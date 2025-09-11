@@ -1,0 +1,103 @@
+@import "tailwindcss";
+
+:root {
+  --font-family: system-ui, -apple-system, sans-serif;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --button-bg: #007bff;
+  --button-text-color: #ffffff;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+.btn {
+  background-color: var(--button-bg);
+  color: var(--button-text-color);
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+
+
+/* Custom Checkbox Styling */
+.custom-checkbox {
+  position: relative;
+  cursor: pointer;
+  outline: none;
+}
+
+/* Hide default checkbox */
+.custom-checkbox[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Custom checkbox background and border */
+.custom-checkbox {
+  background-color: transparent; /* Light mode background */
+  border: 1px solid #11111125; /* Light mode border (gray-300) */
+  transition: all 0.2s ease;
+}
+
+/* Dark mode background and border */
+.dark .custom-checkbox {
+  background-color: #374151; /* Dark mode background (gray-700) */
+  border: 2px solid #4b5563; /* Dark mode border (gray-600) */
+}
+
+/* Checked state */
+.custom-checkbox:checked {
+  background-color: #111111; /* Light mode checked background (blue-600) */
+  border-color: #111111; /* Match border to background */
+}
+
+/* Dark mode checked state */
+.dark .custom-checkbox:checked {
+  background-color: #111111; /* Dark mode checked background (blue-400) */
+  border-color: #111111;
+}
+
+/* Custom checkmark using ::after */
+.custom-checkbox:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1rem;
+  height: 1rem;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>') no-repeat center;
+  background-size: contain;
+  transform: translate(-50%, -50%);
+}
+
+/* Focus ring */
+.custom-checkbox:focus {
+  outline: none;
+  box-shadow: none; /* Light mode focus ring (blue-500) */
+}
+

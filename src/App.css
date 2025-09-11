@@ -1,0 +1,134 @@
+.App {
+  text-align: center;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1; /* Takes remaining space between header and footer */
+  /* padding: 2rem; */
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+/* Add any global styles here */
+
+/* Settings popup animations */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-0.625rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.settings-popup {
+  animation: slideInFromTop 0.2s ease-out;
+}
+
+/* Color picker styling */
+input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 48px;
+  height: 2.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid #e5e7eb;
+  transition: border-color 0.2s ease;
+}
+
+input[type="color"]:hover {
+  border-color: #3b82f6;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 4px;
+}
+
+
+.hero-overlay::after{
+  position: absolute;
+  content: "";
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(17, 17, 17, 0.3);
+}
+.hero-overlay{
+  height: 100%;
+}
+
+.hero-overlay img{
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  height: 100%;
+  width: 100%;
+}
+
+.category-title{
+  background: rgba(17, 17, 17, 0.15);
+  /* width: 100%; */
+  backdrop-filter: blur(0.9375rem);
+  white-space: nowrap;
+  transition: all ease-in-out 0.5s;
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after{
+  display: none;
+  /* background-image: url(../src/assets/chevron-left.svg);
+  background-position: center;
+  background-repeat: no-repeat; */
+}
+
+.swiper-button-prev::before,
+.swiper-button-next:before{
+  position: absolute;
+  content: " ";
+  background-image: url(../src/assets/chevron-left.svg);
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.swiper-button-prev::before{
+  background-image: url(../src/assets/chevron-left.svg);
+}
+
+.swiper-button-next::before{
+  background-image: url(../src/assets/chevron-right.svg);
+}
+
+
+
+.swiper-button-prev,
+.swiper-button-next{
+  width: 2.625rem !important;
+  height: 2.625rem !important;
+  background: #fff;
+  border-radius: 0.625rem;
+}
+
+
+.card-element .hover-content {
+  opacity: 0;
+  transition: all ease-in-out 0.5s;
+}
+
+.card-element:hover .hover-content {
+  opacity: 1;
+}
