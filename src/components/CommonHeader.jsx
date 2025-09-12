@@ -153,21 +153,6 @@ function CommonHeader({ className = "", ...props }) {
       defaultContent
     ));
 
-  return (
-    <section
-      className={`z-10 relative ${
-        location.pathname === "/" ? "rounded-b-none rounded-3xl" : ""
-      } ${className}`}
-      style={{
-        backgroundColor: theme?.bottomFooterBackgroundColor || "#ffffff",
-        color: bottomFooterTextColor || "#111111",
-        fontFamily: theme?.fontFamily || "system-ui, -apple-system, sans-serif",
-      }}
-      {...props}
-    >
-      {innerContent}
-    </section>
-  );
 }
 
 export default CommonHeader;

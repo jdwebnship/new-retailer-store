@@ -75,3 +75,26 @@ export const formatStatus = (status) => {
     .join(" ");
 };
 
+export const getWhatsappLink = (e, product, phone_number) => {
+  e.preventDefault();
+  e.stopPropagation();
+  const productName = product?.name;
+  if (productName && phone_number) {
+    const cleanPhoneNumber = phone_number.replace(/[^\d+]/g, "");
+    const encodedProductName = encodeURIComponent(productName);
+    const url = `https://api.whatsapp.com/send?phone=${cleanPhoneNumber}&text=${encodedProductName}`;
+    window.open(url, "_blank");
+    return true;
+  } else {
+    console.error("Missing product name or phone number");
+    return null;
+  }
+};
+
+ export const isInWishlist = (product_id, wishlistData) => {
+  if (!wishlistData || !Array.isArray(wishlistData)) {
+    return false;
+  }
+  return wishlistData.some((item) => item.product_id == product_id || item.retailer_product_id == product_id);
+};
+

@@ -17,6 +17,7 @@ function App() {
   const [topHeaderHeight, setTopHeaderHeight] = useState(0);
   const [headerHeight, setHeaderHeight] = useState(0);
   const [contentPaddingTop, setContentPaddingTop] = useState(0);
+  const [hasShadow, setHasShadow] = useState(false);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -31,10 +32,13 @@ function App() {
         window.requestAnimationFrame(() => {
           if (currentY <= 0) {
             setShowTopHeader(true);
+            setHasShadow(false);
           } else if (delta > threshold) {
             setShowTopHeader(false);
+            setHasShadow(true);
           } else if (delta < -threshold) {
             setShowTopHeader(true);
+            setHasShadow(true);
           }
           ticking = false;
         });
@@ -80,7 +84,7 @@ function App() {
       <Header
         offsetY={showTopHeader ? topHeaderHeight : 0}
         onHeightChange={setHeaderHeight}
-        visible={showTopHeader}
+        hasShadow={hasShadow}
       />
       <div id="smooth-content">
         <div className="App">

@@ -1,11 +1,24 @@
 import React from "react";
 import { useTheme } from "../contexts/ThemeContext";
-import AdvertismentImg from "../assets/images/Advertisment.png";
 import Marquee from "react-fast-marquee";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Advertisment() {
   const { theme, bottomFooterTextColor, buttonTextColor } = useTheme();
+  const { homeSections } = useSelector((state) => state.homeSections);
+
+  const secondarySection = homeSections?.data?.find(
+    (section) => section.section === "secondary"
+  );
+
+  const imageUrl =
+    secondarySection?.image_url || "https://via.placeholder.com/800x780"; // Fallback image
+  const title = secondarySection?.title || "Browse Our Fashion Paradise!";
+  const content =
+    secondarySection?.content ||
+    "<p>Step into a world of style and explore our diverse collection of clothing categories.</p>";
+
   return (
     <div
       className="py-[0.9375rem]"
@@ -16,14 +29,14 @@ function Advertisment() {
       }}
     >
       <Marquee>
-        <div className="flex gap-4 text-[0.875rem]">
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
+        <div className="flex gap-4 text-[0.875rem] mr-4">
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
         </div>
       </Marquee>
       <div
@@ -37,8 +50,8 @@ function Advertisment() {
         }}
       >
         <img
-          src={AdvertismentImg}
-          alt="Advertisement"
+          src={imageUrl}
+          alt={title}
           style={{
             width: "100%",
             height: "100%",
@@ -52,15 +65,13 @@ function Advertisment() {
               className="text-lg font-bold text-[1.625rem] lg:text-[2.625rem] text-white"
               style={{ whiteSpace: "normal" }}
             >
-              Browse Our Fashion Paradise!
+              {title}
             </h2>
-            <p
+            <div
               className="text-[1rem] lg:text-[22px] text-white"
               style={{ whiteSpace: "normal" }}
-            >
-              Step into a world of style and explore our diverse collection of
-              clothing categories.
-            </p>
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
             <div>
               <Link
                 to={"/shop"}
@@ -91,14 +102,14 @@ function Advertisment() {
         </div>
       </div>
       <Marquee>
-        <div className="flex gap-4 text-[0.875rem]">
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
-          <span>Step into style </span> • <span> Empower your look</span> •
+        <div className="flex gap-4 text-[0.875rem] mr-4">
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
         </div>
       </Marquee>
     </div>

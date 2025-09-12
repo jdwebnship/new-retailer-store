@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
@@ -9,6 +9,7 @@ function Checkout() {
   const location = useLocation();
   const items = location.state?.items || [];
   const { theme, bottomFooterTextColor } = useTheme();
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleContinue = (e) => {
     e.preventDefault();
@@ -298,6 +299,80 @@ function Checkout() {
                 Apply
               </button>
             </div>
+
+            {/* Payment Method */}
+            <div className="my-6">
+              <h3 className="text-2xl font-bold mb-4">Payment Method</h3>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <label
+                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "cod"
+                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                      : "border-[#AAAAAA] hover:border-black/60"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    className="peer hidden"
+                    checked={paymentMethod === "cod"}
+                    onChange={() => setPaymentMethod("cod")}
+                  />
+                  <span
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "cod"
+                        ? "border-black"
+                        : "border-[#AAAAAA]"
+                    }`}
+                  >
+                    <span
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "cod" ? "bg-black" : "bg-transparent"
+                      }`}
+                    />
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-semibold">
+                      Cash on Delivery (COD)
+                    </span>
+                  </div>
+                </label>
+
+                <label
+                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "prepaid"
+                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                      : "border-[#AAAAAA] hover:border-black/60"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="payment"
+                    className="peer hidden"
+                    checked={paymentMethod === "prepaid"}
+                    onChange={() => setPaymentMethod("prepaid")}
+                  />
+                  <span
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "prepaid"
+                        ? "border-black"
+                        : "border-[#AAAAAA]"
+                    }`}
+                  >
+                    <span
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "prepaid"
+                          ? "bg-black"
+                          : "bg-transparent"
+                      }`}
+                    />
+                  </span>
+                  <div className="flex flex-col">
+                    <span className="font-semibold">Prepaid</span>
+                  </div>
+                </label>
+              </div>
+            </div>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Subtotal</span>
@@ -320,7 +395,7 @@ function Checkout() {
             </div>
             <button
               className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] py-4 uppercase disabled:opacity-60"
-              disabled
+              disabled={!paymentMethod}
             >
               Place Order
             </button>

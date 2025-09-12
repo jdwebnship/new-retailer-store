@@ -56,6 +56,7 @@ export const logoutUser = createAsyncThunk(
         user_token: import.meta.env.VITE_API_KEY,
       });
       if (response?.data?.success || response?.status) {
+        toast.success(response?.data?.message || "Logout successful")
         dispatch(logout());
         dispatch({ type: "RESET_APP" });
         navigate("/signin");
@@ -69,6 +70,45 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+// forgot password
+export const forgotpassword = createAsyncThunk(
+  "auth/forgotpassword",
+  async ({ email, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/customer/forgot-password", { email });
+      if (response?.data?.success || response?.status) {
+        toast.success(response?.data?.message)
+        navigate("/signin");
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Logout failed"
+      );
+    }
+  }
+);
+
+// reset password
+export const resetpasswordwithtoken = createAsyncThunk(
+  "auth/resetpassword",
+  async ({ data, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/customer/token-password", data);
+      if (response?.data?.success) {
+        toast.success(response?.data?.message)
+        navigate("/signin");
+      } else {
+        toast.error(response?.data?.message)
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Logout failed"
+      );
+    }
+  }
+);
 
 const authSlice = createSlice({
   name: "auth",
@@ -104,7 +144,7 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        console.log("action.payload",action.payload);
+        console.log("action.payload", action.payload);
         state.loading = false;
         state.user = action.payload.data;
         state.isAuthenticated = action.payload.data.email_verification_token ? false : true;
@@ -147,5 +187,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, setCredentials, updateCustomer } = authSlice.actions;
+export const { logout, updateCustomer } = authSlice.actions;
 export default authSlice.reducer;

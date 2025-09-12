@@ -134,7 +134,6 @@
 
 // export default SignUp;
 
-
 import React, { useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
@@ -163,8 +162,12 @@ const validationSchema = Yup.object({
     .email("Invalid email address")
     .required("Email is required"),
   password: Yup.string()
+    .required("Password is required")
     .min(8, "Password must be at least 8 characters")
-    .required("Password is required"),
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+      "Password must contain at least one uppercase, one lowercase, one number, and one special character"
+    ),
   mobile: Yup.string()
     .matches(/^[0-9]{10}$/, "Enter a valid 10-digit mobile number")
     .required("Mobile number is required"),
@@ -204,7 +207,7 @@ function SignUp() {
           <form className="space-y-6" onSubmit={formik.handleSubmit}>
             {/* First & Last Name */}
             <div className="sm:mb-0 mb-6 flex flex-col sm:flex-row space-x-4">
-              <div className="sm:w-1/2 w-full mb-6">
+              <div className="sm:w-1/2 w-full mb-6 relative">
                 <label className="block text-sm mb-2 font-bold uppercase">
                   First name
                 </label>
@@ -219,10 +222,12 @@ function SignUp() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.firstName && formik.errors.firstName && (
-                  <p className="text-red-500 text-sm">{formik.errors.firstName}</p>
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.firstName}
+                  </p>
                 )}
               </div>
-              <div className="sm:w-1/2 w-full">
+              <div className="sm:w-1/2 w-full relative">
                 <label className="block text-sm mb-2 font-bold uppercase">
                   Last name
                 </label>
@@ -237,13 +242,15 @@ function SignUp() {
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.lastName && formik.errors.lastName && (
-                  <p className="text-red-500 text-sm">{formik.errors.lastName}</p>
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.lastName}
+                  </p>
                 )}
               </div>
             </div>
 
             {/* Email */}
-            <div>
+            <div className="relative">
               <label className="block text-sm mb-2 font-bold uppercase">
                 Email
               </label>
@@ -258,12 +265,12 @@ function SignUp() {
                 onBlur={formik.handleBlur}
               />
               {formik.touched.email && formik.errors.email && (
-                <p className="text-red-500 text-sm">{formik.errors.email}</p>
+                <p className="text-red-500 text-sm absolute">{formik.errors.email}</p>
               )}
             </div>
 
             {/* Password */}
-            <div>
+            <div className="relative">
               <label className="block text-sm mb-2 font-bold uppercase">
                 Password
               </label>
@@ -281,7 +288,7 @@ function SignUp() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-3 flex items-center text-gray-500"
+                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer"
                 >
                   {showPassword ? (
                     <Eye className="h-5 w-5" />
@@ -291,12 +298,12 @@ function SignUp() {
                 </button>
               </div>
               {formik.touched.password && formik.errors.password && (
-                <p className="text-red-500 text-sm">{formik.errors.password}</p>
+                <p className="text-red-500 text-sm absolute">{formik.errors.password}</p>
               )}
             </div>
 
             {/* Mobile */}
-            <div>
+            <div className="relative">
               <label className="block text-sm mb-2 font-bold uppercase">
                 Mobile Number
               </label>
@@ -314,7 +321,7 @@ function SignUp() {
                 onBlur={formik.handleBlur}
               />
               {formik.touched.mobile && formik.errors.mobile && (
-                <p className="text-red-500 text-sm">{formik.errors.mobile}</p>
+                <p className="text-red-500 text-sm absolute">{formik.errors.mobile}</p>
               )}
             </div>
 
@@ -329,7 +336,10 @@ function SignUp() {
                 onBlur={formik.handleBlur}
                 className="shrink-0 h-5 w-5 rounded border-gray-300 bg-white"
               />
-              <label htmlFor="terms" className="text-sm font-medium select-none">
+              <label
+                htmlFor="terms"
+                className="text-sm font-medium select-none"
+              >
                 By creating an account you agree with our Terms of Service,
                 Privacy Policy,
               </label>
@@ -341,7 +351,7 @@ function SignUp() {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full bg-black text-white rounded-[0.625rem] cursor-pointer py-4 uppercase"
+              className="w-full btn rounded-[0.625rem] cursor-pointer py-4 uppercase"
             >
               Sign up
             </button>
@@ -351,7 +361,10 @@ function SignUp() {
           <div className="mt-4 text-center">
             <p className="text-sm uppercase">
               Already have an account?{" "}
-              <Link to={"/signin"} className="underline hover:text-[#007BFF]">
+              <Link
+                to={"/signin"}
+                className="underline hover:text-[#007BFF] transition-all duration-300"
+              >
                 Sign In
               </Link>
             </p>

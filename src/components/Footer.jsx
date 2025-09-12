@@ -32,13 +32,19 @@ function Footer() {
             <h2 className="mb-4 font-bold text-lg">Customer Care</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
-                <a href="#" className="flex gap-2 ">
+                <a
+                  href="#"
+                  className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                >
                   <Mail />
                   {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
                 </a>
               </li>
               <li className="mb-1">
-                <a href="#" className="flex gap-2 ">
+                <a
+                  href="#"
+                  className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                >
                   <Call />
                   {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
                 </a>
@@ -65,12 +71,18 @@ function Footer() {
             <h2 className="mb-4 font-bold text-lg">Support</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
-                <a href="#" className=" ">
+                <a
+                  href="#"
+                  className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out "
+                >
                   FAQ
                 </a>
               </li>
               <li className="mb-1">
-                <a href="#" className="">
+                <a
+                  href="#"
+                  className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                >
                   Terms of use
                 </a>
               </li>
@@ -86,17 +98,26 @@ function Footer() {
             <h2 className="mb-4 font-bold text-lg">Company</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
-                <a href="#" className=" ">
+                <a
+                  href="#"
+                  className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out "
+                >
                   About Us
                 </a>
               </li>
               <li className="mb-1">
-                <a href="#" className="">
+                <a
+                  href="#"
+                  className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                >
                   Contact Us
                 </a>
               </li>
               <li className="mb-1">
-                <a href="#" className="">
+                <a
+                  href="#"
+                  className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                >
                   Support
                 </a>
               </li>
@@ -109,7 +130,7 @@ function Footer() {
               <li className="mb-1">
                 <Link
                   to={storeInfo?.storeinfo?.facebook || "#"}
-                  className="flex gap-2 "
+                  className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Facebook />
                   Facebook
@@ -118,7 +139,7 @@ function Footer() {
               <li className="mb-1">
                 <Link
                   to={storeInfo?.storeinfo?.instagram_url || "#"}
-                  className="flex gap-2 "
+                  className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Instagram />
                   Instagram
@@ -127,7 +148,7 @@ function Footer() {
               <li className="mb-1">
                 <Link
                   to={storeInfo?.storeinfo?.twitter_url || "#"}
-                  className="flex gap-2 "
+                  className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Twitter />
                   Twitter

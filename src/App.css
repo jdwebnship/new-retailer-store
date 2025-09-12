@@ -10,6 +10,7 @@
   /* padding: 2rem; */
   background-color: var(--bg-color);
   color: var(--text-color);
+  transition: padding-top 480ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 /* Add any global styles here */
@@ -107,10 +108,12 @@ input[type="color"]::-webkit-color-swatch {
 
 .swiper-button-prev::before{
   background-image: url(../src/assets/chevron-left.svg);
+  transition: all ease-in-out 0.5s;
 }
 
 .swiper-button-next::before{
   background-image: url(../src/assets/chevron-right.svg);
+  transition: all ease-in-out 0.5s;
 }
 
 
@@ -121,6 +124,18 @@ input[type="color"]::-webkit-color-swatch {
   height: 2.625rem !important;
   background: #fff;
   border-radius: 0.625rem;
+  transition: all ease-in-out 0.5s;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.08);
+}
+
+.swiper-button-prev:hover::before,
+.swiper-button-next:hover:before{
+  filter: invert(1);
+}
+
+.swiper-button-prev:hover,
+.swiper-button-next:hover{
+  background: #111111;
 }
 
 

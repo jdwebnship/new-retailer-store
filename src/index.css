@@ -41,6 +41,11 @@ textarea {
   text-transform: uppercase;
 }
 
+.btn-outline {
+  background-color: transparent;
+  border: 1px solid var(--text-color);
+  color: var(--text-color);
+}
 
 
 /* Custom Checkbox Styling */
@@ -101,13 +106,110 @@ textarea {
   box-shadow: none; /* Light mode focus ring (blue-500) */
 }
 
+.custom-checkbox + span{
+  cursor: pointer;
+}
+
 .Toastify__toast{
   box-shadow:
     0px 8px 10px 0px #00000033,
     0px 6px 30px 0px #0000001F,
     0px 16px 24px 0px #00000024;
-    animation-delay: 300ms;
-    animation-timing-function: linear;
-    animation-duration: 4800ms;
+    animation-delay: 0ms;
+    animation-timing-function: ease-in-out;
+    animation-duration: 300ms;
     color: #111111;
 }
+
+.Toastify__toast-icon{
+  /* background: #F2F2F2; */
+  /* padding: 4px; */
+  border-radius: 50%;
+  width: 2rem !important;
+  height: 2rem !important;
+}
+.Toastify__toast{
+  width: 345px !important;
+  font-size: 17px;
+  font-weight: bold;
+  line-height: 22px;
+  overflow: hidden;
+}
+
+.Toastify__toast--success::before,
+.Toastify__toast--error:before,
+.Toastify__toast--warning::before{
+  position: absolute;
+  content: " ";
+  width: 240px;
+  height: 240px;
+  left: -25%;
+  border-radius: 50%;
+}
+
+.Toastify__toast--error:before{
+  background: radial-gradient(50% 50% at 50% 50%, rgba(240, 66, 72, 0.13) 0%, rgba(240, 66, 72, 0) 100%);
+ }
+.Toastify__toast--success:before{
+  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 237, 81, 0.12) 0%, rgba(0, 237, 123, 0) 100%);
+}
+
+.Toastify__toast--warning:before{
+  background: radial-gradient(50% 50% at 50% 50%, rgba(255, 212, 38, 0.11) 0%, rgba(255, 212, 38, 0) 100%);
+}
+
+.Toastify__toast--success .Toastify__toast-icon svg,
+.Toastify__toast--error .Toastify__toast-icon svg,
+.Toastify__toast--warning .Toastify__toast-icon svg{
+  display: none;
+}
+
+.Toastify__toast--success .Toastify__toast-icon{
+ background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiNGMkYyRjIiLz4KPG1hc2sgaWQ9Im1hc2swXzEyNzZfMTMyNSIgc3R5bGU9Im1hc2stdHlwZTphbHBoYSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iNCIgeT0iNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMF8xMjc2XzEzMjUpIj4KPHBhdGggZD0iTTE0LjYgMjAuNkwyMS42NSAxMy41NUwyMC4yNSAxMi4xNUwxNC42IDE3LjhMMTEuNzUgMTQuOTVMMTAuMzUgMTYuMzVMMTQuNiAyMC42Wk0xNiAyNkMxNC42MTY3IDI2IDEzLjMxNjcgMjUuNzM3MyAxMi4xIDI1LjIxMkMxMC44ODMzIDI0LjY4NzMgOS44MjUgMjMuOTc1IDguOTI1IDIzLjA3NUM4LjAyNSAyMi4xNzUgNy4zMTI2NyAyMS4xMTY3IDYuNzg4IDE5LjlDNi4yNjI2NyAxOC42ODMzIDYgMTcuMzgzMyA2IDE2QzYgMTQuNjE2NyA2LjI2MjY3IDEzLjMxNjcgNi43ODggMTIuMUM3LjMxMjY3IDEwLjg4MzMgOC4wMjUgOS44MjUgOC45MjUgOC45MjVDOS44MjUgOC4wMjUgMTAuODgzMyA3LjMxMjMzIDEyLjEgNi43ODdDMTMuMzE2NyA2LjI2MjMzIDE0LjYxNjcgNiAxNiA2QzE3LjM4MzMgNiAxOC42ODMzIDYuMjYyMzMgMTkuOSA2Ljc4N0MyMS4xMTY3IDcuMzEyMzMgMjIuMTc1IDguMDI1IDIzLjA3NSA4LjkyNUMyMy45NzUgOS44MjUgMjQuNjg3MyAxMC44ODMzIDI1LjIxMiAxMi4xQzI1LjczNzMgMTMuMzE2NyAyNiAxNC42MTY3IDI2IDE2QzI2IDE3LjM4MzMgMjUuNzM3MyAxOC42ODMzIDI1LjIxMiAxOS45QzI0LjY4NzMgMjEuMTE2NyAyMy45NzUgMjIuMTc1IDIzLjA3NSAyMy4wNzVDMjIuMTc1IDIzLjk3NSAyMS4xMTY3IDI0LjY4NzMgMTkuOSAyNS4yMTJDMTguNjgzMyAyNS43MzczIDE3LjM4MzMgMjYgMTYgMjZaIiBmaWxsPSIjMDBERjgwIi8+CjwvZz4KPC9zdmc+Cg==)
+}
+
+
+.Toastify__toast--error .Toastify__toast-icon{
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiNGMkYyRjIiLz4KPG1hc2sgaWQ9Im1hc2swXzEyNzZfMTQxOSIgc3R5bGU9Im1hc2stdHlwZTphbHBoYSIgbWFza1VuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeD0iNCIgeT0iNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0Ij4KPHJlY3QgeD0iNCIgeT0iNCIgd2lkdGg9IjI0IiBoZWlnaHQ9IjI0IiBmaWxsPSIjRDlEOUQ5Ii8+CjwvbWFzaz4KPGcgbWFzaz0idXJsKCNtYXNrMF8xMjc2XzE0MTkpIj4KPHBhdGggZD0iTTEyLjQgMjFMMTYgMTcuNEwxOS42IDIxTDIxIDE5LjZMMTcuNCAxNkwyMSAxMi40TDE5LjYgMTFMMTYgMTQuNkwxMi40IDExTDExIDEyLjRMMTQuNiAxNkwxMSAxOS42TDEyLjQgMjFaTTE2IDI2QzE0LjYxNjcgMjYgMTMuMzE2NyAyNS43MzczIDEyLjEgMjUuMjEyQzEwLjg4MzMgMjQuNjg3MyA5LjgyNSAyMy45NzUgOC45MjUgMjMuMDc1QzguMDI1IDIyLjE3NSA3LjMxMjY3IDIxLjExNjcgNi43ODggMTkuOUM2LjI2MjY3IDE4LjY4MzMgNiAxNy4zODMzIDYgMTZDNiAxNC42MTY3IDYuMjYyNjcgMTMuMzE2NyA2Ljc4OCAxMi4xQzcuMzEyNjcgMTAuODgzMyA4LjAyNSA5LjgyNSA4LjkyNSA4LjkyNUM5LjgyNSA4LjAyNSAxMC44ODMzIDcuMzEyMzMgMTIuMSA2Ljc4N0MxMy4zMTY3IDYuMjYyMzMgMTQuNjE2NyA2IDE2IDZDMTcuMzgzMyA2IDE4LjY4MzMgNi4yNjIzMyAxOS45IDYuNzg3QzIxLjExNjcgNy4zMTIzMyAyMi4xNzUgOC4wMjUgMjMuMDc1IDguOTI1QzIzLjk3NSA5LjgyNSAyNC42ODczIDEwLjg4MzMgMjUuMjEyIDEyLjFDMjUuNzM3MyAxMy4zMTY3IDI2IDE0LjYxNjcgMjYgMTZDMjYgMTcuMzgzMyAyNS43MzczIDE4LjY4MzMgMjUuMjEyIDE5LjlDMjQuNjg3MyAyMS4xMTY3IDIzLjk3NSAyMi4xNzUgMjMuMDc1IDIzLjA3NUMyMi4xNzUgMjMuOTc1IDIxLjExNjcgMjQuNjg3MyAxOS45IDI1LjIxMkMxOC42ODMzIDI1LjczNzMgMTcuMzgzMyAyNiAxNiAyNloiIGZpbGw9IiNGMDQyNDgiLz4KPC9nPgo8L3N2Zz4K)
+ }
+
+ .Toastify__toast--warning .Toastify__toast-icon{
+  background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iMTYiIGZpbGw9IiNGMkYyRjIiLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAwXzEyNzZfMTM3MykiPgo8cGF0aCBkPSJNMTYgNkMxMC40OCA2IDYgMTAuNDggNiAxNkM2IDIxLjUyIDEwLjQ4IDI2IDE2IDI2QzIxLjUyIDI2IDI2IDIxLjUyIDI2IDE2QzI2IDEwLjQ4IDIxLjUyIDYgMTYgNlpNMTcgMjFIMTVWMTlIMTdWMjFaTTE3IDE3SDE1VjExSDE3VjE3WiIgZmlsbD0iI0ZGRDIxRSIvPgo8L2c+CjxkZWZzPgo8Y2xpcFBhdGggaWQ9ImNsaXAwXzEyNzZfMTM3MyI+CjxyZWN0IHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgZmlsbD0id2hpdGUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDQgNCkiLz4KPC9jbGlwUGF0aD4KPC9kZWZzPgo8L3N2Zz4K);
+ }
+
+
+
+.Toastify__progress-bar--success::before, 
+.Toastify__progress-bar--error::before, 
+.Toastify__progress-bar--warning:before{
+  position: absolute;
+  content: " ";
+  background: #ffd21f;
+  width: 100%;
+  height: 6px;
+  backdrop-filter: blur(40px);
+  top: 0px;
+  /* filter: blur(1.5rem); */
+  z-index: -1;
+  filter: blur(4px);
+}
+.Toastify__progress-bar--wrp{
+  overflow: visible;
+}
+
+.Toastify__progress-bar--success:before{
+  background: #01E17B;
+}
+
+.Toastify__progress-bar--error::before{
+  background: #F04349;
+}
+
+.Toastify__progress-bar--warning{
+  background: #FFD21F;
+}
+
+
+/* .Toastify__toast-container{
+  
+} */

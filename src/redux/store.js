@@ -2,7 +2,9 @@ import { configureStore, combineReducers } from "@reduxjs/toolkit";
 import { clearState, loadState, saveState } from "../utils/sessionStorage";
 import authSlice from "../redux/slices/authSlice";
 import storeInfoSlice from "../redux/slices/storeInfoSlice";
-import productSlice from "../redux/slices/productSlice"
+import productSlice from "../redux/slices/productSlice";
+import homeSectionsSlice from "../redux/slices/homeSectionsSlice";
+import wishlistSlice from "../redux/slices/WishListSlice"
 // import cartReducer from "./slices/cartSlice";
 // import wishlistReducer from "./slices/wishlistSlice";
 // import storeReducer from "./slices/storeSlice";
@@ -18,6 +20,8 @@ const appReducer = combineReducers({
   auth: authSlice,
   storeInfo: storeInfoSlice,
   products: productSlice,
+  homeSections: homeSectionsSlice,
+  wishlist: wishlistSlice,
 
   // cart: cartReducer,
   // orders: ordersReducer,
@@ -37,8 +41,8 @@ const rootReducer = (state, action) => {
     const storeInfoState = state?.storeInfo;
 
     state = {
-      storeInfo: storeInfoState
-    }
+      storeInfo: storeInfoState,
+    };
   }
   return appReducer(state, action);
 };

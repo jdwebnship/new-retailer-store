@@ -1,25 +1,28 @@
+// src/pages/Cart.jsx
 import React, { useMemo, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
+import ModalComponent from "../components/modal";
 
 function Cart() {
   const navigate = useNavigate();
   const [items, setItems] = useState([
     {
       id: 1,
-      name: "Longine_s Heritage Classic Copper-Black",
+      name: "Longines Heritage Classic Copper-Black",
       price: 79.99,
       quantity: 1,
       image: "/src/assets/images/hero.jpg",
     },
     {
       id: 2,
-      name: "Lacost e Navy Blue Logo Work Premium Polo T-Shirt",
+      name: "Lacoste Navy Blue Logo Work Premium Polo T-Shirt",
       price: 129.0,
       quantity: 2,
       image: "/src/assets/images/hero.jpg",
     },
   ]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const increaseQty = (id) => {
     setItems((prev) =>
@@ -68,9 +71,11 @@ function Cart() {
                 </Link>
               </div>
             ) : (
-
               items.map((it) => (
-                <div key={it.id} className="flex md:flex-row flex-col md:gap-6 gap-4 justify-between">
+                <div
+                  key={it.id}
+                  className="flex md:flex-row flex-col md:gap-6 gap-4 justify-between"
+                >
                   <div className="flex gap-4 flex-1 max-w-[25.938rem]">
                     <img
                       src={it.image}
@@ -78,13 +83,24 @@ function Cart() {
                       className="lg:w-[6.25rem] lg:h-[6.25rem] w-20 h-20 object-cover rounded-[1.125rem]"
                     />
                     <div>
-                      <div className="sm:text-lg text-base font-bold mb-2.5 text-[#111111]">{it.name}</div>
-                      <div className="flex mb-2">
-                        <span className="leading-none inline-block text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">Size:<strong className="font-bold text-[#111111] ml-2">L</strong></span>
-                      <div className="flex items-center gap-2">
-                        <span className="leading-none text-base font-bold text-[#111111]">₹3,298</span>
-                        <span className="leading-none text-sm text-[#808080]">₹19,999</span>
+                      <div className="sm:text-lg text-base font-bold mb-2.5 text-[#111111]">
+                        {it.name}
                       </div>
+                      <div className="flex mb-2">
+                        <span className="leading-none inline-block text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                          Size:
+                          <strong className="font-bold text-[#111111] ml-2">
+                            L
+                          </strong>
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="leading-none text-base font-bold text-[#111111]">
+                            ${it.price.toFixed(2)}
+                          </span>
+                          <span className="leading-none text-sm text-[#808080]">
+                            ${it.price.toFixed(2)}
+                          </span>
+                        </div>
                       </div>
                       <button
                         onClick={() => removeItem(it.id)}
@@ -97,43 +113,62 @@ function Cart() {
                   <div className="flex items-center gap-8 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
                     <button
                       onClick={() => decreaseQty(it.id)}
-                      className="text-2xl font-normal text-[#111111] focus:outline-none"
+                      className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer"
                       style={{ minWidth: "2.5rem" }}
                     >
                       –
                     </button>
-                    <span className="text-base font-normal text-[#111111] select-none">{it.quantity}</span>
+                    <span className="text-base font-normal text-[#111111] select-none">
+                      {it.quantity}
+                    </span>
                     <button
                       onClick={() => increaseQty(it.id)}
-                      className="text-2xl font-normal text-[#111111] focus:outline-none"
+                      className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer"
                       style={{ minWidth: "2.5rem" }}
                     >
                       +
                     </button>
                   </div>
                   <div className="md:ml-[0] ml-[6rem]">
-                    <p className="text-lg font-bold">₹9,894</p>
+                    <p className="text-lg font-bold">
+                      ${(it.price * it.quantity).toFixed(2)}
+                    </p>
                   </div>
                 </div>
               ))
             )}
           </div>
           <aside className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-12">
-            <h2 className="md:text-2xl text-lg font-semibold mb-6">Order Summary</h2>
+            <h2 className="md:text-2xl text-lg font-semibold mb-6">
+              Order Summary
+            </h2>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Subtotal</span>
-                <span className="sm:text-lg font-medium">${subtotal.toFixed(2)}</span>
+                <span className="sm:text-lg font-medium">
+                  ${subtotal.toFixed(2)}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Taxes (7%)</span>
-                <span className="sm:text-lg font-medium">${tax.toFixed(2)}</span>
+                <span className="sm:text-lg font-medium">
+                  ${tax.toFixed(2)}
+                </span>
               </div>
               <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
-                <span className="md:text-2xl text-lg font-medium">${total.toFixed(2)}</span>
+                <span className="md:text-2xl text-lg font-medium">
+                  ${total.toFixed(2)}
+                </span>
               </div>
             </div>
+            <button
+              onClick={() => setIsModalOpen(true)}
+              disabled={items.length === 0}
+              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
+            >
+              Open Modal
+            </button>
             <button
               onClick={proceedToCheckout}
               disabled={items.length === 0}
@@ -142,11 +177,20 @@ function Cart() {
               Checkout
             </button>
             <div className="text-center mt-6">
-            <a className="sm:text-lg uppercase font-normal underline hover:text-[#007BFF]" href="">Continue Shopping</a>
+              <Link
+                className="sm:text-lg uppercase font-normal underline hover:text-[#007BFF] transition-all duration-300"
+                to="/shop"
+              >
+                Continue Shopping
+              </Link>
             </div>
           </aside>
         </div>
       </div>
+      <ModalComponent
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 }
