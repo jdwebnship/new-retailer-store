@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { useSelector } from "react-redux";
 import { getContrastingColor } from "../utils/colorUtils";
 
 const ThemeContext = createContext();
@@ -25,6 +26,36 @@ export function ThemeProvider({ children, theme = {} }) {
     categoryLayout: "swiper",
     ...theme,
   });
+
+  // Get store info from Redux store
+  const storeInfo = useSelector(
+    (state) => state.storeInfo?.storeInfo?.storeinfo || {}
+  );
+
+  // Update theme when store info changes
+  useEffect(() => {
+    if (storeInfo) {
+      setCurrentTheme((prevTheme) => ({
+        ...prevTheme,
+        fontFamily: storeInfo.fontFamily || prevTheme.fontFamily,
+        backgroundColor: storeInfo.backgroundColor || prevTheme.backgroundColor,
+        buttonBackgroundColor:
+          storeInfo.buttonBackgroundColor || prevTheme.buttonBackgroundColor,
+        topHeaderBackgroundColor:
+          storeInfo.topHeaderBackgroundColor ||
+          prevTheme.topHeaderBackgroundColor,
+        headerBackgroundColor:
+          storeInfo.headerBackgroundColor || prevTheme.headerBackgroundColor,
+        footerBackgroundColor:
+          storeInfo.footerBackgroundColor || prevTheme.footerBackgroundColor,
+        bottomFooterBackgroundColor:
+          storeInfo.bottomFooterBackgroundColor ||
+          prevTheme.bottomFooterBackgroundColor,
+        bannerType: storeInfo.bannerType || prevTheme.bannerType,
+        categoryLayout: storeInfo.categoryLayout || prevTheme.categoryLayout,
+      }));
+    }
+  }, [storeInfo]);
 
   const textColor = useMemo(
     () => getContrastingColor(currentTheme.backgroundColor),

@@ -6,74 +6,91 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { CardItem } from "./CardItem";
-
-import ct01 from "../assets/images/ct-01.jpg";
-import ct02 from "../assets/images/ct-02.jpg";
-import ct03 from "../assets/images/ct-03.jpg";
-import ct04 from "../assets/images/ct-04.jpg";
-import ct05 from "../assets/images/ct-01.jpg";
-
-// Sample card data
-const cardItems = [
-  {
-    image: ct01,
-    name: "Mountain Retreat",
-    // price: "$299.99",
-  },
-  {
-    image: ct02,
-    name: "Beach Villa",
-    // price: "$399.99",
-  },
-  {
-    image: ct03,
-    name: "City Loft",
-    // price: "$199.99",
-  },
-  {
-    image: ct04,
-    name: "Forest Cabin",
-    // price: "$249.99",
-  },
-  {
-    image: ct05,
-    name: "Mountain Retreat",
-    // price: "$299.99",
-  },
-];
+import { useSelector } from "react-redux";
 
 export default function CardSlider() {
   const { theme } = useTheme();
   const isSwiper = (theme?.categoryLayout || "swiper") === "swiper";
+  const { storeInfo, loading } = useSelector((state) => state.storeInfo);
+
+  const categories = storeInfo?.sub_category_list || [];
 
   return (
     <div className="px-6 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
       {isSwiper ? (
-        <Swiper
-          modules={[Navigation, Pagination, Autoplay]}
-          spaceBetween={30}
-          navigation
-          autoplay={{ delay: 3000, disableOnInteraction: true }}
-          loop={true}
-          breakpoints={{
-            320: { slidesPerView: 1.3 },
-            640: { slidesPerView: 2.3 },
-            1366: { slidesPerView: 4.3 },
-          }}
-        >
-          {cardItems.map((item, idx) => (
-            <SwiperSlide key={idx} className="flex justify-center">
-              <CardItem item={item} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <div className="newsSlider-wrapper">
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            className="newsSlider"
+            spaceBetween={30}
+            slidesPerView={1.1}
+            loop={true}
+            autoplay={{
+              delay: 3000,
+              disableOnInteraction: true,
+            }}
+            navigation={{
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            }}
+            // pagination={{ clickable: true }}
+            breakpoints={{
+              640: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+              },
+              1024: {
+                slidesPerView: 2,
+                spaceBetween: 24,
+              },
+              1200: {
+                slidesPerView: 4,
+                spaceBetween: 24,
+              },
+            }}
+          >
+            {loading ? (
+              <div className="flex items-center justify-center p-4">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+              </div>
+            ) : categories.length > 0 ? (
+              categories.map((item, idx) => (
+                <SwiperSlide key={idx} className="flex justify-center">
+                  <CardItem item={item} />
+                </SwiperSlide>
+              ))
+            ) : (
+              <div className="flex items-center justify-center p-4">
+                <p className="text-sm text-gray-500">No categories found</p>
+              </div>
+            )}
+
+            {/* Navigation buttons */}
+            <div className="swiper-button-prev"></div>
+            <div className="swiper-button-next"></div>
+          </Swiper>
+        </div>
       ) : (
         <section className="py-[3.125rem] lg:py-[100px]">
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 gap-4">
-            {cardItems.map((item, idx) => (
-              <CardItem key={idx} item={item} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="flex items-center justify-center p-4">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : categories.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 gap-4">
+              {categories.map((item, idx) => (
+                <CardItem key={idx} item={item} />
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center p-4">
+              <p className="text-sm text-gray-500">No categories found</p>
+            </div>
+          )}
         </section>
       )}
     </div>

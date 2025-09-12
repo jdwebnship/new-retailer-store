@@ -15,51 +15,61 @@ function ProductSection() {
     {
       productName: "Chanel Jumbo Paris Glossy bag with...",
       price: "3,298",
+      oldPrice: "3,898",
       imageSrc: s01,
     },
     {
       productName: "Sample Product 2",
       price: "49.99",
+      oldPrice: "59.99",
       imageSrc: s02,
     },
     {
       productName: "Sample Product 3",
       price: "19.99",
+      oldPrice: "29.99",
       imageSrc: s03,
     },
     {
       productName: "Sample Product 1",
       price: "29.99",
+      oldPrice: "39.99",
       imageSrc: s04,
     },
     {
       productName: "Sample Product 2",
       price: "49.99",
+      oldPrice: "59.99",
       imageSrc: s05,
     },
     {
       productName: "Chanel Jumbo Paris Glossy bag with...",
       price: "3,298",
+      oldPrice: "3,898",
       imageSrc: s01,
     },
     {
       productName: "Sample Product 2",
       price: "49.99",
+      oldPrice: "59.99",
       imageSrc: s02,
     },
     {
       productName: "Sample Product 3",
       price: "19.99",
+      oldPrice: "29.99",
       imageSrc: s03,
     },
     {
       productName: "Sample Product 1",
       price: "29.99",
+      oldPrice: "39.99",
       imageSrc: s04,
     },
     {
       productName: "Sample Product 2",
       price: "49.99",
+      oldPrice: "59.99",
       imageSrc: s05,
     },
   ];
@@ -77,6 +87,7 @@ function ProductSection() {
               key={index}
               productName={product.productName}
               price={product.price}
+              oldPrice={product.oldPrice}
               imageSrc={product.imageSrc}
             />
           ))}

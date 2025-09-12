@@ -1,16 +1,12 @@
-import { useState } from "react";
-
-export default function PriceRangeSlider() {
-  const [priceRange, setPriceRange] = useState([1000, 5000]);
-
+export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
   const handleMinChange = (e) => {
-    const newMin = Math.min(+e.target.value, priceRange[1] - 500);
-    setPriceRange([newMin, priceRange[1]]);
+    const newMin = Math.min(+e.target.value, value[1] - 500);
+    onChange([newMin, value[1]]);
   };
 
   const handleMaxChange = (e) => {
-    const newMax = Math.max(+e.target.value, priceRange[0] + 500);
-    setPriceRange([priceRange[0], newMax]);
+    const newMax = Math.max(+e.target.value, value[0] + 500);
+    onChange([value[0], newMax]);
   };
 
   return (
@@ -21,8 +17,8 @@ export default function PriceRangeSlider() {
         <div
           className="absolute h-2 bg-black rounded-full"
           style={{
-            left: `${(priceRange[0] / 10000) * 100}%`,
-            right: `${100 - (priceRange[1] / 10000) * 100}%`,
+            left: `${(value[0] / 10000) * 100}%`,
+            right: `${100 - (value[1] / 10000) * 100}%`,
           }}
         />
         {/* Min handle */}
@@ -31,7 +27,7 @@ export default function PriceRangeSlider() {
           min="0"
           max="10000"
           step="100"
-          value={priceRange[0]}
+          value={value[0]}
           onChange={handleMinChange}
           className="absolute top-[-0.3125rem] w-full bg-transparent appearance-none pointer-events-none
             [&::-webkit-slider-thumb]:appearance-none
@@ -47,7 +43,7 @@ export default function PriceRangeSlider() {
           min="0"
           max="10000"
           step="100"
-          value={priceRange[1]}
+          value={value[1]}
           onChange={handleMaxChange}
           className="absolute top-[-0.3125rem] w-full bg-transparent appearance-none pointer-events-none
             [&::-webkit-slider-thumb]:appearance-none
@@ -61,13 +57,13 @@ export default function PriceRangeSlider() {
 
       {/* Price boxes */}
       <div className="flex justify-between gap-4">
-        <div className="flex items-center justify-between w-1/2 border rounded-lg px-3 py-2">
-          <span>₹</span>
-          <span>{priceRange[0].toLocaleString()}</span>
+        <div className="flex items-center justify-center w-1/2 border rounded-lg px-3 py-2">
+          <span className="mr-1">₹</span>
+          <span>{value[0].toLocaleString()}</span>
         </div>
-        <div className="flex items-center justify-between w-1/2 border rounded-lg px-3 py-2">
-          <span>₹</span>
-          <span>{priceRange[1].toLocaleString()}</span>
+        <div className="flex items-center justify-center w-1/2 border rounded-lg px-3 py-2">
+          <span className="mr-1">₹</span>
+          <span>{value[1].toLocaleString()}</span>
         </div>
       </div>
     </div>

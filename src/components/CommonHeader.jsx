@@ -10,10 +10,10 @@ function CommonHeader({ className = "", ...props }) {
   const routeConfigs = {
     "/": {
       content: (
-        <div className="py-[2.5rem] lg:py-[4.6875rem] -mt-[70px] z-10 relative rounded-b-none rounded-3xl">
-          <div className="flex items-center justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] max-w-[90rem] ml-auto mr-auto">
-            <div className="grid md:grid-cols-3 xxl:px-[248px]">
-              <div className="px-[2.5rem] lg:px-[4.6875rem] py-[30px] lg:py-[4.6875rem] md:border-0 md:border-r">
+        <div className="py-[2.5rem] lg:py-[4.6875rem] -mt-[40px] z-10 relative rounded-b-none rounded-3xl">
+          <div className="flex items-center justify-between max-w-[90rem] ml-auto mr-auto">
+            <div className="flex xxl:px-[248px] gap-6">
+              <div className="flex-1 px-[2.5rem] lg:px-[3.75rem] py-[30px] lg:py-[3.75rem]">
                 <h1 className="mb-4 text-[1.125rem] lg:text-[1.5rem] font-bold">
                   Free Shipping
                 </h1>
@@ -22,7 +22,8 @@ function CommonHeader({ className = "", ...props }) {
                   Don't miss out.
                 </p>
               </div>
-              <div className="px-[2.5rem] lg:px-[4.6875rem] py-[30px] lg:py-[4.6875rem] md:border-0 md:border-r">
+              <span className="seperator border-r"></span>
+              <div className="flex-1 px-[2.5rem] lg:px-[3.75rem] py-[30px] lg:py-[3.75rem]">
                 <h1 className="mb-4 text-[1.125rem] lg:text-[1.5rem] font-bold">
                   Secure Payment
                 </h1>
@@ -31,7 +32,8 @@ function CommonHeader({ className = "", ...props }) {
                   us.
                 </p>
               </div>
-              <div className="px-[2.5rem] lg:px-[4.6875rem] py-[30px] lg:py-[4.6875rem]">
+              <span className="seperator border-r"></span>
+              <div className="flex-1 px-[2.5rem] lg:px-[3.75rem] py-[30px] lg:py-[3.75rem]">
                 <h1 className="mb-4 text-[1.125rem] lg:text-[1.5rem] font-bold">
                   Satisfaction Guarantee
                 </h1>
@@ -50,7 +52,7 @@ function CommonHeader({ className = "", ...props }) {
         <div className="flex items-center justify-between w-full px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
           <h1 className="text-2xl font-bold">About Page Header</h1>
           <nav className="flex gap-4">
-            <Link to="/" className="hover:underline">
+            <Link to="/" className="">
               Home
             </Link>
           </nav>
@@ -61,12 +63,24 @@ function CommonHeader({ className = "", ...props }) {
       title: "Shop",
       breadcrumb: true,
     },
+    "/cart": {
+      title: "Your Shopping Cart",
+      breadcrumb: true,
+    },
+    "/Checkout": {
+      title: "Your Shopping Cart",
+      breadcrumb: true,
+    },
     "/categories": {
       title: "Shop By Category",
       breadcrumb: true,
     },
+    "/order-success": {
+      title: "Shop By Category",
+      breadcrumb: true,
+    },
     "/my-account": {
-      title: "My Account",
+      title: "Successful Order",
       breadcrumb: true,
     },
     "/signin": {
@@ -91,14 +105,14 @@ function CommonHeader({ className = "", ...props }) {
   const Breadcrumb = ({ currentPage }) => (
     <nav className="flex justify-center" aria-label="Breadcrumb">
       <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
-        <li className="inline-flex items-center font-medium me-4">
+        <li className="inline-flex items-center font-medium me-2">
           <Link to="/" className="inline-flex items-center">
             Home
           </Link>
         </li>
         <li aria-current="page">
-          <div className="flex items-center border-l opacity-35 font-medium ps-4">
-            <span className="ms-1 text-sm">{currentPage}</span>
+          <div className="flex items-center border-l opacity-35 font-medium ps-2">
+            <span className="text-sm">{currentPage}</span>
           </div>
         </li>
       </ol>
@@ -110,10 +124,10 @@ function CommonHeader({ className = "", ...props }) {
     <div className="flex items-center justify-between w-full px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
       <h1 className="text-2xl font-bold">Default Header</h1>
       <nav className="flex gap-4">
-        <Link to="/" className="hover:underline">
+        <Link to="/" className="">
           Home
         </Link>
-        <Link to="/about" className="hover:underline">
+        <Link to="/about" className="">
           About
         </Link>
       </nav>

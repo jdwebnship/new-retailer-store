@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
 import { useTheme } from "../contexts/ThemeContext";
+import { useSelector } from "react-redux";
 
 function TopHeader({ visible = true, onHeightChange }) {
   const { theme, topHeaderTextColor } = useTheme();
   const ref = useRef(null);
+
+  const { storeInfo } = useSelector((state) => state.storeInfo);
 
   const topHeaderBgColor = theme?.topHeaderBackgroundColor || "#f8f9fa";
 
@@ -33,7 +36,8 @@ function TopHeader({ visible = true, onHeightChange }) {
       <div className="w-[100%] px-4 sm:px-6 md:px-10 lg:px-[4.6875rem] mx-auto">
         <div className="flex items-center justify-center mx-auto text-center">
           <span className="font-medium text-[0.75] sm:text-[0.875rem] md:text-[1rem]">
-            All over India Delivery Available.
+            {storeInfo?.storeinfo?.offer_text ||
+              "All over India Delivery Available."}
           </span>
         </div>
       </div>

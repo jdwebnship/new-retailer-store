@@ -1,11 +1,14 @@
 import React from "react";
 import CommonHeader from "../components/CommonHeader";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTheme } from "../contexts/ThemeContext";
+import watch from "../assets/watch.png";
 
 function Checkout() {
   const navigate = useNavigate();
   const location = useLocation();
   const items = location.state?.items || [];
+  const { theme, bottomFooterTextColor } = useTheme();
 
   const handleContinue = (e) => {
     e.preventDefault();
@@ -19,143 +22,317 @@ function Checkout() {
   return (
     <div>
       <CommonHeader />
-      <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] py-10">
-        <h1 className="text-2xl font-semibold mb-6">Checkout</h1>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <form className="lg:col-span-2 space-y-8" onSubmit={handleContinue}>
-            <section className="border rounded-md p-4">
-              <h2 className="text-lg font-semibold mb-4">Billing details</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm mb-1" htmlFor="b_name">
-                    Full name
+      {/* Form */}
+      <div className="2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0]">
+        <div className="grid lg:grid-cols-2 gap-8 text-start w-full lg:gap-16">
+          <div className="w-full">
+            <form action="">
+              <div className="flex flex-col gap-6">
+                <div className="">
+                  <label
+                    className="block text-sm mb-2 font-bold uppercase"
+                    htmlFor="phonenumber"
+                  >
+                    Phone Number
                   </label>
                   <input
-                    id="b_name"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="John Doe"
+                    id="phonenumber"
+                    type="text"
+                    className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                    placeholder="Enter your Phone number"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm mb-1" htmlFor="b_email">
-                    Email
+                <h3 className="text-2xl font-bold">Shipping Details</h3>
+                <hr className="opacity-10" />
+                <div className="">
+                  <label
+                    className="block text-sm mb-2 font-bold uppercase"
+                    htmlFor="email"
+                  >
+                    Email Address
                   </label>
                   <input
-                    id="b_email"
-                    type="email"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="you@example.com"
+                    id="email"
+                    type="text"
+                    className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                    placeholder="Enter your email address"
                   />
                 </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-sm mb-1" htmlFor="b_address">
+                <div className=" flex flex-col sm:flex-row">
+                  <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                    <label
+                      className="block text-sm font-bold mb-1 uppercase"
+                      htmlFor="fname"
+                    >
+                      first name
+                    </label>
+                    <input
+                      type="text"
+                      id="fname"
+                      className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                      placeholder="Enter your first name"
+                    />
+                  </div>
+                  <div className="w-full sm:w-1/2 sm:pl-3">
+                    <label
+                      className="block text-sm font-bold mb-1 uppercase"
+                      htmlFor="lname"
+                    >
+                      Last Name
+                    </label>
+                    <input
+                      type="text"
+                      id="lname"
+                      className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                      placeholder="Enter your last name"
+                    />
+                  </div>
+                </div>
+                <div className="">
+                  <label
+                    className="block text-sm mb-2 font-bold uppercase"
+                    htmlFor="email"
+                  >
                     Address
                   </label>
                   <input
-                    id="b_address"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="123 Main St"
+                    id="email"
+                    type="text"
+                    className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                    placeholder="Enter your address"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm mb-1" htmlFor="b_phone">
-                    Phone
-                  </label>
-                  <input
-                    id="b_phone"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="(555) 123-4567"
-                  />
+                <div className=" flex flex-col sm:flex-row">
+                  <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                    <label
+                      className="block text-sm font-bold mb-1 uppercase"
+                      htmlFor="fname"
+                    >
+                      Zip Code
+                    </label>
+                    <input
+                      type="text"
+                      id="fname"
+                      className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                      placeholder="Enter your zipcode"
+                    />
+                  </div>
+                  <div className="w-full sm:w-1/2 sm:pl-3">
+                    <label
+                      className="block text-sm font-bold mb-1 uppercase"
+                      htmlFor="lname"
+                    >
+                      Phone Number
+                    </label>
+                    <input
+                      type="text"
+                      id="lname"
+                      className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+                </div>
+                <div className=" flex flex-col sm:flex-row">
+                  <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                    <label
+                      className="block text-sm font-bold mb-1 uppercase"
+                      htmlFor="city"
+                    >
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      id="city"
+                      className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                      placeholder="Enter your city"
+                    />
+                  </div>
+                  <div className="w-full sm:w-1/2 sm:pl-3">
+                    <label
+                      className="block text-sm font-bold mb-1 uppercase"
+                      htmlFor="state"
+                    >
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
+                      placeholder="Enter your state"
+                    />
+                  </div>
                 </div>
               </div>
-            </section>
-
-            <section className="border rounded-md p-4">
-              <h2 className="text-lg font-semibold mb-4">Shipping details</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm mb-1" htmlFor="s_name">
-                    Full name
-                  </label>
-                  <input
-                    id="s_name"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm mb-1" htmlFor="s_email">
-                    Email
-                  </label>
-                  <input
-                    id="s_email"
-                    type="email"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="you@example.com"
-                  />
-                </div>
-                <div className="sm:col-span-2">
-                  <label className="block text-sm mb-1" htmlFor="s_address">
-                    Address
-                  </label>
-                  <input
-                    id="s_address"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="456 Market St"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm mb-1" htmlFor="s_phone">
-                    Phone
-                  </label>
-                  <input
-                    id="s_phone"
-                    className="w-full border rounded-md px-3 py-2"
-                    placeholder="(555) 987-6543"
-                  />
+            </form>
+          </div>
+          <div
+            className="p-7 rounded-[1.875rem]"
+            style={{
+              backgroundColor: theme.bottomFooterBackgroundColor,
+              height: "fit-content",
+            }}
+          >
+            <div className="flex  flex-col gap-6">
+              <div className="flex justify-between items-center">
+                <h3 className="text-2xl">Your Orders</h3>
+                <a href="" className="underline">
+                  Edit Cart
+                </a>
+              </div>
+              <div className="bottom-card">
+                <div className="flex gap-[0.82rem] justify-between">
+                  <div className="flex  gap-[0.82rem]">
+                    <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden flex-shrink-0">
+                      <img src={watch} alt="" />
+                    </div>
+                    <div>
+                      <h6 className="font-bold">
+                        Longine_s Heritage Classic Copper-Black
+                      </h6>
+                      <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
+                        <p
+                          className="font-bold"
+                          style={{
+                            margin: 0,
+                          }}
+                        >
+                          <span>₹</span>3,298
+                        </p>
+                        <p
+                          className="font-regular line-through text-sm"
+                          style={{
+                            margin: 0,
+                            color: "#555",
+                          }}
+                        >
+                          <span>₹</span>19,999
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="font-bold">
+                    <span className="pr-2">X</span>3
+                  </p>
                 </div>
               </div>
-            </section>
-
-            <div className="flex justify-end">
-              <button
-                type="submit"
-                className="bg-black text-white rounded-md py-2 px-6"
-              >
-                Continue to Payment
+              <div className="bottom-card">
+                <div className="flex gap-[0.82rem] justify-between">
+                  <div className="flex gap-[0.82rem]">
+                    <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden flex-shrink-0">
+                      <img src={watch} alt="" />
+                    </div>
+                    <div>
+                      <h6 className="font-bold">
+                        Longine_s Heritage Classic Copper-Black
+                      </h6>
+                      <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
+                        <p
+                          className="font-bold"
+                          style={{
+                            margin: 0,
+                          }}
+                        >
+                          <span>₹</span>3,298
+                        </p>
+                        <p
+                          className="font-regular line-through text-sm"
+                          style={{
+                            margin: 0,
+                            color: "#555",
+                          }}
+                        >
+                          <span>₹</span>19,999
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="font-bold">
+                    <span className="pr-2">X</span>3
+                  </p>
+                </div>
+              </div>
+              <div className="bottom-card">
+                <div className="flex gap-[0.82rem] justify-between">
+                  <div className="flex gap-[0.82rem]">
+                    <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden flex-shrink-0">
+                      <img src={watch} alt="" />
+                    </div>
+                    <div>
+                      <h6 className="font-bold">
+                        Longine_s Heritage Classic Copper-Black
+                      </h6>
+                      <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
+                        <p
+                          className="font-bold"
+                          style={{
+                            margin: 0,
+                          }}
+                        >
+                          <span>₹</span>3,298
+                        </p>
+                        <p
+                          className="font-regular line-through text-sm"
+                          style={{
+                            margin: 0,
+                            color: "#555",
+                          }}
+                        >
+                          <span>₹</span>19,999
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <p className="font-bold">
+                    <span className="pr-2">X</span>3
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative flex w-full border-2 border-blue-[#111111] rounded-2xl overflow-hidden my-6">
+              <input
+                type="text"
+                placeholder="Coupon Code"
+                className="flex-1 px-4 py-4 text-gray-700 placeholder-gray-400 bg-transparent border-none outline-none"
+              />
+              <button className="px-8 lg:px-14 py-2 bg-black text-white hover:bg-gray-800 transition-colors">
+                Apply
               </button>
             </div>
-          </form>
-
-          <aside className="border rounded-md p-4 h-fit">
-            <h2 className="text-lg font-semibold mb-4">Order summary</h2>
-            <div className="space-y-3 text-sm">
-              {items.length === 0 ? (
-                <div>No items in order.</div>
-              ) : (
-                items.map((it) => (
-                  <div key={it.id} className="flex justify-between">
-                    <span>
-                      {it.name} × {it.quantity}
-                    </span>
-                    <span>${(it.price * it.quantity).toFixed(2)}</span>
-                  </div>
-                ))
-              )}
-              <div className="flex justify-between pt-2 border-t">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+            <div className="space-y-2 text-sm">
+              <div className="flex justify-between">
+                <span className="sm:text-lg font-medium">Subtotal</span>
+                <span className="sm:text-lg font-medium">
+                  <span>₹</span> 29,682
+                </span>
               </div>
               <div className="flex justify-between">
-                <span>Taxes (7%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span className="sm:text-lg font-medium">Discount</span>
+                <span className="sm:text-lg font-medium">2</span>
               </div>
-              <div className="flex justify-between font-medium">
-                <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+              <div className="flex justify-between">
+                <span className="sm:text-lg font-medium">Shipping</span>
+                <span className="sm:text-lg font-medium">Free</span>
+              </div>
+              <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
+                <span className="md:text-2xl text-lg font-medium">Total</span>
+                <span className="md:text-2xl text-lg font-medium">2</span>
               </div>
             </div>
-          </aside>
+            <button
+              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] py-4 uppercase disabled:opacity-60"
+              disabled
+            >
+              Place Order
+            </button>
+            <div className="text-center mt-6">
+              <a
+                className="sm:text-lg uppercase font-normal underline hover:text-[#007BFF]"
+                href=""
+              >
+                Continue Shopping
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>

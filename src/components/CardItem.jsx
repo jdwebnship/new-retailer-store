@@ -1,6 +1,14 @@
+import { useNavigate } from "react-router-dom";
+
 export function CardItem({ item }) {
+  const navigate = useNavigate();
   return (
-    <div className="w-full bg-white rounded-[1.125rem] shadow-lg flex flex-col flex-shrink-0 overflow-hidden relative">
+    <div
+      className="w-full bg-white rounded-[1.125rem] shadow-lg flex flex-col flex-shrink-0 overflow-hidden relative h-100"
+      onClick={() =>
+        navigate(`/shop?categories=${encodeURIComponent(item.name)}`)
+      }
+    >
       <img
         src={item.image}
         alt={item.name}

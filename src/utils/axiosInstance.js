@@ -1,33 +1,66 @@
-import axios from "axios";
+import axios from 'axios';
 
-const baseConfig = {
+// Store cancel tokens for active requests
+const pendingRequests = new Map();
+
+const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  withCredentials: false,
-};
+  // baseURL: "http://192.168.29.103:8001/api/",
+});
 
-// Axios instance for APIs that require authentication
-const authenticatedAxios = axios.create(baseConfig);
-
-// Axios instance for APIs that work without authentication
-const publicAxios = axios.create(baseConfig);
-
-// Add token to authenticated requests
-authenticatedAxios.interceptors.request.use(
+axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("auth_token");
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    // Add API Key
+    const apiKey = import.meta.env.VITE_API_KEY;
+    if (apiKey) {
+      config.headers['API-KEY'] = apiKey;
     }
+
+    // Add User Token (from localStorage)
+    const persistedState = localStorage.getItem("reduxState");
+    if (persistedState) {
+      try {
+        const parsedState = JSON.parse(persistedState);
+        const token = parsedState?.auth?.user?.token;
+        if (token) {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        }
+      } catch (err) {
+        console.error("Failed to parse reduxState:", err);
+      }
+    }
+
+    // Create a unique key for the request (URL + params)
+    const requestKey = `${config.url}_${JSON.stringify(config.params)}`;
+
+    // Create a new cancel token for the current request
+    const source = axios.CancelToken.source();
+    config.cancelToken = source.token;
+    pendingRequests.set(requestKey, source);
+
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => {
+    console.error("Interceptor Error", error);
+    return Promise.reject(error);
+  }
 );
 
-// Export both instances
-export { authenticatedAxios, publicAxios };
+axiosInstance.interceptors.response.use(
+  (response) => {
+    const requestKey = `${response.config.url}_${JSON.stringify(response.config.params)}`;
+    pendingRequests.delete(requestKey);
+    return response;
+  },
+  (error) => {
+    if (axios.isCancel(error)) {
+      return Promise.resolve(null); // canceled request
+    }
+    const requestKey = `${error.config?.url}_${JSON.stringify(error.config?.params)}`;
+    pendingRequests.delete(requestKey);
+    console.error("Response Error", error);
+    return Promise.reject(error);
+  }
+);
 
-// Default export for backward compatibility (authenticated)
-export default authenticatedAxios;
+export default axiosInstance;

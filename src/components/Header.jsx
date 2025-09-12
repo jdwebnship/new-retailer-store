@@ -5,15 +5,22 @@ import Search from "./Search";
 import Profile from "./Profile";
 import Cart from "./Cart";
 import { useState, useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStoreInfo } from "../redux/slices/storeInfoSlice";
 
-const categories = ["Men's Watch", "T-shirts", "Jeans", "Shirts"];
-
-function Header({ offsetY = 0, onHeightChange }) {
+function Header({ offsetY = 0, onHeightChange, visible = true }) {
   const { theme, headerTextColor } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
   const ref = useRef(null);
+  const dispatch = useDispatch();
+  const { storeInfo, loading } = useSelector((state) => state.storeInfo);
+  const categories = storeInfo?.sub_category_list || [];
+
+  useEffect(() => {
+    dispatch(fetchStoreInfo());
+  }, [dispatch]);
 
   // Prevent background scroll when drawer is open
   useEffect(() => {
@@ -43,10 +50,13 @@ function Header({ offsetY = 0, onHeightChange }) {
     <header
       ref={ref}
       className="fixed left-0 right-0 z-40 transition-transform duration-300 ease-out"
-      style={{ top: offsetY }}
+      style={{
+        top: offsetY,
+        transform: visible ? "translateY(0)" : "translateY(-100%)",
+      }}
     >
       <nav
-        className="flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] py-[0.75] lg:py-[1.5rem]"
+        className="flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] py-[1rem] lg:py-[1.5rem]"
         style={{
           backgroundColor: theme?.headerBackgroundColor || "#ffffff",
           color: headerTextColor || "#ffffff",
@@ -81,7 +91,7 @@ function Header({ offsetY = 0, onHeightChange }) {
 
           <div className="left-nav hidden lg:flex items-center">
             <Link
-              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase hover:underline transition-all duration-300"
+              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase transition-all duration-300 py-3"
               to="/"
               style={{
                 color: headerTextColor || "#111111",
@@ -98,7 +108,7 @@ function Header({ offsetY = 0, onHeightChange }) {
               onMouseLeave={() => setIsCategoryDropdownOpen(false)}
             >
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium uppercase hover:underline transition-all duration-300 flex items-center"
+                className="text-[0.875rem] xl:text-[1rem] font-medium uppercase transition-all duration-300 py-3 flex items-center"
                 to="/categories"
                 style={{
                   color: headerTextColor || "#111111",
@@ -129,40 +139,55 @@ function Header({ offsetY = 0, onHeightChange }) {
               {/* Dropdown Menu */}
               {isCategoryDropdownOpen && (
                 <div
-                  className="absolute top-full left-0 mt-1 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
+                  className="absolute top-full left-0 mt-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
                   style={{
                     backgroundColor: theme?.headerBackgroundColor || "#ffffff",
                   }}
                 >
-                  {categories.map((category, index) => (
-                    <Link
-                      key={index}
-                      to={`/categories/${category
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")}`}
-                      className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
-                      style={{
-                        color: headerTextColor || "#111111",
-                        backgroundColor:
-                          theme?.headerBackgroundColor || "#ffffff",
-                      }}
-                      onMouseEnter={(e) =>
-                        (e.target.style.backgroundColor = "rgba(0,0,0,0.05)")
-                      }
-                      onMouseLeave={(e) =>
-                        (e.target.style.backgroundColor =
-                          theme?.headerBackgroundColor || "#ffffff")
-                      }
-                    >
-                      {category}
-                    </Link>
-                  ))}
+                  {loading ? (
+                    <div className="flex items-center justify-center p-4">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                    </div>
+                  ) : categories.length > 0 ? (
+                    categories.map((category) => {
+                      return (
+                        <Link
+                          key={category.id}
+                          to={`/shop?categories=${encodeURIComponent(
+                            category.name
+                          )}`}
+                          className="block px-4 py-2 text-sm hover:bg-gray-100 transition-colors duration-200"
+                          style={{
+                            color: headerTextColor || "#111111",
+                            backgroundColor:
+                              theme?.headerBackgroundColor || "#ffffff",
+                          }}
+                          onMouseEnter={(e) =>
+                            (e.target.style.backgroundColor =
+                              "rgba(0,0,0,0.05)")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.target.style.backgroundColor =
+                              theme?.headerBackgroundColor || "#ffffff")
+                          }
+                        >
+                          {category.name}
+                        </Link>
+                      );
+                    })
+                  ) : (
+                    <div className="flex items-center justify-center p-4">
+                      <p className="text-sm text-gray-500">
+                        No categories found
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
 
             <Link
-              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase hover:underline transition-all duration-300"
+              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase transition-all duration-300 py-3"
               to="/shop"
               style={{
                 color: headerTextColor || "#111111",
@@ -178,17 +203,25 @@ function Header({ offsetY = 0, onHeightChange }) {
           className="center-nav flex-1 flex items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
           to="/"
         >
-          <h1
-            className="uppercase text-[1.125rem] sm:text-[20px] lg:text-[1.5rem] xl:text-[2rem] font-medium text-center"
-            style={{ color: headerTextColor || "#111111" }}
-          >
-            Store name
-          </h1>
+          {storeInfo?.storeinfo?.logo?.trim() ? (
+            <img
+              src={storeInfo.storeinfo.logo}
+              alt={storeInfo?.storeinfo?.store_name || "Store logo"}
+              className="w-12 h-12"
+            />
+          ) : (
+            <h1
+              className="uppercase text-[1.125rem] sm:text-[20px] lg:text-[1.5rem] xl:text-[2rem] font-medium text-center"
+              style={{ color: headerTextColor || "#111111" }}
+            >
+              {storeInfo?.storeinfo?.store_name || "Store name"}
+            </h1>
+          )}
         </Link>
         <div className="right-nav flex items-center gap-3 sm:gap-4">
           <div className="hidden lg:flex items-center">
             <Link
-              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase hover:underline transition-all duration-300"
+              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase transition-all duration-300 py-3"
               to="/about"
               style={{
                 color: headerTextColor || "#111111",
@@ -198,7 +231,7 @@ function Header({ offsetY = 0, onHeightChange }) {
               About Us
             </Link>
             <Link
-              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase hover:underline transition-all duration-300"
+              className="text-[0.875rem] xl:text-[1rem] font-medium uppercase transition-all duration-300 py-3"
               to="/about"
               style={{
                 color: headerTextColor || "#111111",
@@ -241,7 +274,9 @@ function Header({ offsetY = 0, onHeightChange }) {
         }}
       >
         <div className="flex items-center justify-between px-4 py-3 border-b border-black/10">
-          <span className="uppercase font-semibold">Store name</span>
+          <span className="uppercase font-semibold">
+            {storeInfo?.storeinfo?.store_name ?? "Store name"}
+          </span>
           <button
             type="button"
             className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-black/10 hover:bg-black/15 transition"
@@ -305,22 +340,32 @@ function Header({ offsetY = 0, onHeightChange }) {
             {/* Mobile Categories List */}
             {isMobileCategoryOpen && (
               <div className="ml-4 mt-2 space-y-1">
-                {categories.map((category, index) => (
-                  <Link
-                    key={index}
-                    to={`/categories/${category
-                      .toLowerCase()
-                      .replace(/\s+/g, "-")}`}
-                    className="block px-3 py-2 rounded hover:bg-black/10 transition text-sm"
-                    style={{ color: headerTextColor || "#111111" }}
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      setIsMobileCategoryOpen(false);
-                    }}
-                  >
-                    {category}
-                  </Link>
-                ))}
+                {loading ? (
+                  <div className="flex items-center justify-center p-4">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                  </div>
+                ) : categories.length > 0 ? (
+                  categories.map((category, index) => (
+                    <Link
+                      key={index}
+                      to={`/shop?categories=${encodeURIComponent(
+                        category.name
+                      )}`}
+                      className="block px-3 py-2 rounded hover:bg-black/10 transition text-sm"
+                      style={{ color: headerTextColor || "#111111" }}
+                      onClick={() => {
+                        setIsMenuOpen(false);
+                        setIsMobileCategoryOpen(false);
+                      }}
+                    >
+                      {category.name}
+                    </Link>
+                  ))
+                ) : (
+                  <div className="flex items-center justify-center p-4">
+                    <p className="text-sm text-gray-500">No categories found</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

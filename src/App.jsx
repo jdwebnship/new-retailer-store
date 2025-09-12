@@ -1,28 +1,12 @@
-import { Outlet, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
+import { useEffect, useLayoutEffect, useState } from "react";
 import TopHeader from "./components/TopHeader";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomFooter from "./components/BottomFooter";
-import CommonHeader from "./components/CommonHeader";
-import Product from "./pages/Product";
-import ProductDetail from "./pages/ProductDetail";
-import Shop from "./pages/Shop";
-import MyAccount from "./pages/MyAccount";
-import SignUp from "./pages/SignUp";
-import SignIn from "./pages/SignIn";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import React, { useEffect, useLayoutEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger"; // Import ScrollTrigger
 import ScrollSmoother from "./gsap-bonus/ScrollSmoother"; // Local file import
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
-import Payment from "./pages/Payment";
-import OrderSuccess from "./pages/OrderSuccess";
-import OrderFailure from "./pages/OrderFailure";
+import AppRoutes from "./Routes/routes";
 import "./App.css";
 
 // Register plugins once at the module level
@@ -96,6 +80,7 @@ function App() {
       <Header
         offsetY={showTopHeader ? topHeaderHeight : 0}
         onHeightChange={setHeaderHeight}
+        visible={showTopHeader}
       />
       <div id="smooth-content">
         <div className="App">
@@ -103,27 +88,7 @@ function App() {
             className="main-content"
             style={{ paddingTop: contentPaddingTop }}
           >
-            <Routes>
-              {" "}
-              {/* NEW: Define routes here */}
-              <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />
-              <Route path="/shop" element={<Product />} />
-              <Route path="/shop/:id" element={<ProductDetail />} />
-              <Route path="/categories" element={<Shop />} />
-              <Route path="/my-account" element={<MyAccount />} />
-              <Route path="/signup" element={<SignUp />} />
-              <Route path="/signin" element={<SignIn />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<ResetPassword />} />
-              <Route path="/cart" element={<Cart />} />
-              <Route path="/checkout" element={<Checkout />} />
-              <Route path="/payment" element={<Payment />} />
-              <Route path="/order-success" element={<OrderSuccess />} />
-              <Route path="/order-failure" element={<OrderFailure />} />
-              {/* Add more routes as needed, e.g., <Route path="/contact" element={<Contact />} /> */}
-            </Routes>
-            {/* Note: Outlet is not needed if using Routes directly; this setup uses Routes for simplicity */}
+            <AppRoutes />
           </main>
           <BottomFooter />
           <Footer />

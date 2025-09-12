@@ -27,10 +27,10 @@ function BottomFooter({}) {
             id="email"
             placeholder="Email Address"
             required
-            className="px-[1.5rem] py-[0.9375rem] lg:w-[300px] rounded-l-lg bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-0"
+            className="px-[1.5rem] py-[0.9375rem] sm:w-[18.75rem] w-[11.875rem] rounded-l-lg bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-0"
           />
           <button
-            className="btn px-[1.5rem] py-[0.9375rem] rounded-r-lg text-sm font-medium focus:outline-none"
+            className="btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-r-lg text-sm font-medium focus:outline-none"
             type="submit"
           >
             SUBSCRIBE
