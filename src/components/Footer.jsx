@@ -16,8 +16,12 @@ function Footer() {
   const location = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [location]); // Re-run effect whenever the location changes
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "instant", // use "smooth" if you want animation
+    });
+  }, [location.pathname]);
 
   return (
     <footer
@@ -81,6 +85,7 @@ function Footer() {
                 <Link
                   to="/faq"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out "
+                  target="_top"
                 >
                   FAQ
                 </Link>
@@ -89,6 +94,7 @@ function Footer() {
                 <Link
                   to="/terms-use"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                  target="_top"
                 >
                   Terms of use
                 </Link>
@@ -97,6 +103,7 @@ function Footer() {
                 <Link
                   to="privacy-policy"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                  target="_top"
                 >
                   Privacy Policy
                 </Link>
