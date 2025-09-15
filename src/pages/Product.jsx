@@ -57,6 +57,7 @@ function Product() {
           ? Number(searchParams.get("max_price"))
           : 10000,
       ],
+      sort_by: searchParams.get("sort_by") || null,
     });
   }, [searchParams]);
 
@@ -94,8 +95,11 @@ function Product() {
       return;
     }
 
+    // Use the same page value from URL to ensure consistency
+    const pageFromUrl = searchParams.get("page") || "1";
+
     const requestParams = {
-      page: currentPageNum,
+      page: parseInt(pageFromUrl, 10),
     };
 
     // Get sort_by from URL first, then fallback to filters state
@@ -103,7 +107,6 @@ function Product() {
 
     if (sortBy) {
       requestParams.sort_by = sortBy;
-      console.log("Sort by parameter:", sortBy);
     }
 
     if (subcategoryIds.length > 0) {
@@ -126,41 +129,37 @@ function Product() {
     }
 
     const params = new URLSearchParams();
-    // params.set("page", "1");
+
+    // Set page parameter - use from URL params directly to ensure consistency
+    params.set("page", pageFromUrl);
+
+    // Set filter parameters
     if (filters.categories.length > 0) {
       params.set("categories", filters.categories.join(","));
-      params.set("page", "1");
     }
-    params.set("page", currentPageNum.toString());
     if (filters.sizes.length > 0) {
       params.set("sizes", filters.sizes.join(","));
-      params.set("page", "1");
     }
     if (filters.priceRange[0] > 0) {
       params.set("min_price", filters.priceRange[0]);
-      params.set("page", "1");
     }
     if (filters.priceRange[1] < 10000) {
       params.set("max_price", filters.priceRange[1]);
-      params.set("page", "1");
     }
     if (filters.in_stock) {
       params.set("in_stock", "true");
-      // params.set("page", "1");
     }
     if (filters.out_of_stock) {
       params.set("out_of_stock", "true");
-      // params.set("page", "1");
     }
     if (filters.sort_by) {
       params.set("sort_by", filters.sort_by);
-      params.set("page", "1");
     }
 
     setSearchParams(params, { replace: true });
     debouncedFetchProducts(requestParams, dispatch, searchQuery);
   }, [
-    currentPageNum,
+    searchParams,
     subcategoryIds,
     filters.categories,
     filters.sizes,
@@ -172,7 +171,6 @@ function Product() {
     setSearchParams,
     searchQuery,
     debouncedFetchProducts,
-    searchParams,
   ]);
 
   const handlePageClick = (event) => {
@@ -187,40 +185,78 @@ function Product() {
   };
 
   const handleCheckboxChange = (filterType, value) => {
-    // Clear search query when any filter is applied
-    setSearchParams((prev) => {
-      const newParams = new URLSearchParams(prev);
-      newParams.delete("search");
-      return newParams;
-    });
-
+    // Update filters state first
+    let newFilters = {};
     if (filterType === "in_stock" || filterType === "out_of_stock") {
-      setFilters((prev) => ({
-        ...prev,
-        [filterType]: !prev[filterType],
-      }));
+      newFilters = {
+        ...filters,
+        [filterType]: !filters[filterType],
+      };
     } else if (filterType === "categories") {
       const category = categories.find((cat) => cat.id.toString() === value);
       const categoryName = category?.name || value;
-      setFilters((prev) => ({
-        ...prev,
-        categories: prev.categories.includes(categoryName)
-          ? prev.categories.filter((cat) => cat !== categoryName)
-          : [...prev.categories, categoryName],
-      }));
+      newFilters = {
+        ...filters,
+        categories: filters.categories.includes(categoryName)
+          ? filters.categories.filter((cat) => cat !== categoryName)
+          : [...filters.categories, categoryName],
+      };
     } else if (filterType === "sizes") {
-      setFilters((prev) => ({
-        ...prev,
-        sizes: prev.sizes.includes(value)
-          ? prev.sizes.filter((s) => s !== value)
-          : [...prev.sizes, value],
-      }));
+      newFilters = {
+        ...filters,
+        sizes: filters.sizes.includes(value)
+          ? filters.sizes.filter((s) => s !== value)
+          : [...filters.sizes, value],
+      };
     } else if (filterType === "sort_by") {
-      setFilters((prev) => ({
-        ...prev,
+      newFilters = {
+        ...filters,
         sort_by: value,
-      }));
+      };
     }
+
+    // Update filter state
+    setFilters(newFilters);
+
+    // Update URL parameters with page reset and new filters
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.delete("search");
+      newParams.set("page", "1");
+
+      // Update URL with new filter values
+      if (newFilters.categories.length > 0) {
+        newParams.set("categories", newFilters.categories.join(","));
+      } else {
+        newParams.delete("categories");
+      }
+
+      if (newFilters.sizes.length > 0) {
+        newParams.set("sizes", newFilters.sizes.join(","));
+      } else {
+        newParams.delete("sizes");
+      }
+
+      if (newFilters.in_stock) {
+        newParams.set("in_stock", "true");
+      } else {
+        newParams.delete("in_stock");
+      }
+
+      if (newFilters.out_of_stock) {
+        newParams.set("out_of_stock", "true");
+      } else {
+        newParams.delete("out_of_stock");
+      }
+
+      if (newFilters.sort_by) {
+        newParams.set("sort_by", newFilters.sort_by);
+      } else {
+        newParams.delete("sort_by");
+      }
+
+      return newParams;
+    });
   };
 
   const clearAllFilters = () => {
@@ -404,21 +440,27 @@ function Product() {
                   ))}
                   {(filters.priceRange[0] > 0 ||
                     filters.priceRange[1] < 10000) && (
-                    <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
-                      ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
-                      <img
-                        className="cursor-pointer"
-                        src={cross}
-                        alt=""
-                        onClick={() =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            priceRange: [0, 10000],
-                          }))
-                        }
-                      />
-                    </span>
-                  )}
+                      <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                        ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
+                        <img
+                          className="cursor-pointer"
+                          src={cross}
+                          alt=""
+                          onClick={() => {
+                            setFilters((prev) => ({
+                              ...prev,
+                              priceRange: [0, 10000],
+                            }));
+                            // Reset to page 1 when clearing price range
+                            setSearchParams((prev) => {
+                              const newParams = new URLSearchParams(prev);
+                              newParams.set("page", "1");
+                              return newParams;
+                            });
+                          }}
+                        />
+                      </span>
+                    )}
                   {filters.sort_by && (
                     <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                       {filters.sort_by}
@@ -426,12 +468,7 @@ function Product() {
                         className="cursor-pointer"
                         src={cross}
                         alt=""
-                        onClick={() =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            sort_by: null,
-                          }))
-                        }
+                        onClick={() => handleCheckboxChange("sort_by", null)}
                       />
                     </span>
                   )}
@@ -543,17 +580,35 @@ function Product() {
                 value={filters.priceRange}
                 onChange={(newRange) => {
                   const handlePriceRangeChange = (newValue) => {
-                    // Clear search query when price range is changed
+
+                    // Update filter state first
+                    const newFilters = {
+                      ...filters,
+                      priceRange: newValue,
+                    };
+
+                    setFilters(newFilters);
+
+                    // Update URL parameters with page reset
                     setSearchParams((prev) => {
                       const newParams = new URLSearchParams(prev);
                       newParams.delete("search");
+                      newParams.set("page", "1"); // Reset to page 1 when price range changes
+
+                      // Update price range in URL
+                      if (newValue[0] > 0) {
+                        newParams.set("min_price", newValue[0].toString());
+                      } else {
+                        newParams.delete("min_price");
+                      }
+
+                      if (newValue[1] < 10000) {
+                        newParams.set("max_price", newValue[1].toString());
+                      } else {
+                        newParams.delete("max_price");
+                      }
                       return newParams;
                     });
-
-                    setFilters((prev) => ({
-                      ...prev,
-                      priceRange: newValue,
-                    }));
                   };
                   handlePriceRangeChange(newRange);
                 }}
@@ -568,19 +623,7 @@ function Product() {
                 value={filters.sort_by || ""}
                 onChange={(e) => {
                   const sortValue = e.target.value || null;
-                  setFilters((prev) => ({
-                    ...prev,
-                    sort_by: sortValue,
-                  }));
-
-                  const newSearchParams = new URLSearchParams(searchParams);
-                  if (sortValue) {
-                    newSearchParams.set("sort_by", sortValue);
-                    newSearchParams.set("page", "1");
-                  } else {
-                    newSearchParams.delete("sort_by");
-                  }
-                  setSearchParams(newSearchParams);
+                  handleCheckboxChange("sort_by", sortValue);
                 }}
               >
                 <option value="">Sort By</option>
