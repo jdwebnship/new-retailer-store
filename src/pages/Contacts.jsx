@@ -11,143 +11,137 @@ function Contacts() {
     <div>
       <CommonHeader />
       <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0] text-left">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[1.5rem] xl:gap-y-[4.375rem]">
-          <div class="space-y-6">
-            <div className="mx-w-[300px] space-y-6">
-              <div class="rounded-lg border border-[#f3f3f3] p-4 flex flex-col gap-3">
-                <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
-                  Contact Information
-                </h3>
-                <div className="flex gap-2 text-base items-center">
-                  <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                    <img
-                      className="w-[1.125rem] h-[1.125rem]"
-                      src={Mail}
-                      alt=""
-                    />
-                  </span>
-                  <a
-                    class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href=""
-                  >
-                    supprt@jdshipnweb.com
-                  </a>
-                </div>
-                <div className="flex gap-2 text-base items-center">
-                  <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                    <img
-                      className="w-[1.125rem] h-[1.125rem]"
-                      src={Call}
-                      alt=""
-                    />
-                  </span>
-                  <a
-                    class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href=""
-                  >
-                    +91 9876543210
-                  </a>
-                </div>
-                <div className="flex gap-2 text-base items-center">
-                  <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                    <img
-                      className="w-[1.125rem] h-[1.125rem]"
-                      src={Map}
-                      alt=""
-                    />
-                  </span>
-                  <a
-                    class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href=""
-                  >
-                    123 Business Street, City, Country – ZIP
-                  </a>
-                </div>
+        <div className="flex flex-col lg:flex-row gap-[1.5rem] xl:gap-y-[4.375rem]">
+          <div className="space-y-6 lg:w-2/6">
+            <div class="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
+              <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
+                Contact Information
+              </h3>
+              <div className="flex gap-2 text-base items-center">
+                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                  <img
+                    className="w-[1.125rem] h-[1.125rem]"
+                    src={Mail}
+                    alt=""
+                  />
+                </span>
+                <a
+                  class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                  href=""
+                >
+                  supprt@jdshipnweb.com
+                </a>
               </div>
-
-              <div class="rounded-lg border border-[#f3f3f3] p-4 flex flex-col gap-3">
-                <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
-                  Business Hours
-                </h3>
-                <div className="flex flex-col gap-2 text-base">
-                  <span>Monday – Friday: 9:00 AM – 6:00 PM</span>
-                  <span>Saturday: 10:00 AM – 2:00 PM</span>
-                  <span>Sunday: Closed</span>
-                </div>
+              <div className="flex gap-2 text-base items-center">
+                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                  <img
+                    className="w-[1.125rem] h-[1.125rem]"
+                    src={Call}
+                    alt=""
+                  />
+                </span>
+                <a
+                  class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                  href=""
+                >
+                  +91 9876543210
+                </a>
               </div>
+              <div className="flex gap-2 text-base items-center">
+                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                  <img className="w-[1.125rem] h-[1.125rem]" src={Map} alt="" />
+                </span>
+                <a
+                  class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                  href=""
+                >
+                  123 Business Street, City, Country – ZIP
+                </a>
+              </div>
+            </div>
 
-              <div class="rounded-lg border border-[#f3f3f3] p-4 flex items-center gap-4">
-                <div class="w-full">
-                  <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
-                    Follow Our Journey
-                  </h3>
-                  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                    <div className="flex gap-2 text-base items-center">
-                      <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                        <img
-                          className="w-[1.125rem] h-[1.125rem]"
-                          src={Facebook}
-                          alt=""
-                        />
-                      </span>
-                      <a
-                        href="#"
-                        className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                      >
-                        Facebook
-                      </a>
-                    </div>
-                    <div className="flex gap-2 text-base items-center">
-                      <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                        <img
-                          className="w-[1.125rem] h-[1.125rem]"
-                          src={Instagram}
-                          alt=""
-                        />
-                      </span>
-                      <a
-                        href="#"
-                        className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                      >
-                        Instagram
-                      </a>
-                    </div>
-                    <div className="flex gap-2 text-base items-center">
-                      <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                        <img
-                          className="w-[1.125rem] h-[1.125rem]"
-                          src={Twitter}
-                          alt=""
-                        />
-                      </span>
-                      <a
-                        href="#"
-                        className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                      >
-                        Twitter
-                      </a>
-                    </div>
-                    <div className="flex gap-2 text-base items-center">
-                      <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1">
-                        <img
-                          className="w-[1.125rem] h-[1.125rem]"
-                          src={Twitter}
-                          alt=""
-                        />
-                      </span>
-                      <a
-                        href="#"
-                        className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                      >
-                        Twitter
-                      </a>
-                    </div>
+            <div class="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
+              <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
+                Business Hours
+              </h3>
+              <div className="flex flex-col gap-2 text-base">
+                <span>Monday – Friday: 9:00 AM – 6:00 PM</span>
+                <span>Saturday: 10:00 AM – 2:00 PM</span>
+                <span>Sunday: Closed</span>
+              </div>
+            </div>
+
+            <div class="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4">
+              <div class="w-full">
+                <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
+                  Follow Our Journey
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                  <div className="flex gap-2 text-base items-center">
+                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                      <img
+                        className="w-[1.125rem] h-[1.125rem]"
+                        src={Facebook}
+                        alt=""
+                      />
+                    </span>
+                    <a
+                      href="#"
+                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    >
+                      Facebook
+                    </a>
+                  </div>
+                  <div className="flex gap-2 text-base items-center">
+                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                      <img
+                        className="w-[1.125rem] h-[1.125rem]"
+                        src={Instagram}
+                        alt=""
+                      />
+                    </span>
+                    <a
+                      href="#"
+                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    >
+                      Instagram
+                    </a>
+                  </div>
+                  <div className="flex gap-2 text-base items-center">
+                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                      <img
+                        className="w-[1.125rem] h-[1.125rem]"
+                        src={Twitter}
+                        alt=""
+                      />
+                    </span>
+                    <a
+                      href="#"
+                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    >
+                      Twitter
+                    </a>
+                  </div>
+                  <div className="flex gap-2 text-base items-center">
+                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                      <img
+                        className="w-[1.125rem] h-[1.125rem]"
+                        src={Twitter}
+                        alt=""
+                      />
+                    </span>
+                    <a
+                      href="#"
+                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    >
+                      Twitter
+                    </a>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="bg-[#fff7f2] rounded-2xl p-5">
+          <div className="rounded-2xl lg:w-8/12 lg:pl-5">
             {/* <Form> */}
             <div className="mb-6">
               <h6 className="text-3xl font-bold uppercase mb-3">
