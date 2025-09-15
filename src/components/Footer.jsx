@@ -85,7 +85,6 @@ function Footer() {
                 <Link
                   to="/faq"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out "
-                  target="_top"
                 >
                   FAQ
                 </Link>
@@ -94,7 +93,6 @@ function Footer() {
                 <Link
                   to="/terms-use"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                  target="_top"
                 >
                   Terms of use
                 </Link>
@@ -103,7 +101,6 @@ function Footer() {
                 <Link
                   to="privacy-policy"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                  target="_top"
                 >
                   Privacy Policy
                 </Link>
