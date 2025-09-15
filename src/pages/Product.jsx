@@ -148,24 +148,31 @@ function Product() {
     // Set filter parameters
     if (filters.categories.length > 0) {
       params.set("categories", filters.categories.join(","));
+      params.set("page", "1");
     }
     if (filters.sizes.length > 0) {
       params.set("sizes", filters.sizes.join(","));
+      params.set("page", "1");
     }
     if (filters.priceRange[0] > 0) {
       params.set("min_price", filters.priceRange[0]);
+      params.set("page", "1");
     }
     if (filters.priceRange[1] < 10000) {
       params.set("max_price", filters.priceRange[1]);
+      params.set("page", "1");
     }
     if (filters.in_stock) {
       params.set("in_stock", "true");
+      params.set("page", "1");
     }
     if (filters.out_of_stock) {
       params.set("out_of_stock", "true");
+      params.set("page", "1");
     }
     if (filters.sort_by) {
       params.set("sort_by", filters.sort_by);
+      params.set("page", "1");
     }
 
     setSearchParams(params, { replace: true });
