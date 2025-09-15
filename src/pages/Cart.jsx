@@ -4,63 +4,91 @@ import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
 import ModalComponent from "../components/modal";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCart } from "../redux/slices/cartSlice";
+import {
+  fetchCart,
+  updateCartItem,
+  removeFromCart,
+} from "../redux/slices/cartSlice";
 
 function Cart() {
-  const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems, loading, error } = useSelector((state) => state.cart);
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const [items, setItems] = useState([
-    {
-      id: 1,
-      name: "Longines Heritage Classic Copper-Black",
-      price: 79.99,
-      quantity: 1,
-      image: "/src/assets/images/hero.jpg",
-    },
-    {
-      id: 2,
-      name: "Lacoste Navy Blue Logo Work Premium Polo T-Shirt",
-      price: 129.0,
-      quantity: 2,
-      image: "/src/assets/images/hero.jpg",
-    },
-  ]);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     dispatch(fetchCart());
   }, [dispatch]);
 
-  const increaseQty = (id) => {
-    setItems((prev) =>
-      prev.map((it) =>
-        it.id === id ? { ...it, quantity: it.quantity + 1 } : it
+  const handleUpdateQuantity = async (itemId, newQuantity) => {
+    if (newQuantity < 1) return;
+
+    try {
+      await dispatch(
+        updateCartItem({ itemId, quantity: newQuantity })
+      ).unwrap();
+      // Refresh cart after successful update
+      dispatch(fetchCart());
+    } catch (error) {
+      console.error("Failed to update quantity:", error);
+    }
+  };
+
+  const increaseQty = (item) => {
+    console.log("item", item);
+
+    const newQuantity = (item.quantity || 1) + 1;
+    console.log("newQuantity", newQuantity);
+    handleUpdateQuantity(item.cart_id, newQuantity);
+  };
+
+  const decreaseQty = (item) => {
+    const newQuantity = Math.max(1, (item.quantity || 1) - 1);
+    if (newQuantity !== item.quantity) {
+      handleUpdateQuantity(item.cart_id, newQuantity);
+    }
+  };
+
+  const removeItem = async (itemId) => {
+    if (
+      window.confirm(
+        "Are you sure you want to remove this item from your cart?"
       )
-    );
+    ) {
+      try {
+        await dispatch(removeFromCart(itemId)).unwrap();
+        // Refresh cart after successful removal
+        dispatch(fetchCart());
+      } catch (error) {
+        console.error("Failed to remove item:", error);
+      }
+    }
   };
 
-  const decreaseQty = (id) => {
-    setItems((prev) =>
-      prev.map((it) =>
-        it.id === id ? { ...it, quantity: Math.max(1, it.quantity - 1) } : it
-      )
-    );
-  };
+  const { subtotal, tax, total, itemCount } = useMemo(() => {
+    if (!cartItems?.cart?.length) {
+      return { subtotal: 0, tax: 0, total: 0, itemCount: 0 };
+    }
 
-  const removeItem = (id) => {
-    setItems((prev) => prev.filter((it) => it.id !== id));
-  };
+    const sub = cartItems.cart.reduce((sum, item) => {
+      return sum + parseFloat(item.final_price) * item.quantity;
+    }, 0);
 
-  const { subtotal, tax, total } = useMemo(() => {
-    const sub = items.reduce((s, it) => s + it.price * it.quantity, 0);
-    const t = sub * 0.07;
-    return { subtotal: sub, tax: t, total: sub + t };
-  }, [items]);
+    const t = sub * 0.07; // 7% tax
+    return {
+      subtotal: sub,
+      tax: t,
+      total: sub + t,
+      itemCount: cartItems.cart.reduce(
+        (count, item) => count + item.quantity,
+        0
+      ),
+    };
+  }, [cartItems]);
 
   const proceedToCheckout = () => {
-    navigate("/checkout", { state: { items } });
+    navigate("/checkout", { state: { items: cartItems?.cart || [] } });
   };
 
   return (
@@ -70,16 +98,17 @@ function Cart() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-4">
           <div className="lg:col-span-2 space-y-7.5">
             <h1 className="text-2xl font-bold mb-6 pb-5 border-b border-[#11111126] text-left">
-              Your Cart
+              Your Cart{" "}
+              {itemCount > 0 &&
+                `(${itemCount} ${itemCount === 1 ? "item" : "items"})`}
             </h1>
-            {cartItems?.cart?.length === 0 ? (
-              <div className="text-center p-6 border rounded-md">
-                <p>Your cart is empty.</p>
-                <Link className="text-blue-600" to="/shop">
-                  Continue shopping
-                </Link>
+            {loading ? (
+              <div className="text-center p-6">Loading cart...</div>
+            ) : error ? (
+              <div className="text-center p-6 text-red-600">
+                Error loading cart: {error}
               </div>
-            ) : (
+            ) : cartItems?.cart?.length > 0 ? (
               cartItems?.cart?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0];
                 return (
@@ -123,7 +152,7 @@ function Cart() {
                     </div>
                     <div className="flex items-center gap-8 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
                       <button
-                        onClick={() => decreaseQty(item.cart_id)}
+                        onClick={() => decreaseQty(item)}
                         className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer"
                         style={{ minWidth: "2.5rem" }}
                       >
@@ -133,7 +162,7 @@ function Cart() {
                         {item.quantity}
                       </span>
                       <button
-                        onClick={() => increaseQty(item.cart_id)}
+                        onClick={() => increaseQty(item)}
                         className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer"
                         style={{ minWidth: "2.5rem" }}
                       >
@@ -142,12 +171,26 @@ function Cart() {
                     </div>
                     <div className="md:ml-[0] ml-[6rem]">
                       <p className="text-lg font-bold">
-                        ${(item.final_price * item.quantity).toFixed(2)}
+                        ₹
+                        {(item.final_price * item.quantity).toLocaleString(
+                          "en-IN",
+                          { maximumFractionDigits: 2 }
+                        )}
                       </p>
                     </div>
                   </div>
                 );
               })
+            ) : (
+              <div className="text-center p-6 border rounded-md">
+                <p className="mb-4">Your cart is empty.</p>
+                <Link
+                  className="inline-block bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors"
+                  to="/shop"
+                >
+                  Continue shopping
+                </Link>
+              </div>
             )}
           </div>
           <aside className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-12">
@@ -158,19 +201,22 @@ function Cart() {
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Subtotal</span>
                 <span className="sm:text-lg font-medium">
-                  ${subtotal.toFixed(2)}
+                  ₹
+                  {subtotal.toLocaleString("en-IN", {
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Taxes (7%)</span>
                 <span className="sm:text-lg font-medium">
-                  ${tax.toFixed(2)}
+                  ₹{tax.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
                 </span>
               </div>
               <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
                 <span className="md:text-2xl text-lg font-medium">
-                  ${total.toFixed(2)}
+                  ₹{total.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
                 </span>
               </div>
             </div>
@@ -180,7 +226,7 @@ function Cart() {
                   setIsModalOpen(true);
                   document.body.style.overflow = "hidden";
                 }}
-                disabled={items.length === 0}
+                disabled={!cartItems?.cart?.length || loading}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
               >
                 Checkout
@@ -188,7 +234,7 @@ function Cart() {
             ) : (
               <button
                 onClick={proceedToCheckout}
-                disabled={items.length === 0}
+                disabled={!cartItems?.cart?.length || loading}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
               >
                 Checkout

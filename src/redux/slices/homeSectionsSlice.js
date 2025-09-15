@@ -5,6 +5,7 @@ const initialState = {
   homeSections: null,
   loading: false,
   error: null,
+  aboutSections: null,
 };
 
 export const fetchHomeSections = createAsyncThunk(
@@ -12,6 +13,19 @@ export const fetchHomeSections = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get("/home-page-sections");
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch home sections"
+      );
+    }
+  }
+);
+export const fetchAboutSections = createAsyncThunk(
+  "homeSections/fetchAboutSections",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.get("/about-us-page");
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -36,6 +50,18 @@ const homeSectionsSlice = createSlice({
         state.homeSections = action.payload;
       })
       .addCase(fetchHomeSections.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch home sections";
+      })
+      .addCase(fetchAboutSections.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAboutSections.fulfilled, (state, action) => {
+        state.loading = false;
+        state.aboutSections = action.payload;
+      })
+      .addCase(fetchAboutSections.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch home sections";
       });

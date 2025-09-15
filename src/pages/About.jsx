@@ -1,33 +1,34 @@
+import { useDispatch, useSelector } from "react-redux";
 import CommonHeader from "../components/CommonHeader";
+import { useEffect } from "react";
+import { fetchAboutSections } from "../redux/slices/homeSectionsSlice";
 function About() {
+  const { aboutSections } = useSelector((state) => state.homeSections);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchAboutSections());
+  }, [dispatch]);
+
+  const content = aboutSections?.data?.content || "";
   return (
     <div>
       <CommonHeader />
       <div className="max-w-[80rem] mx-auto lg:py-[6.25rem] md:py-[5rem] py-[3.5rem]">
         <div className="px-4 sm:mb-10 mb-7.5">
           <div className="space-y-5 text-left w-full">
-            <p className="md:text-[1.375rem] text-lg">
-              Established in 2018, JDwebship is a tech-based logistics
-              aggregator. We have rapidly emerged as a leading force in the
-              logistics sector, embodying a commitment to innovation,
-              reliability, and customer satisfaction. Our journey began with a
-              simple yet profound goal: to revolutionize E-commerce shipping
-              services.
-            </p>
-            <p className="md:text-[1.375rem] text-lg">
-              Making logistics seamless, efficient, and accessible for everyone.
-              Founded with a vision to democratize shipping for businesses of
-              all sizes, JDwebship has emerged as one of India's leading
-              shipping and logistics platforms, empowering over 20,000 sellers
-              and entrepreneurs to reach their customers across 26,000+ pin
-              codes nationwide.
-            </p>
+            <div
+              className="prose max-w-none"
+              dangerouslySetInnerHTML={{ __html: content }}
+            />
           </div>
         </div>
 
-        <div className="px-4 sm:mb-10 mb-7.5">
+        {/* <div className="px-4 sm:mb-10 mb-7.5">
           <div className="space-y-5 text-left w-full">
-            <h2 className="md:text-[2rem] text-2xl font-bold mb-4">Our Mission</h2>
+            <h2 className="md:text-[2rem] text-2xl font-bold mb-4">
+              Our Mission
+            </h2>
             <p className="md:text-[1.375rem] text-lg">
               Our mission is to bridge the gap between merchants and consumers
               through technology-driven logistics solutions. We understand the
@@ -68,7 +69,9 @@ function About() {
           </div>
 
           <div className="text-left w-full">
-            <h2 className="md:text-[2rem] text-2xl font-bold mb-4">Why Choose JDwebship?</h2>
+            <h2 className="md:text-[2rem] text-2xl font-bold mb-4">
+              Why Choose JDwebship?
+            </h2>
             <p className="md:text-[1.375rem] text-lg">
               Our dedication goes beyond just providing a service. We are
               committed to the success of our merchants, offering personalized
@@ -78,7 +81,7 @@ function About() {
               ecosystem.
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

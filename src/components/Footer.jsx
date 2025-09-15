@@ -108,28 +108,28 @@ function Footer() {
             <h2 className="mb-4 font-bold text-lg">Company</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
-                <a
-                  href="#"
+                <Link
+                  to="/about"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out "
                 >
                   About Us
-                </a>
+                </Link>
               </li>
               <li className="mb-1">
-                <a
-                  href="#"
+                <Link
+                  to="/contact"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   Contact Us
-                </a>
+                </Link>
               </li>
               <li className="mb-1">
-                <a
-                  href="/support"
+                <Link
+                  to="/support"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   Support
-                </a>
+                </Link>
               </li>
             </ul>
           </div>

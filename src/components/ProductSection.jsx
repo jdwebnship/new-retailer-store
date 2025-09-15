@@ -3,6 +3,7 @@ import { useTheme } from "../contexts/ThemeContext";
 import CardComponent from "./CardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { postNewArrivals } from "../redux/slices/newArrivalsSlice";
+import { Link } from "react-router-dom";
 
 function ProductSection() {
   const { theme, buttonTextColor } = useTheme();
@@ -37,8 +38,8 @@ function ProductSection() {
           ))}
         </div>
         <div className="mt-[30px] lg:mt-[3.125rem]">
-          <a
-            href=""
+          <Link
+            to="/shop?page=1"
             className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center"
           >
             Shop ALL New Trending
@@ -59,7 +60,7 @@ function ProductSection() {
                 />
               </svg>
             </span>
-          </a>
+          </Link>
         </div>
       </section>
     </div>
