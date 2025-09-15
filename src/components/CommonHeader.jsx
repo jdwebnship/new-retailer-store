@@ -119,6 +119,10 @@ function CommonHeader({ className = "", ...props }) {
       title: "Support",
       breadcrumb: true,
     },
+    "/about": {
+      title: "About Us",
+      breadcrumb: true,
+    },
     "/contact": {
       title: "Contact",
       breadcrumb: true,
