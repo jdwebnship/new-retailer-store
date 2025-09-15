@@ -21,11 +21,8 @@ function Product() {
   const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState({
-    in_stock:
-      searchParams.get("in_stock") !== null
-        ? searchParams.get("in_stock") === "true"
-        : true,
-    out_of_stock: searchParams.get("out_of_stock") === "true" || true,
+    in_stock: searchParams.get("in_stock") === "true",
+    out_of_stock: searchParams.get("out_of_stock") === "true",
     categories: searchParams.get("categories")
       ? searchParams.get("categories").split(",")
       : [],
@@ -43,11 +40,8 @@ function Product() {
   // Update filters when URL parameters change
   useEffect(() => {
     setFilters({
-      in_stock:
-        searchParams.get("in_stock") !== null
-          ? searchParams.get("in_stock") === "true"
-          : true,
-      out_of_stock: searchParams.get("out_of_stock") === "true" || true,
+      in_stock: searchParams.get("in_stock") === "true",
+      out_of_stock: searchParams.get("out_of_stock") === "true",
       categories: searchParams.get("categories")
         ? searchParams.get("categories").split(",")
         : [],
@@ -104,11 +98,11 @@ function Product() {
     if (filters.sizes.length > 0) {
       requestParams.size = filters.sizes.join(",");
     }
-    if (!filters.in_stock) {
-      requestParams.in_stock = "0";
+    if (filters.in_stock) {
+      requestParams.in_stock = "1";
     }
-    if (!filters.out_of_stock) {
-      requestParams.out_of_stock = "0";
+    if (filters.out_of_stock) {
+      requestParams.out_of_stock = "1";
     }
 
     const params = new URLSearchParams();
