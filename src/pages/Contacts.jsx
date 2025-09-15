@@ -38,26 +38,37 @@ function Contacts() {
 
   const formik = useFormik({
     initialValues: {
-      firstname: "",
-      lastname: "",
+      firstName: "",
+      lastName: "",
       email: "",
-      phone_number: "",
+      phone: "",
       subject: "",
       message: "",
       subscribe: false,
     },
     validationSchema,
-    onSubmit: (values) => {
-      const formData = new FormData();
-      formData.append("firstname", values.firstname);
-      formData.append("lastname", values.lastname);
-      formData.append("email", values.email);
-      formData.append("phone_number", values.phone_number);
-      formData.append("subject", values.subject);
-      formData.append("message", values.message);
-      formData.append("subscribe", values.subscribe ? "1" : "0");
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        const formData = new FormData();
+        Object.entries(values).forEach(([key, value]) => {
+          formData.append(key, value);
+        });
+        
+        const token = localStorage.getItem("token");
+        if (token) {
+          formData.append("token", token);
+        }
 
-      dispatch(submitContactForm(formData));
+        await dispatch(submitContactForm(formData)).unwrap();
+        
+        toast.success("Message sent successfully! We will get back to you soon.");
+        resetForm();
+      } catch (error) {
+        const errorMessage = error?.response?.data?.message || "Failed to send message. Please try again later.";
+        toast.error(errorMessage);
+      } finally {
+        setSubmitting(false);
+      }
     },
   });
 
@@ -207,7 +218,6 @@ function Contacts() {
             </div>
           </div>
           <div className="rounded-2xl lg:w-8/12 lg:pl-5">
-            {/* <Form> */}
             <div className="mb-6">
               <h6 className="text-3xl font-bold uppercase mb-3">
                 How can we help?
@@ -222,23 +232,27 @@ function Contacts() {
                 <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
-                    htmlFor="firstname"
+                    htmlFor="firstName"
                   >
                     First Name *
                   </label>
                   <input
-                    id="firstname"
-                    name="firstname"
+                    id="firstName"
+                    name="firstName"
                     type="text"
-                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
+                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] ${
+                      formik.touched.firstName && formik.errors.firstName
+                        ? "border-red-500"
+                        : ""
+                    }`}
                     placeholder="Enter your First name"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
-                    value={formik.values.firstname}
+                    value={formik.values.firstName}
                   />
-                  {formik.touched.firstname && formik.errors.firstname && (
+                  {formik.touched.firstName && formik.errors.firstName && (
                     <p className="text-red-500 text-sm absolute">
-                      {formik.errors.firstname}
+                      {formik.errors.firstName}
                     </p>
                   )}
                 </div>

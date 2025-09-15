@@ -3,12 +3,14 @@ import CommonHeader from "../components/CommonHeader";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import watch from "../assets/watch.png";
+import { useSelector } from "react-redux";
 
 function Checkout() {
+  const { cartItems } = useSelector((state) => state.cart);
   const navigate = useNavigate();
   const location = useLocation();
   const items = location.state?.items || [];
-  const { theme, bottomFooterTextColor } = useTheme();
+  const { theme } = useTheme();
   const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleContinue = (e) => {
@@ -16,7 +18,11 @@ function Checkout() {
     navigate("/payment", { state: { items } });
   };
 
+  console.log("cartItems", cartItems);
+
   const subtotal = items.reduce((s, it) => s + it.price * it.quantity, 0);
+
+  // const subtotal = cartItems?.reduce((sum, item) => sum + (item.final_price * (item.quantity || 1)), 0) || 0;
   const tax = subtotal * 0.07;
   const total = subtotal + tax;
 
@@ -176,121 +182,54 @@ function Checkout() {
             <div className="flex  flex-col gap-6">
               <div className="flex justify-between items-center">
                 <h3 className="text-2xl font-bold">Your Orders</h3>
-                <a href="" className="text-sm uppercase underline">
+                <Link to="/cart" className="text-sm uppercase underline">
                   Edit Cart
-                </a>
+                </Link>
               </div>
-              <div className="bottom-card">
-                <div className="flex sm:gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
-                    <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
-                      <img
-                        src={watch}
-                        alt="Longines Heritage Classic Copper-Black watch"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base mr-4">
-                        Longines Heritage Classic Copper-Black
-                      </h3>
-                      <div className="flex mt-[0.5rem] items-center gap-4">
-                        <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
-                          Size:{" "}
-                          <strong className="font-bold text-[#111111] ml-2">
-                            L
-                          </strong>
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
-                            ₹3,298
-                          </span>
-                          <span className="leading-none line-through text-sm text-[#808080]">
-                            ₹19,999
-                          </span>
+              {cartItems?.cart.map((item) => {
+                const firstImage = item.product_images?.split(",")[0] || watch;
+                return (
+                  <div key={item.cart_id} className="bottom-card">
+                    <div className="flex sm:gap-[0.82rem] justify-between">
+                      <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
+                        <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
+                          <img
+                            src={firstImage}
+                            alt={item.product_name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              e.target.src = watch;
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                            {item.product_name}
+                          </h3>
+                          <div className="flex mt-[0.5rem] items-center gap-4">
+                            {item.selected_variant && (
+                              <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                                {item.selected_variant.variant_name}:{" "}
+                                <strong className="font-bold text-[#111111] ml-2">
+                                  {item.selected_variant.variant_value}
+                                </strong>
+                              </span>
+                            )}
+                            <div className="flex items-center gap-2">
+                              <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
+                                ₹{item.final_price?.toLocaleString("en-IN")}
+                              </span>
+                            </div>
+                          </div>
                         </div>
                       </div>
+                      <p className="font-bold text-sm sm:text-base">
+                        × {item.quantity || 1}
+                      </p>
                     </div>
                   </div>
-                  <p className="font-bold text-sm sm:text-base">
-                    <span className="mr-2">X</span>3
-                  </p>
-                </div>
-              </div>
-              <div className="bottom-card">
-                <div className="flex sm:gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
-                    <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
-                      <img
-                        src={watch}
-                        alt="Longines Heritage Classic Copper-Black watch"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base mr-4">
-                        Longines Heritage Classic Copper-Black
-                      </h3>
-                      <div className="flex mt-[0.5rem] items-center gap-4">
-                        <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
-                          Size:{" "}
-                          <strong className="font-bold text-[#111111] ml-2">
-                            L
-                          </strong>
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
-                            ₹3,298
-                          </span>
-                          <span className="leading-none line-through text-sm text-[#808080]">
-                            ₹19,999
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="font-bold text-sm sm:text-base">
-                    <span className="mr-2">X</span>3
-                  </p>
-                </div>
-              </div>
-              <div className="bottom-card">
-                <div className="flex sm:gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
-                    <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
-                      <img
-                        src={watch}
-                        alt="Longines Heritage Classic Copper-Black watch"
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <div>
-                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base mr-4">
-                        Longines Heritage Classic Copper-Black
-                      </h3>
-                      <div className="flex mt-[0.5rem] items-center gap-4">
-                        <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
-                          Size:{" "}
-                          <strong className="font-bold text-[#111111] ml-2">
-                            L
-                          </strong>
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
-                            ₹3,298
-                          </span>
-                          <span className="leading-none line-through text-sm text-[#808080]">
-                            ₹19,999
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p className="font-bold text-sm sm:text-base">
-                    <span className="mr-2">X</span>3
-                  </p>
-                </div>
-              </div>
+                );
+              })}
             </div>
             <div className="relative flex w-full border-2 border-blue-[#111111] rounded-[0.625rem] overflow-hidden my-6">
               <input
