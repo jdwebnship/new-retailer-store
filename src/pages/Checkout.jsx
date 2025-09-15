@@ -191,7 +191,7 @@ function Checkout() {
                       />
                     </div>
                     <div>
-                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base mr-4">
                         Longines Heritage Classic Copper-Black
                       </h3>
                       <div className="flex mt-[0.5rem] items-center gap-4">
@@ -212,7 +212,9 @@ function Checkout() {
                       </div>
                     </div>
                   </div>
-                  <p className="font-bold text-sm sm:text-base">× 3</p>
+                  <p className="font-bold text-sm sm:text-base">
+                    <span className="mr-2">X</span>3
+                  </p>
                 </div>
               </div>
               <div className="bottom-card">
@@ -226,7 +228,7 @@ function Checkout() {
                       />
                     </div>
                     <div>
-                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base mr-4">
                         Longines Heritage Classic Copper-Black
                       </h3>
                       <div className="flex mt-[0.5rem] items-center gap-4">
@@ -247,7 +249,9 @@ function Checkout() {
                       </div>
                     </div>
                   </div>
-                  <p className="font-bold text-sm sm:text-base">× 3</p>
+                  <p className="font-bold text-sm sm:text-base">
+                    <span className="mr-2">X</span>3
+                  </p>
                 </div>
               </div>
               <div className="bottom-card">
@@ -261,7 +265,7 @@ function Checkout() {
                       />
                     </div>
                     <div>
-                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base mr-4">
                         Longines Heritage Classic Copper-Black
                       </h3>
                       <div className="flex mt-[0.5rem] items-center gap-4">
@@ -282,7 +286,9 @@ function Checkout() {
                       </div>
                     </div>
                   </div>
-                  <p className="font-bold text-sm sm:text-base">× 3</p>
+                  <p className="font-bold text-sm sm:text-base">
+                    <span className="mr-2">X</span>3
+                  </p>
                 </div>
               </div>
             </div>
@@ -290,7 +296,7 @@ function Checkout() {
               <input
                 type="text"
                 placeholder="Coupon Code"
-                className="flex-1 px-4 py-4 text-gray-700 placeholder-gray-[#808080] bg-transparent border-none outline-none"
+                className="w-full px-4 py-4 text-gray-700 placeholder-gray-[#808080] bg-transparent border-none outline-none"
               />
               <button className="px-8 lg:px-14 py-2 bg-black text-white hover:bg-gray-800 transition-colors">
                 Apply
