@@ -1,4 +1,3 @@
-import React from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import whatsapp from "../assets/Whatsapp.svg";
 import { useNavigate } from "react-router-dom";
@@ -38,8 +37,6 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
   // const wishlistData = productData?.data?.wishlist;
   const isWishlist =
     (isAuthenticated && isInWishlist(productData?.id, productData)) || false;
-
-  console.log("productproduct", productData);
 
   const addToWishList = () => {
     if (isAuthenticated) {
@@ -133,7 +130,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
 
         <div className="hover-content absolute left-0 right-0 h-100">
           <div className="flex justify-between h-100">
-            {productData?.stock_status && (
+            {product?.stock_status === "out_of_stock" && (
               <span className="bg-[#1111116b] uppercase text-[0.875rem] px-[0.9375rem] py-[8px] rounded-[8px] absolute top-[0.9375rem] left-[8px] font-bold text-white backdrop-blur-md transition-all duration-150 ease-in-out">
                 {formatStatus(productData?.stock_status)}
               </span>
@@ -188,7 +185,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         <div className="flex flex-col gap-[0.1875rem] text-start">
           {productData?.name && (
             <h3
-              className="line-clamp-1 mb-[6px]"
+              className="line-clamp-1 mb-[0.375rem]"
               style={{ margin: 0, fontSize: "1.125rem" }}
             >
               {productData?.name}

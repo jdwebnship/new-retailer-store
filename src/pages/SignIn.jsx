@@ -70,7 +70,7 @@ function SignIn() {
                 onBlur={formik.handleBlur}
               />
               {formik.touched.email && formik.errors.email ? (
-                <p className="text-red-600 text-sm text-left absolute">
+                <p className="text-red-500 text-sm text-left absolute">
                   {formik.errors.email}
                 </p>
               ) : null}
@@ -103,10 +103,12 @@ function SignIn() {
                 </button>
               </div>
               {formik.touched.password && formik.errors.password && (
-                <p className="text-red-500 text-sm">{formik.errors.password}</p>
+                <p className="text-red-500 text-sm absolute">
+                  {formik.errors.password}
+                </p>
               )}
             </div>
-            <div className="mt-4 text-right">
+            <div className="mt-6 text-right">
               <Link
                 to={"/forgot-password"}
                 className="text-sm underline hover:text-[#007BFF] site-link uppercase transition-all duration-300"

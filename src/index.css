@@ -375,14 +375,16 @@ textarea {
 }
 
 @media only screen and (max-width: 639px) {
-
-  .search-box,
   .profile-dropdown {
     transform: translate(calc(-50% + -8.5rem), 0);
   }
 
   .search-box {
     transform: translate(calc(-50% + -8.5rem), 0);
+  }
+
+  .search-box,.profile-dropdown{
+    animation:none;
   }
 }
 

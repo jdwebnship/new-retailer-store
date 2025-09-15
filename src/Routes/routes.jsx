@@ -1,6 +1,8 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { lazy, Suspense } from "react";
+import { Contact } from "lucide-react";
+import Contacts from "../pages/Contacts";
 
 // Lazy-loaded routes
 const About = lazy(() => import("../pages/About"));
@@ -88,6 +90,7 @@ function AppRoutes() {
         <Route path="/terms-use" element={<Terms />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/contact" element={<Contacts />} />
 
         {/* Protected routes */}
         <Route
@@ -127,6 +130,15 @@ function AppRoutes() {
           element={
             <ProtectedRoute>
               <OrderFailure />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/contact"
+          element={
+            <ProtectedRoute>
+              <Contacts />
             </ProtectedRoute>
           }
         />

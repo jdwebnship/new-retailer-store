@@ -12,14 +12,12 @@ import accountDetailsSlice from "../redux/slices/accountDetailsSlice";
 import customerOrdersSlice from "../redux/slices/customerOrdersSlice";
 import orderPopupSlice from "../redux/slices/orderPopupSlice";
 // import cartReducer from "./slices/cartSlice";
+import cartSlice from "./slices/cartSlice";
 // import wishlistReducer from "./slices/wishlistSlice";
 // import storeReducer from "./slices/storeSlice";
-// import productReducer from "./slices/productSlice";
 // import checkoutReducer from "./slices/checkoutSlice";
 // import filtersReducer from "./slices/filterSlice";
 // import ordersReducer from "./slices/ordersSlice";
-// import accountDetailsReducer from "./slices/accountDetailsSlice";
-// import shippingAddressReducer from "./slices/shippingAddressSlice";
 
 // --- combine all slices
 const appReducer = combineReducers({
@@ -35,10 +33,8 @@ const appReducer = combineReducers({
   customerOrders: customerOrdersSlice,
   orderPopup: orderPopupSlice,
   // cart: cartReducer,
+  cart: cartSlice,
   // orders: ordersReducer,
-  // accountDetails: accountDetailsReducer,
-  // shippingAddress: shippingAddressReducer,
-  // wishlist: wishlistReducer,
   // store: storeReducer,
   // checkout: checkoutReducer,
   // filters: filtersReducer,

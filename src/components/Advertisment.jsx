@@ -30,17 +30,24 @@ function Advertisment() {
     >
       <Marquee>
         <div className="flex gap-4 text-[0.875rem] mr-4">
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
         </div>
       </Marquee>
       <div
-        className="py-[1.5rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] rounded-[2.125rem] relative"
+        className="py-[1.875rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] rounded-[2.125rem] relative"
         style={{
           width: "100%",
           height: "780px",
@@ -103,13 +110,20 @@ function Advertisment() {
       </div>
       <Marquee>
         <div className="flex gap-4 text-[0.875rem] mr-4">
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> • <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
+          <span className="uppercase">Step into style </span> •{" "}
+          <span className="uppercase"> Empower your look</span> •
         </div>
       </Marquee>
     </div>

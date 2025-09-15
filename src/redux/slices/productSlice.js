@@ -5,6 +5,7 @@ const initialState = {
   product: null,
   productDetails: null,
   loading: false,
+  searchLoading: false,
   error: null,
 };
 
@@ -51,9 +52,25 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchProductsDetails = createAsyncThunk(
   "product/fetchProductsDetails",
-  async ({slug}, { rejectWithValue }) => {
+  async ({ slug }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/singal-product-details/${slug}`);
+      const response = await axiosInstance.get(
+        `/singal-product-details/${slug}`
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Failed to fetch products information"
+      );
+    }
+  }
+);
+
+export const fetchSearchProducts = createAsyncThunk(
+  "product/fetchSearchProducts",
+  async ({ search }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/search-products", { search });
       return response.data;
     } catch (error) {
       return rejectWithValue(
@@ -95,6 +112,19 @@ const productSlice = createSlice({
       .addCase(fetchProductsDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch products information";
+      })
+      .addCase(fetchSearchProducts.pending, (state) => {
+        state.searchLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchSearchProducts.fulfilled, (state, action) => {
+        state.searchLoading = false;
+        state.product = action.payload;
+        state.productDetails = null;
+      })
+      .addCase(fetchSearchProducts.rejected, (state, action) => {
+        state.searchLoading = false;
+        state.error = action.payload || "Failed to search products";
       });
   },
 });

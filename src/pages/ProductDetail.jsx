@@ -12,6 +12,9 @@ import { fetchProductsDetails } from "../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getWhatsappLink, isInWishlist } from "../utils/common";
 import { addtowishList, removeFromwishList } from "../redux/slices/WishListSlice";
+import useVariantQuery from "../hooks/useVariantQuery";
+import { toast } from "react-toastify";
+import { addToCart } from "../redux/slices/cartSlice";
 
 function ProductDetail() {
   const { slug } = useParams();
@@ -20,10 +23,14 @@ function ProductDetail() {
   const [quantity, setQuantity] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
+  const [productVariations, setProductVariations] = useState([]);
+  const [variant, setVariant] = useVariantQuery(productVariations);
+
   const { productDetails } = useSelector((state) => state.products);
   const { wishlist } = useSelector((state) => state.wishlist);
   const { storeInfo } = useSelector((state) => state.storeInfo);
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
   const product = productDetails?.product
   const wishlistData = wishlist?.data?.wishlist;
@@ -35,6 +42,8 @@ function ProductDetail() {
   const [mainHeight, setMainHeight] = useState("400px"); // Initial fallback
   const mainContainerRef = useRef(null);
   const thumbContainerRef = useRef(null);
+
+  
 
   const addToWishList = () => {
     if (isAuthenticated) {
@@ -65,16 +74,85 @@ function ProductDetail() {
     }
   }, [slug, dispatch, navigate]);
 
+  useEffect(() => {
+    if (product?.productVariations?.length) {
+      setProductVariations(product.productVariations);
+
+      // // If there's only one variant, select it by default
+      if (product.productVariations.length === 1) {
+        setVariant(product.productVariations[0].product_variation);
+      }
+    }
+  }, [product?.productVariations]);
+
+  const handleVariantSelect = (selectedVariant) => {
+    setVariant(selectedVariant);
+    setQuantity(1); // Reset quantity when variant changes
+  };
+
   const discount =
     product?.old_price && product?.new_price
       ? (((product?.old_price - product?.new_price) / product?.old_price) * 100).toFixed(0)
       : 0;
 
-  const handleIncrement = () => {
-    setQuantity((prev) => prev + 1);
+  const selectedVariant = productVariations.find(
+    (v) => v.product_variation === variant
+  );
+
+  const cartQuantity = cartItems
+    .filter(
+      (item) =>
+        item.product_id === product.id &&
+        (!selectedVariant || item.selected_variant?.id === selectedVariant.id)
+    )
+    .reduce((sum, item) => sum + item.quantity, 0);
+
+  console.log("cartQuantity", cartQuantity);
+
+  const MAX_LIMIT = 5;
+  const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
+
+  const increaseQuantity = () => {
+    setQuantity((prev) =>
+      Math.min(prev + 1, Math.min(availableStock - cartQuantity, MAX_LIMIT))
+    );
   };
-  const handleDecrement = () => {
-    setQuantity((prev) => (prev > 1 ? prev - 1 : 1));
+
+  const decreaseQuantity = () => {
+    setQuantity((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    if (availableStock === 0) {
+      toast.warning("Product is not avaliable");
+    } else if (cartQuantity + quantity > availableStock) {
+      toast.warning("Cannot add more than available stock");
+    } else if (productVariations?.length) {
+      if (selectedVariant) {
+        dispatch(addToCart({
+          item: {
+            ...product,
+            selectedVariant: {
+              id: selectedVariant.id,
+              product_variation: selectedVariant.product_variation,
+              final_price: selectedVariant.final_price,
+              stock: selectedVariant.stock,
+            },
+          },
+          quantity,
+        }));
+      } else {
+        toast.warning("Please select a size");
+      }
+    } else {
+      dispatch(addToCart({
+        item: {
+          ...product,
+        },
+        quantity,
+      }));
+    }
   };
 
   const handleSlideChange = (swiper) => {
@@ -202,16 +280,16 @@ function ProductDetail() {
                   // watchSlidesProgress={true}
                   // updateOnWindowResize={true}
                   breakpoints={{
-                    0: { 
+                    0: {
                       direction: "horizontal",
-                      slidesPerView: 3 
+                      slidesPerView: 3
                     },
-                    768: { 
-                      slidesPerView: 4, 
-                      direction: "vertical" 
+                    768: {
+                      slidesPerView: 4,
+                      direction: "vertical"
                     },
-                    1440: { 
-                      slidesPerView: 4, 
+                    1440: {
+                      slidesPerView: 4,
                       direction: "vertical"
                     },
                   }}
@@ -226,11 +304,10 @@ function ProductDetail() {
                   {productImg.map((src, index) => (
                     <SwiperSlide key={index}>
                       <div
-                        className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${
-                          activeIndex === index
-                            ? "grayscale-0 opacity-100"
-                            : "grayscale opacity-50"
-                        }`}
+                        className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${activeIndex === index
+                          ? "grayscale-0 opacity-100"
+                          : "grayscale opacity-50"
+                          }`}
                       >
                         <img src={src} alt="" className="absolute top-0 left-0 object-contain w-full h-full block" />
                       </div>
@@ -319,27 +396,33 @@ function ProductDetail() {
               </p>
             </div>
             {/* Available Sizes */}
-            {product?.productVariations.length > 0 &&
+            {(product?.variations?.length > 0 || product?.productVariations?.length > 0) && (
               <div className="mb-6">
                 <h4 className="text-sm font-bold mb-2 uppercase">Size</h4>
-                <div className="flex gap-2">
-                  {product?.productVariations.map((size, index) => (
+                <div className="flex flex-wrap gap-2">
+                  {productVariations?.map((item) => (
                     <button
-                      key={index}
-                      className="px-4 py-2 border border-gray-300 rounded-md cursor-pointer hover:bg-[#111111] hover:text-[#FFFFFF]"
+                      key={item.id}
+                      disabled={!item?.stock}
+                      onClick={() => handleVariantSelect(item?.product_variation)}
+                      className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${
+                        variant === item?.product_variation ? "border-black" : ""
+                      }`}
                     >
-                      {size?.product_variation}
+                      {item?.product_variation}
+                      {item?.stock <= 0 && (
+                        <span className="absolute top-0 left-0 w-full h-full bg-white/70"></span>
+                      )}
                     </button>
                   ))}
                 </div>
               </div>
-            }
-
+            )}
             <div className="flex gap-4 mb-3.5">
               <div className="quantity-wrapper">
                 <div className="inline-flex items-center border border-gray-300 rounded-md py-2 h-full">
                   <button
-                    onClick={handleDecrement}
+                    onClick={decreaseQuantity}
                     className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition"
                     disabled={quantity === 1}
                   >
@@ -361,8 +444,12 @@ function ProductDetail() {
                     {quantity}
                   </span>
                   <button
-                    onClick={handleIncrement}
+                    onClick={increaseQuantity}
                     className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition"
+                    disabled={
+                      quantity + cartQuantity >= availableStock ||
+                      quantity >= MAX_LIMIT
+                    }
                   >
                     <svg
                       className="w-5 h-5"
@@ -380,7 +467,9 @@ function ProductDetail() {
                   </button>
                 </div>
               </div>
-              <button className="flex-1 btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none">
+              <button
+                onClick={handleAddToCart}
+                className="flex-1 btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none">
                 Add to Cart
               </button>
             </div>

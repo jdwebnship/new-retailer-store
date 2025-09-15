@@ -24,8 +24,8 @@ function Checkout() {
     <div>
       <CommonHeader />
       {/* Form */}
-      <div className="w-full max-w-auto 2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.5rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-[0]">
-        <div className="grid lg:grid-cols-2 gap-8 text-start w-full xl:gap-16">
+      <div className="w-full max-w-auto 2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.25rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-[0]">
+        <div className="grid lg:grid-cols-2 gap-8 text-start w-full xl:gap-15">
           <div className="w-full ">
             <form action="">
               <div className="flex flex-col gap-6">
@@ -167,7 +167,7 @@ function Checkout() {
             </form>
           </div>
           <div
-            className="p-4 md:p-7 rounded-[1.875rem]"
+            className="p-4 md:p-[1.875rem] rounded-[2.125rem]"
             style={{
               backgroundColor: theme.bottomFooterBackgroundColor,
               height: "fit-content",
@@ -176,13 +176,13 @@ function Checkout() {
             <div className="flex  flex-col gap-6">
               <div className="flex justify-between items-center">
                 <h3 className="text-2xl font-bold">Your Orders</h3>
-                <a href="" className="underline">
+                <a href="" className="text-sm uppercase underline">
                   Edit Cart
                 </a>
               </div>
               <div className="bottom-card">
                 <div className="flex sm:gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.5rem] sm:gap-[0.82rem]">
+                  <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
                     <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
                       <img
                         src={watch}
@@ -217,7 +217,7 @@ function Checkout() {
               </div>
               <div className="bottom-card">
                 <div className="flex sm:gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.5rem] sm:gap-[0.82rem]">
+                  <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
                     <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
                       <img
                         src={watch}
@@ -252,7 +252,7 @@ function Checkout() {
               </div>
               <div className="bottom-card">
                 <div className="flex sm:gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.5rem] sm:gap-[0.82rem]">
+                  <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
                     <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
                       <img
                         src={watch}

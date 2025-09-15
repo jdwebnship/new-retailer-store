@@ -48,7 +48,14 @@ const Support = () => {
                       backgroundColor: bottomFooterTextColor,
                     }}
                   >
-                    <div className="w-2 h-2 rounded-full"></div>
+                    <div
+                      className="w-2 h-2 rounded-full"
+                      style={{
+                        backgroundColor:
+                          theme?.bottomFooterBackgroundColor || "#1f2937",
+                        color: bottomFooterTextColor || "#ffffff",
+                      }}
+                    ></div>
                   </div>
                   <p className=" text-left">{item}</p>
                 </div>
@@ -117,8 +124,8 @@ const Support = () => {
           </div>
 
           {/* Contact Information */}
-          <div className="w-full max-w-full px-4">
-            <div className="grid grid-cols-1 gap-6 mb-12">
+          <div className="w-full max-w-full">
+            <div className="grid grid-cols-1 gap-6">
               <div className="text-left">
                 <h2 className="text-2xl font-bold text-gray-800 mb-4">
                   How to Reach Us

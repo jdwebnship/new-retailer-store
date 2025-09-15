@@ -18,12 +18,12 @@ const renderContent = (selected, wishlistData) => {
     case "wishlist":
       return (
         <div className="w-full">
-          <div className="flex justify-between w-full pb-[1.25rem] items-center">
+          <div className="flex justify-between w-full pb-[1.5rem] items-center">
             <h3 className="text-2xl font-bold">Wishlist</h3>
           </div>
           <hr className="opacity-10" />
           {/* Card */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-[1.5rem] gap-y-[1.375rem] lg:gap-y-[4.375rem] mt-[1.875rem]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-[1.5rem] gap-y-[1.875rem] lg:gap-y-[4.375rem] mt-[1.5rem]">
             {wishlistData?.map((wishlist, index) => (
               <CardComponent
                 key={index}
@@ -219,7 +219,7 @@ const MyAccount = () => {
   return (
     <div>
       <CommonHeader />
-      <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0]">
+      <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.25rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0]">
         {/* Left Navigation */}
         <div className="flex gap-6 flex-col md:flex-row">
           <nav
@@ -250,7 +250,7 @@ const MyAccount = () => {
                       borderLeftWidth: "2.8px",
                       borderLeft:
                         selected === item.key ? "solid" : "transparent",
-                      fontWeight: selected === item.key ? 600 : 400,
+                      fontWeight: selected === item.key ? 700 : 500,
                       color:
                         selected === item.key
                           ? bottomFooterTextColor
@@ -261,7 +261,7 @@ const MyAccount = () => {
                     }}
                   >
                     {item.img && (
-                      <span style={{ marginRight: "0.5rem" }}>
+                      <span style={{ marginRight: "0.93rem" }}>
                         {item.img(selected === item.key)}
                       </span>
                     )}

@@ -92,7 +92,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
             {/* Hamburger for mobile */}
             <button
               type="button"
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10"
+              className="lg:hidden"
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-drawer"
@@ -391,7 +391,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               </Link>
               <Link
                 className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
-                to="/about"
+                to="/contact"
                 style={{
                   color: headerTextColor || "#111111",
                   margin: "0 1rem",
@@ -419,11 +419,12 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
         )}
 
         {/* Drawer */}
+        {/* <div className="overlay w-full h-dvh fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-99"></div> */}
         <aside
           id="mobile-drawer"
           role="dialog"
           aria-modal="true"
-          className={`fixed top-0 left-0 h-[100vh] w-72 max-w-[80%] z-50 lg:hidden transform transition-transform duration-300 ease-out border-r border-black/10`}
+          className={`fixed top-0 left-0 h-[100vh] w-72 max-w-[80%] z-100 lg:hidden transform transition-transform duration-300 ease-out border-r border-black/10`}
           style={{
             backgroundColor: theme?.headerBackgroundColor || "#ffffff",
             color: headerTextColor || "#111111",

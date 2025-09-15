@@ -60,11 +60,11 @@ const UpdateAddressForm = () => {
 
   return (
     <div className="w-full text-start">
-      <div className="flex justify-between w-full pb-[1.25rem] items-center">
+      <div className="flex justify-between w-full pb-[1.5rem] items-center">
         <h3 className="text-2xl font-bold">Update Address</h3>
       </div>
       <hr className="opacity-10" />
-      <div className="mt-[1.875rem]">
+      <div className="mt-[1.5rem]">
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}
@@ -84,17 +84,13 @@ const UpdateAddressForm = () => {
                   id="address"
                   name="address"
                   type="text"
-                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none ${
-                    errors.address && touched.address
-                      ? "border-red-500"
-                      : "border-[#AAAAAA]"
-                  }`}
+                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] }`}
                   placeholder="Enter your address"
                 />
                 <ErrorMessage
                   name="address"
                   component="p"
-                  className="text-red-500 text-sm mt-1"
+                  className="text-red-500 text-sm absolute"
                 />
               </div>
               <div className="mb-6">
@@ -108,23 +104,19 @@ const UpdateAddressForm = () => {
                   id="pincode"
                   name="pincode"
                   type="text"
-                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none ${
-                    errors.pincode && touched.pincode
-                      ? "border-red-500"
-                      : "border-[#AAAAAA]"
-                  }`}
+                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] }`}
                   placeholder="Enter your pincode"
                 />
                 <ErrorMessage
                   name="pincode"
                   component="p"
-                  className="text-red-500 text-sm mt-1"
+                  className="text-red-500 text-sm absolute"
                 />
               </div>
               <div className="mb-6 flex flex-col sm:flex-row">
                 <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
                   <label
-                    className="block text-sm font-medium mb-1"
+                    className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="state"
                   >
                     STATE
@@ -133,11 +125,7 @@ const UpdateAddressForm = () => {
                     as="select"
                     id="state"
                     name="state"
-                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none ${
-                      errors.state && touched.state
-                        ? "border-red-500"
-                        : "border-[#AAAAAA]"
-                    }`}
+                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] }`}
                     onChange={(e) => {
                       setFieldValue("state", e.target.value);
                       setFieldValue("city", ""); // Reset city when state changes
@@ -153,12 +141,12 @@ const UpdateAddressForm = () => {
                   <ErrorMessage
                     name="state"
                     component="p"
-                    className="text-red-500 text-sm mt-1"
+                    className="text-red-500 text-sm absolute"
                   />
                 </div>
                 <div className="w-full sm:w-1/2 sm:pl-3">
                   <label
-                    className="block text-sm font-medium mb-1"
+                    className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="city"
                   >
                     CITY
@@ -167,11 +155,9 @@ const UpdateAddressForm = () => {
                     as="select"
                     id="city"
                     name="city"
-                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none ${
-                      errors.city && touched.city
-                        ? "border-red-500"
-                        : "border-[#AAAAAA]"
-                    } ${!values.state ? "opacity-50 cursor-not-allowed" : ""}`}
+                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] ${
+                      !values.state ? "opacity-50 cursor-not-allowed" : ""
+                    }`}
                     disabled={!values.state}
                   >
                     <option value="">Select a city</option>
@@ -185,7 +171,7 @@ const UpdateAddressForm = () => {
                   <ErrorMessage
                     name="city"
                     component="p"
-                    className="text-red-500 text-sm mt-1"
+                    className="text-red-500 text-sm absolute"
                   />
                 </div>
               </div>

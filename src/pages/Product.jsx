@@ -14,12 +14,14 @@ function Product() {
   const { product, loading: ProductLoading } = useSelector(
     (state) => state.products
   );
-
-  console.log("product", product);
-
-  const categories = storeInfo?.sub_category_list || [];
-  const dispatch = useDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
+
+  const categories = useMemo(
+    () => storeInfo?.sub_category_list || [],
+    [storeInfo?.sub_category_list]
+  );
+  const dispatch = useDispatch();
   const [filters, setFilters] = useState({
     in_stock: searchParams.get("in_stock") === "true",
     out_of_stock: searchParams.get("out_of_stock") === "true",
@@ -35,6 +37,7 @@ function Product() {
         ? Number(searchParams.get("max_price"))
         : 10000,
     ],
+    sort_by: searchParams.get("sort_by") || null,
   });
 
   // Update filters when URL parameters change
@@ -75,16 +78,33 @@ function Product() {
   }, [filters.categories, categories]);
 
   const debouncedFetchProducts = useCallback(
-    debounce((params, dispatch) => {
+    debounce((params, dispatch, search) => {
+      if (search) {
+        // Don't fetch if we're already showing search results
+        return;
+      }
       dispatch(fetchProducts(params));
     }, 300),
-    []
+    [dispatch]
   );
 
   useEffect(() => {
+    // If we have a search query, don't fetch regular products
+    if (searchQuery) {
+      return;
+    }
+
     const requestParams = {
       page: currentPageNum,
     };
+
+    // Get sort_by from URL first, then fallback to filters state
+    const sortBy = searchParams.get("sort_by") || filters.sort_by;
+
+    if (sortBy) {
+      requestParams.sort_by = sortBy;
+      console.log("Sort by parameter:", sortBy);
+    }
 
     if (subcategoryIds.length > 0) {
       requestParams.sub_category = subcategoryIds.join(",");
@@ -106,12 +126,12 @@ function Product() {
     }
 
     const params = new URLSearchParams();
-    params.set("page", currentPageNum.toString());
     // params.set("page", "1");
     if (filters.categories.length > 0) {
       params.set("categories", filters.categories.join(","));
       params.set("page", "1");
     }
+    params.set("page", currentPageNum.toString());
     if (filters.sizes.length > 0) {
       params.set("sizes", filters.sizes.join(","));
       params.set("page", "1");
@@ -132,9 +152,13 @@ function Product() {
       params.set("out_of_stock", "true");
       // params.set("page", "1");
     }
+    if (filters.sort_by) {
+      params.set("sort_by", filters.sort_by);
+      params.set("page", "1");
+    }
 
     setSearchParams(params, { replace: true });
-    debouncedFetchProducts(requestParams, dispatch);
+    debouncedFetchProducts(requestParams, dispatch, searchQuery);
   }, [
     currentPageNum,
     subcategoryIds,
@@ -142,9 +166,13 @@ function Product() {
     filters.sizes,
     filters.priceRange,
     filters.in_stock,
+    filters.sort_by,
     filters.out_of_stock,
     dispatch,
     setSearchParams,
+    searchQuery,
+    debouncedFetchProducts,
+    searchParams,
   ]);
 
   const handlePageClick = (event) => {
@@ -159,6 +187,13 @@ function Product() {
   };
 
   const handleCheckboxChange = (filterType, value) => {
+    // Clear search query when any filter is applied
+    setSearchParams((prev) => {
+      const newParams = new URLSearchParams(prev);
+      newParams.delete("search");
+      return newParams;
+    });
+
     if (filterType === "in_stock" || filterType === "out_of_stock") {
       setFilters((prev) => ({
         ...prev,
@@ -180,6 +215,11 @@ function Product() {
           ? prev.sizes.filter((s) => s !== value)
           : [...prev.sizes, value],
       }));
+    } else if (filterType === "sort_by") {
+      setFilters((prev) => ({
+        ...prev,
+        sort_by: value,
+      }));
     }
   };
 
@@ -189,16 +229,42 @@ function Product() {
       out_of_stock: false,
       categories: [],
       sizes: [],
+      sort_by: null,
       priceRange: [0, 10000],
     });
-    setSearchParams({ page: "1" });
+    // Clear search, sort, and reset to page 1
+    const newParams = new URLSearchParams();
+    newParams.set("page", "1");
+    // Remove sort_by parameter when clearing filters
+    newParams.delete("sort_by");
+    setSearchParams(newParams);
   };
 
-  const products = product?.data?.products?.data || [];
-  const totalPages = product?.data?.products?.last_page || 1;
-  const totalItems = product?.data?.products?.total || 0;
-  const pageForm = product?.data?.products?.from;
-  const pageTo = product?.data?.products?.to;
+  // Handle both regular products and search results
+  const products =
+    searchQuery && product?.data?.data
+      ? product.data.data // Search results structure
+      : product?.data?.products?.data || []; // Regular products structure
+
+  const totalPages =
+    searchQuery && product?.data?.last_page
+      ? product.data.last_page
+      : product?.data?.products?.last_page || 1;
+
+  const totalItems =
+    searchQuery && product?.data?.total
+      ? product.data.total
+      : product?.data?.products?.total || 0;
+
+  const pageForm =
+    searchQuery && product?.data?.from
+      ? product.data.from
+      : product?.data?.products?.from;
+
+  const pageTo =
+    searchQuery && product?.data?.to
+      ? product.data.to
+      : product?.data?.products?.to;
 
   const filteredProducts = products.filter((product) => {
     const in_stock = product.quantity > 0;
@@ -215,6 +281,7 @@ function Product() {
     const priceMatch =
       product.final_price >= filters.priceRange[0] &&
       product.final_price <= filters.priceRange[1];
+    // const sort_byMatch =
     return stockMatch && categoryMatch && priceMatch;
   });
 
@@ -227,14 +294,17 @@ function Product() {
     filters.categories.length > 0 ||
     filters.sizes.length > 0 ||
     filters.priceRange[0] > 0 ||
-    filters.priceRange[1] < 10000;
+    filters.priceRange[1] < 10000 ||
+    filters.sort_by;
 
   const activeFilterCount =
     (filters.in_stock ? 1 : 0) +
     (filters.out_of_stock ? 1 : 0) +
     filters.categories.length +
     filters.sizes.length +
-    (filters.priceRange[0] > 0 || filters.priceRange[1] < 10000 ? 1 : 0);
+    (filters.priceRange[0] > 0 || filters.priceRange[1] < 10000 ? 1 : 0) +
+    (searchQuery ? 1 : 0) +
+    (filters.sort_by ? 1 : 0);
 
   return (
     <div className="">
@@ -256,6 +326,21 @@ function Product() {
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-[0.5rem] py-[1.5rem]">
+                  {searchQuery && (
+                    <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                      Search: {searchQuery}
+                      <img
+                        className="cursor-pointer"
+                        src={cross}
+                        alt="Clear search"
+                        onClick={() => {
+                          const newParams = new URLSearchParams(searchParams);
+                          newParams.delete("search");
+                          setSearchParams(newParams);
+                        }}
+                      />
+                    </span>
+                  )}
                   {filters.in_stock && (
                     <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                       In stock
@@ -334,6 +419,22 @@ function Product() {
                       />
                     </span>
                   )}
+                  {filters.sort_by && (
+                    <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                      {filters.sort_by}
+                      <img
+                        className="cursor-pointer"
+                        src={cross}
+                        alt=""
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            sort_by: null,
+                          }))
+                        }
+                      />
+                    </span>
+                  )}
                 </div>
               </div>
             </div>
@@ -371,7 +472,7 @@ function Product() {
                 <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem] text-[#111111]">
                   Category <span>({categories.length})</span>
                 </h4>
-                <div className="flex lg:flex-nowrap flex-wrap gap-5 lg:gap-[0.5rem] flex-row lg:flex-col max-h-[30rem] overflow-y-auto">
+                <div className="flex lg:flex-nowrap gap-5 lg:gap-[0.5rem] flex-col max-h-[30rem] overflow-y-auto">
                   {categories.map((category) => {
                     const name = category?.name || "Unnamed";
                     return (
@@ -440,18 +541,52 @@ function Product() {
               </h4>
               <PriceRangeSlider
                 value={filters.priceRange}
-                onChange={(newRange) =>
-                  setFilters((prev) => ({ ...prev, priceRange: newRange }))
-                }
+                onChange={(newRange) => {
+                  const handlePriceRangeChange = (newValue) => {
+                    // Clear search query when price range is changed
+                    setSearchParams((prev) => {
+                      const newParams = new URLSearchParams(prev);
+                      newParams.delete("search");
+                      return newParams;
+                    });
+
+                    setFilters((prev) => ({
+                      ...prev,
+                      priceRange: newValue,
+                    }));
+                  };
+                  handlePriceRangeChange(newRange);
+                }}
               />
             </div>
           </div>
 
           <div className="lg:col-span-10 lg:pl-[1.875rem]">
             <div className="flex flex-wrap gap-2 justify-between mb-[1.5rem]">
-              <select className="uppercase">
-                <option className="uppercase">Sort By</option>
-                <option value="in_stock">In Stock</option>
+              <select
+                className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                value={filters.sort_by || ""}
+                onChange={(e) => {
+                  const sortValue = e.target.value || null;
+                  setFilters((prev) => ({
+                    ...prev,
+                    sort_by: sortValue,
+                  }));
+
+                  const newSearchParams = new URLSearchParams(searchParams);
+                  if (sortValue) {
+                    newSearchParams.set("sort_by", sortValue);
+                    newSearchParams.set("page", "1");
+                  } else {
+                    newSearchParams.delete("sort_by");
+                  }
+                  setSearchParams(newSearchParams);
+                }}
+              >
+                <option value="">Sort By</option>
+                <option value="recently_added">Recently Added</option>
+                <option value="price_high_to_low">Price High To Low</option>
+                <option value="price_low_to_high">Price Low To High</option>
               </select>
               <span className="text-[#808080] uppercase">
                 {ProductLoading ? (
@@ -490,7 +625,7 @@ function Product() {
             )}
             {filteredProducts.length > 0 && (
               <div className="mt-auto">
-                <div className="flex justify-center my-8">
+                <div className="flex justify-center mt-[2.375rem] lg:mt-[4.375rem]">
                   <ReactPaginate
                     breakLabel="..."
                     nextLabel=""

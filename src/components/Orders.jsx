@@ -28,7 +28,7 @@ const Orders = () => {
   };
   return (
     <div className="w-full">
-      <div className="flex justify-between w-full pb-[1.25rem] items-center">
+      <div className="flex justify-between w-full pb-[1.5rem] items-center">
         <h3 className="text-2xl font-bold">Orders</h3>
         {/* <p className="text-sm text-[#808080]">Showing 1-10 Of 20 Results.</p> */}
       </div>
@@ -39,17 +39,17 @@ const Orders = () => {
           {orders?.orders?.map((val) => {
             const status = toTitleCase(val?.status);
             return (
-              <div className="flex flex-col mt-[1.875rem] text-start">
+              <div className="flex flex-col mt-[1.5rem] text-start">
                 <div className="rounded-2xl border border-[#AAAAAA] overflow-auto">
                   <div
-                    className="top-card  p-[0.82rem]"
+                    className="top-card  p-[0.938rem]"
                     style={{
                       backgroundColor: theme?.bottomFooterBackgroundColor,
                       color: bottomFooterTextColor,
                     }}
                   >
-                    <div className="flex flex-wrap gap-[1.25rem] justify-between">
-                      <div className="flex flex-wrap gap-[1.25rem]">
+                    <div className="flex flex-wrap sm:gap-[1.5rem] gap-[1rem] justify-between">
+                      <div className="flex flex-wrap sm:gap-[1.5rem] gap-[1rem]">
                         <div>
                           <span className="text-sm uppercase">Order Date:</span>
                           <p className="text-sm font-bold">{val?.order_date}</p>
@@ -72,8 +72,8 @@ const Orders = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="bottom-card p-[0.82rem]">
-                    <div className="flex flex-wrap gap-[0.82rem]">
+                  <div className="bottom-card p-[0.938rem]">
+                    <div className="flex flex-wrap gap-[0.938rem]">
                       <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden">
                         <img src={watch} alt="" />
                       </div>
@@ -81,7 +81,7 @@ const Orders = () => {
                         <h6 className="sm:text-lg font-bold">
                           {val?.product_name}
                         </h6>
-                        <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
+                        <div className="flex flex-wrap gap-[0.938rem] items-center mt-[0.5rem]">
                           <Link
                             onClick={(e) => {
                               e.preventDefault();

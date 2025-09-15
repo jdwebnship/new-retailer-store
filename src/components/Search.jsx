@@ -1,6 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { fetchSearchProducts } from "../redux/slices/productSlice";
 
 function Search() {
   const { theme, headerTextColor } = useTheme();
@@ -9,6 +11,7 @@ function Search() {
   const searchInputRef = useRef(null);
   const searchContainerRef = useRef(null);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Focus input when search opens
   useEffect(() => {
@@ -39,14 +42,21 @@ function Search() {
   }, [isSearchOpen]);
 
   // Handle search submission
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      // Navigate to shop page with search query
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
-      // Close search box and clear query
-      setIsSearchOpen(false);
-      setSearchQuery("");
+    const trimmedQuery = searchQuery.trim();
+    if (trimmedQuery) {
+      try {
+        await dispatch(fetchSearchProducts({ search: trimmedQuery })).unwrap();
+        // Navigate to shop page with search query
+        navigate(`/shop?search=${encodeURIComponent(trimmedQuery)}`);
+        // Close search box and clear query
+        setIsSearchOpen(false);
+        setSearchQuery("");
+      } catch (error) {
+        console.error("Search failed:", error);
+        // Optionally show error to user
+      }
     }
   };
 

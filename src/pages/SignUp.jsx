@@ -340,7 +340,7 @@ function SignUp() {
                 checked={formik.values.terms}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                className="shrink-0 h-5 w-5 rounded border-gray-300 bg-white"
+                className="shrink-0 h-4.5 w-4.5 rounded border-gray-300 bg-white"
               />
               <label
                 htmlFor="terms"

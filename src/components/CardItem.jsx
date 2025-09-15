@@ -14,8 +14,8 @@ export function CardItem({ item }) {
         alt={item.name}
         className="w-full h-full absolute top-0 left-0 object-contain rounded-[1.125rem]"
       />
-      <div className="absolute bottom-0 category-title py-[1rem] 2xl:py-[2.125rem] rounded-lg rounded-t-none overflow-hidden left-0 right-0">
-        <h3 className="text-lg font-bold text-[1.125rem] 2xl:text-[1.5rem] text-white">
+      <div className="absolute bottom-0 category-title py-[1rem] 2xl:py-[1.5rem] rounded-lg rounded-t-none overflow-hidden left-0 right-0">
+        <h3 className="text-lg font-bold text-[1.125rem] text-white">
           {item.name}
         </h3>
         {/* <p className="text-md text-gray-600">{item.price}</p> */}

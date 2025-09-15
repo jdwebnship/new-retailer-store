@@ -76,7 +76,7 @@ function Cart() {
                   key={it.id}
                   className="flex md:flex-row flex-col md:gap-6 gap-4 justify-between"
                 >
-                  <div className="flex gap-4 flex-1 max-w-[25.938rem]">
+                  <div className="flex gap-[0.938rem] flex-1 max-w-[25.938rem]">
                     <img
                       src={it.image}
                       alt={it.name}
