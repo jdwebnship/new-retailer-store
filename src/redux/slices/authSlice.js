@@ -10,7 +10,6 @@ const initialState = {
   isAuthenticated: false,
 };
 
-
 // Register
 export const registerUser = createAsyncThunk(
   "auth/register",
@@ -18,8 +17,8 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/customer/register", data);
       if (response?.data?.success || response?.status) {
-        toast.success(response?.data?.message)
-        navigate("/signin")
+        toast.success(response?.data?.message);
+        navigate("/signin");
       }
       return response.data;
     } catch (error) {
@@ -35,10 +34,13 @@ export const login = createAsyncThunk(
     try {
       const response = await axiosInstance.post("/customer/login", credentials);
       if (response?.data?.success) {
-        toast.success(response?.data?.message || "Login successful.")
-        navigate("/")
+        toast.success(response?.data?.message || "Login successful.");
+        navigate("/");
       } else {
-        toast.error(response?.data?.message || "Please verify your email before logging in.")
+        toast.error(
+          response?.data?.message ||
+            "Please verify your email before logging in."
+        );
       }
       return response.data;
     } catch (error) {
@@ -56,16 +58,14 @@ export const logoutUser = createAsyncThunk(
         user_token: import.meta.env.VITE_API_KEY,
       });
       if (response?.data?.success || response?.status) {
-        toast.success(response?.data?.message || "Logout successful")
+        toast.success(response?.data?.message || "Logout successful");
         dispatch(logout());
         dispatch({ type: "RESET_APP" });
         navigate("/signin");
       }
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Logout failed"
-      );
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
   }
 );
@@ -75,16 +75,16 @@ export const forgotpassword = createAsyncThunk(
   "auth/forgotpassword",
   async ({ email, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/customer/forgot-password", { email });
+      const response = await axiosInstance.post("/customer/forgot-password", {
+        email,
+      });
       if (response?.data?.success || response?.status) {
-        toast.success(response?.data?.message)
+        toast.success(response?.data?.message);
         navigate("/signin");
       }
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Logout failed"
-      );
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
   }
 );
@@ -94,18 +94,19 @@ export const resetpasswordwithtoken = createAsyncThunk(
   "auth/resetpassword",
   async ({ data, navigate }, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/customer/token-password", data);
+      const response = await axiosInstance.post(
+        "/customer/token-password",
+        data
+      );
       if (response?.data?.success) {
-        toast.success(response?.data?.message)
+        toast.success(response?.data?.message);
         navigate("/signin");
       } else {
-        toast.error(response?.data?.message)
+        toast.error(response?.data?.message);
       }
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Logout failed"
-      );
+      return rejectWithValue(error.response?.data?.message || "Logout failed");
     }
   }
 );
@@ -147,7 +148,9 @@ const authSlice = createSlice({
         console.log("action.payload", action.payload);
         state.loading = false;
         state.user = action.payload.data;
-        state.isAuthenticated = action.payload.data.email_verification_token ? false : true;
+        state.isAuthenticated = action.payload.data.email_verification_token
+          ? false
+          : true;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -187,5 +190,6 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout, updateCustomer } = authSlice.actions;
+export const { logout, updateCustomer, updateAccountDetailsSuccess } =
+  authSlice.actions;
 export default authSlice.reducer;

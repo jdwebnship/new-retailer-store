@@ -17,7 +17,7 @@ function Shop() {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
           </div>
         ) : categories.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5  gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 gap-x-6 gap-y-7.5">
             {categories.map((item) => (
               <CardItem item={item} />
             ))}

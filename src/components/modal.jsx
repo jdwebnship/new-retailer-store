@@ -72,7 +72,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
             <div className="w-full lg:w-1/2 flex flex-col justify-start items-center text-left  p-[1.75rem] lg:p-[3.75rem]">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl"
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

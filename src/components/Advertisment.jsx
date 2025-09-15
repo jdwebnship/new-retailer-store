@@ -59,7 +59,7 @@ function Advertisment() {
             objectFit: "cover",
           }}
         />
-        <div className="absolute top-1/2 left-1/2 w-full max-w-[20rem] sm:max-w-[45.625rem] -translate-x-1/2 -translate-y-1/2 category-title p-[20px] sm:p-[2.5rem] md:p-[4.6875rem] rounded-[2.125rem] overflow-hidden">
+        <div className="view-collection absolute top-1/2 left-1/2 w-full max-w-[20rem] lg:max-w-[45.625rem] md:max-w-[40rem] sm:max-w-[35rem] -translate-x-1/2 -translate-y-1/2 category-title p-[20px] sm:p-[2.5rem] md:p-[4.6875rem] rounded-[2.125rem] overflow-hidden">
           <div className="flex flex-col gap-[0.9375rem]">
             <h2
               className="text-lg font-bold text-[1.625rem] lg:text-[2.625rem] text-white"

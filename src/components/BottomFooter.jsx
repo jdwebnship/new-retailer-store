@@ -7,7 +7,7 @@ function BottomFooter({}) {
 
   return (
     <section
-      className="text-center py-[2.5rem] lg:py-[70px] rounded-t-none rounded-3xl -mb-[70px] z-1"
+      className="text-center py-[2.5rem] px-[1rem] lg:py-[70px] rounded-t-none rounded-3xl -mb-[70px] z-1"
       style={{
         backgroundColor: theme?.bottomFooterBackgroundColor || "#1f2937",
         color: bottomFooterTextColor || "#ffffff",
@@ -27,10 +27,10 @@ function BottomFooter({}) {
             id="email"
             placeholder="Email Address"
             required
-            className="px-[1.5rem] py-[0.9375rem] sm:w-[18.75rem] w-[11.875rem] rounded-l-lg bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-0"
+            className="px-[1.5rem] py-[0.9375rem] sm:w-[18.75rem] w-[11.875rem] rounded-l-[0.625rem] bg-white text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-0 focus:border-0"
           />
           <button
-            className="btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-r-lg text-sm font-medium focus:outline-none"
+            className="btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-r-[0.625rem] lg:text-lg focus:outline-none "
             type="submit"
           >
             SUBSCRIBE

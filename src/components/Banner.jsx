@@ -27,7 +27,7 @@ function SingleImage({ data }) {
             __html: data?.content || "<p>New styles are here</p>",
           }}
         />
-        <p className="text-white text-2xl lg:text-[22px] mb-[0.9375rem]">
+        <p className="text-white text-2xl lg:text-[22px] mb-6">
           Shine with our latest must-haves
         </p>
         <Link
@@ -80,7 +80,7 @@ function Video({ data }) {
             __html: data?.content || "<p>New styles are here</p>",
           }}
         />
-        <p className="text-white text-2xl lg:text-[22px] mb-[0.9375rem]">
+        <p className="text-white text-2xl lg:text-[22px] mb-6">
           Shine with our latest must-haves
         </p>
         <Link

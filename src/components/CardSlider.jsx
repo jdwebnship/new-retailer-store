@@ -48,7 +48,7 @@ export default function CardSlider() {
                 spaceBetween: 24,
               },
               1200: {
-                slidesPerView: 4,
+                slidesPerView: 5,
                 spaceBetween: 24,
               },
             }}

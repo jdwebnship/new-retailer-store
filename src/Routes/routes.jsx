@@ -18,6 +18,10 @@ const ResetPassword = lazy(() => import("../pages/ResetPassword"));
 const Shop = lazy(() => import("../pages/Shop"));
 const SignIn = lazy(() => import("../pages/SignIn"));
 const SignUp = lazy(() => import("../pages/SignUp"));
+const Faq = lazy(() => import("../pages/Faq"));
+const Terms = lazy(() => import("../pages/Terms"));
+const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
+const Support = lazy(() => import("../pages/Support"));
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
@@ -80,6 +84,10 @@ function AppRoutes() {
         <Route path="/products/:slug" element={<ProductDetail />} />
         <Route path="/categories" element={<Shop />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/faq" element={<Faq />} />
+        <Route path="/terms-use" element={<Terms />} />
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/support" element={<Support />} />
 
         {/* Protected routes */}
         <Route

@@ -71,25 +71,28 @@ function Footer() {
             <h2 className="mb-4 font-bold text-lg">Support</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
-                <a
-                  href="#"
+                <Link
+                  to="/faq"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out "
                 >
                   FAQ
-                </a>
+                </Link>
               </li>
               <li className="mb-1">
-                <a
-                  href="#"
+                <Link
+                  to="/terms-use"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   Terms of use
-                </a>
+                </Link>
               </li>
               <li className="mb-1">
-                <a href="#" className="">
+                <Link
+                  to="privacy-policy"
+                  className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -115,7 +118,7 @@ function Footer() {
               </li>
               <li className="mb-1">
                 <a
-                  href="#"
+                  href="/support"
                   className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   Support

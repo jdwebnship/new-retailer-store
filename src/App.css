@@ -116,7 +116,9 @@ input[type="color"]::-webkit-color-swatch {
   transition: all ease-in-out 0.5s;
 }
 
-
+.product__slider .swiper-slide {
+  height: auto !important;
+}
 
 .swiper-button-prev,
 .swiper-button-next{

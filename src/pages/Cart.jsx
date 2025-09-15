@@ -87,7 +87,7 @@ function Cart() {
                         {it.name}
                       </div>
                       <div className="flex mb-2">
-                        <span className="leading-none inline-block text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                        <span className="leading-none inline-block font-bold text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
                           Size:
                           <strong className="font-bold text-[#111111] ml-2">
                             L

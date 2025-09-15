@@ -55,7 +55,7 @@ function SignIn() {
           <form className="space-y-6" onSubmit={formik.handleSubmit}>
             <div className="form-group relative">
               <label
-                className="block text-sm mb-2 font-bold uppercase"
+                className="block text-sm mb-2.5 font-bold uppercase"
                 htmlFor="email"
               >
                 Email
@@ -76,7 +76,7 @@ function SignIn() {
               ) : null}
             </div>
             <div>
-              <label className="block text-sm mb-2 font-bold uppercase">
+              <label className="block text-sm mb-2.5 font-bold uppercase">
                 Password
               </label>
               <div className="relative">

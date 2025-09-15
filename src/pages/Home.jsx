@@ -16,7 +16,7 @@ function Home() {
       <ShopCategory />
       <Advertisment />
       <ProductSection />
-      <SocialAdvertisementImage />
+      {/* <SocialAdvertisementImage /> */}
     </div>
   );
 }

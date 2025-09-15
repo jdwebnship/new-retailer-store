@@ -7,10 +7,13 @@ import Cart from "./Cart";
 import { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStoreInfo } from "../redux/slices/storeInfoSlice";
-import s05 from "../assets/images/s-05.jpg";
-import close from "../assets/images/close.png";
-import copy_icon from "../assets/images/copy_icon.png";
 import { gsap } from "gsap";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import OrderDetailsPopup from "../model/OrderDetailsPopup";
 
 function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
   const { theme, headerTextColor } = useTheme();
@@ -21,7 +24,8 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
   const dispatch = useDispatch();
   const { storeInfo, loading } = useSelector((state) => state.storeInfo);
   const categories = storeInfo?.sub_category_list || [];
-
+  const [isShopMegaMenuOpen, setIsShopMegaMenuOpen] = useState(false);
+  const orderPopup = useSelector((state) => state.orderPopup);
   useEffect(() => {
     dispatch(fetchStoreInfo());
   }, [dispatch]);
@@ -76,7 +80,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
         }}
       >
         <nav
-          className="flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] h-[5rem] shadow-sm"
+          className="flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] h-[5rem]"
           style={{
             backgroundColor: theme?.headerBackgroundColor || "#ffffff",
             color: headerTextColor || "#ffffff",
@@ -88,7 +92,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
             {/* Hamburger for mobile */}
             <button
               type="button"
-              className="lg:hidden inline-flex items-center justify-center w-10 h-10 rounded-md bg-black/10 hover:bg-black/15 transition"
+              className="lg:hidden inline-flex items-center justify-center w-10 h-10"
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-drawer"
@@ -111,7 +115,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
 
             <div className="left-nav hidden lg:flex items-center h-[5rem]">
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-600 ease-in-out h-full flex items-center"
+                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-600 ease-in-out h-full flex items-center outline-none"
                 to="/"
                 style={{
                   color: headerTextColor || "#111111",
@@ -128,7 +132,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
                 onMouseLeave={() => setIsCategoryDropdownOpen(false)}
               >
                 <Link
-                  className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center"
+                  className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center outline-none"
                   to="/categories"
                   style={{
                     color: headerTextColor || "#111111",
@@ -207,16 +211,150 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
                 )}
               </div>
 
-              <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center"
-                to="/shop"
-                style={{
-                  color: headerTextColor || "#111111",
-                  margin: "0 1rem",
-                }}
+              {/* Shop Mega Menu */}
+
+              <div
+                className="relative h-[5rem]"
+                onMouseEnter={() => setIsShopMegaMenuOpen(true)}
+                onMouseLeave={() => setIsShopMegaMenuOpen()} // Fixed: should be false on mouse leave
               >
-                Shop
-              </Link>
+                <Link
+                  className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center outline-none"
+                  to="/shop"
+                  style={{
+                    color: headerTextColor || "#111111",
+                    margin: "0 1rem",
+                  }}
+                >
+                  Shop
+                </Link>
+                {isShopMegaMenuOpen && (
+                  <div
+                    className="fixed left-0 top-[100%] px-8 py-15 bg-white border border-gray-200 shadow-2xl z-50 w-[100vw]"
+                    style={{
+                      backgroundColor: theme?.headerBackgroundColor || "#fff",
+                    }}
+                  >
+                    {/* Mega menu content */}
+                    <div className="flex items-center justify-center min-h-[160px] w-full">
+                      {loading ? (
+                        <div className="flex items-center justify-center p-4 w-full">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+                        </div>
+                      ) : categories.length > 0 ? (
+                        <div className="w-full max-w-[100rem]">
+                          <Swiper
+                            modules={[Navigation, Pagination, Autoplay]}
+                            spaceBetween={20}
+                            slidesPerView={8}
+                            navigation={{
+                              nextEl: ".swiper-button-next-custom",
+                              prevEl: ".swiper-button-prev-custom",
+                            }}
+                            pagination={{
+                              clickable: true,
+                              dynamicBullets: true,
+                            }}
+                            autoplay={{
+                              delay: 3000,
+                              disableOnInteraction: false,
+                            }}
+                            loop={categories.length > 8}
+                            breakpoints={{
+                              320: {
+                                slidesPerView: 2,
+                                spaceBetween: 15,
+                              },
+                              640: {
+                                slidesPerView: 3,
+                                spaceBetween: 15,
+                              },
+                              768: {
+                                slidesPerView: 4,
+                                spaceBetween: 20,
+                              },
+                              1024: {
+                                slidesPerView: 5,
+                                spaceBetween: 20,
+                              },
+                              1280: {
+                                slidesPerView: 8,
+                                spaceBetween: 20,
+                              },
+                            }}
+                            className="categories-swiper"
+                          >
+                            {categories.map((category, idx) => (
+                              <SwiperSlide key={category.id || idx}>
+                                <div className="flex flex-col items-center group">
+                                  <Link
+                                    to={`/shop?categories=${encodeURIComponent(
+                                      category.name
+                                    )}`}
+                                    className="flex flex-col items-center w-full"
+                                    style={{ textDecoration: "none" }}
+                                  >
+                                    <div className="w-[6rem] h-[6rem] rounded-2xl bg-[#F7F7F7] flex items-center justify-center mb-2 overflow-hidden">
+                                      {category.image ? (
+                                        <img
+                                          src={category.image}
+                                          alt={category.name}
+                                          className="object-contain w-15 h-15 transition-transform duration-200 group-hover:scale-105"
+                                        />
+                                      ) : (
+                                        <div className="w-12 h-12 bg-gray-200 rounded" />
+                                      )}
+                                    </div>
+                                    <span className="text-sm text-center text-[#111] group-hover:text-[#007BFF] transition-colors duration-200 block w-full break-words">
+                                      {category.name}
+                                    </span>
+                                  </Link>
+                                </div>
+                              </SwiperSlide>
+                            ))}
+
+                            {/* Custom Navigation Buttons */}
+                            <div className="swiper-button-prev-custom absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-[#F7F7F7] rounded-full shadow-sm flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                              <svg
+                                width="25"
+                                height="25"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#007BFF"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="m15 18-6-6 6-6" />
+                              </svg>
+                            </div>
+                            <div className="swiper-button-next-custom absolute right-0 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-[#F7F7F7] rounded-full shadow-sm flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors duration-200">
+                              <svg
+                                width="25"
+                                height="25"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="#007BFF"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              >
+                                <path d="m9 18 6-6-6-6" />
+                              </svg>
+                            </div>
+                          </Swiper>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-center p-4 w-full">
+                          <p className="text-sm text-gray-500">
+                            No categories found
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 
@@ -228,7 +366,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               <img
                 src={storeInfo.storeinfo.logo}
                 alt={storeInfo?.storeinfo?.store_name || "Store logo"}
-                className="w-12 h-12"
+                className="sm:w-16 sm:h-16 w-14 h-14"
               />
             ) : (
               <h1
@@ -239,10 +377,10 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               </h1>
             )}
           </Link>
-          <div className="right-nav flex items-center gap-3 sm:gap-4">
-            <div className="hidden lg:flex items-center">
+          <div className="right-nav flex items-center gap-3 sm:gap-4 h-[5rem]">
+            <div className="hidden lg:flex items-center h-[5rem]">
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3"
+                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
                 to="/about"
                 style={{
                   color: headerTextColor || "#111111",
@@ -252,7 +390,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
                 About Us
               </Link>
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3"
+                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
                 to="/about"
                 style={{
                   color: headerTextColor || "#111111",
@@ -285,7 +423,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
           id="mobile-drawer"
           role="dialog"
           aria-modal="true"
-          className={`fixed top-0 left-0 h-full w-72 max-w-[80%] z-50 lg:hidden transform transition-transform duration-300 ease-out border-r border-black/10`}
+          className={`fixed top-0 left-0 h-[100vh] w-72 max-w-[80%] z-50 lg:hidden transform transition-transform duration-300 ease-out border-r border-black/10`}
           style={{
             backgroundColor: theme?.headerBackgroundColor || "#ffffff",
             color: headerTextColor || "#111111",
@@ -300,7 +438,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
             </span>
             <button
               type="button"
-              className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-black/10 hover:bg-black/15 transition"
+              className="inline-flex items-center justify-center w-10 h-10"
               aria-label="Close menu"
               onClick={() => setIsMenuOpen(false)}
               autoFocus
@@ -320,7 +458,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               </svg>
             </button>
           </div>
-          <nav className="flex flex-col p-4 gap-2 items-start">
+          <nav className="flex flex-col p-4 gap-2 items-start h-dvh bg-white overflow-y-auto">
             <Link
               to="/"
               className="px-3 py-2 rounded hover:bg-black/10 transition uppercase text-sm"
@@ -570,112 +708,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
       {/* Cart POP up End*/}
 
       {/* Order POP up Start*/}
-      {/* <div className="overlay w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-99"></div>
-      <div className="fixed top-0 right-0 z-100 w-full max-w-[50rem]">
-        <div className="relative bg-white border border-white/20 w-full max-w-[50rem] h-dvh overflow-y-auto sm:p-7.5 p-4 mx-auto">
-
-          <div className="relative pb-6 mb-6 border-b border-[#11111126]">
-            <div className="flex items-start justify-between">
-              <div>
-                <h1 className="text-2xl font-bold text-[#111111]">
-                  Order Details
-                </h1>
-                <div className="flex items-center gap-2">
-                  <span className="text-[#111111] font-mono text-lg">
-                    #80879571220
-                  </span>
-                  <img className="cursor-pointer w-4 h-4" src={copy_icon} alt="" />
-                </div>                
-              </div>
-                <img className="cursor-pointer w-4 h-4 mt-1.5" src={close} alt="" />
-            </div>
-          </div>
-
-          <div className="relative flex sm:flex-row flex-col sm:items-center justify-between gap-4 p-6 bg-[#FFF7F2] rounded-[0.625rem]">
-            <div className="">
-              <div className="text-[#000000] text-sm mb-1 uppercase">Order Date:</div>
-              <div className="text-[#000000] text-sm font-bold">08 September 2025</div>
-            </div>
-            <div className="">
-              <div className="text-[#000000] text-sm mb-1 uppercase">TOTAL:</div>
-              <div className="text-[#000000] text-sm font-bold">08 Sep, 2025</div>
-            </div>
-            <div className="">
-              <div className="text-[#000000] text-sm mb-1 uppercase">STATUS:</div>
-              <div className="text-[#000000] text-sm font-bold">
-                Order Placed
-              </div>
-            </div>
-          </div>
-
-          <div className="relative pt-6">
-            <div className="border border-[#00000026] rounded-[1.125rem] p-6">
-              <div className="flex items-start gap-3">
-                <div className="flex-1">
-                  <h3 className="text-[#000000] font-bold text-base mb-1">
-                    SHIP TO:
-                  </h3>
-                  <div className="space-y-1 text-[#000000]">
-                    <div className="text-[#000000]">John Doe</div>
-                    <div>john.doe@example.com</div>
-                    <div>9510207888</div>
-                    <div className="leading-relaxed">
-                      123 Main Street, City, Los Angeles, California, 395023
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative pt-6">
-            <div className="border border-[#00000026] rounded-[1.125rem] p-6">
-              <div className="flex items-start gap-3">
-                <div>
-                  <h3 className="text-[#000000] font-bold">
-                    PAYMENT:
-                  </h3>
-                  <div className="text-[#000000]">Pay on delivery</div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative pt-6">
-            <div className="border border-[#00000026] rounded-[1.125rem] p-6">
-              <div className="flex items-start gap-3 mb-2">
-                <h3 className="text-[#000000] font-bold">
-                  ORDER SUMMARY:
-                </h3>
-              </div>
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="text-[#000000]">Amount:</span>
-                  <span className="text-[#000000]">₹29,682</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#000000]">Subtotal:</span>
-                  <span className="text-[#000000]">₹29,682</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-[#000000]">Shipping Cost:</span>
-                  <span className="text-[#000000]">Free</span>
-                </div>
-                <div className="flex justify-between items-center text-lg">
-                  <span className="text-[#000000] font-bold">Total</span>
-                  <span className="text-[#000000] font-bold">₹29,682</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="relative pt-6 mt-6 border-t border-[#11111126]">
-            <button className="w-full btn py-4 px-6 rounded-2xl">
-              <span className="text-lg">BUY IT AGAIN</span>
-            </button>
-          </div>
-        </div>
-      </div> */}
+      {orderPopup?.open && <OrderDetailsPopup />}
       {/* Order POP up End*/}
     </div>
   );

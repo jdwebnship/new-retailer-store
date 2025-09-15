@@ -94,7 +94,7 @@ function App() {
           >
             <AppRoutes />
           </main>
-          <BottomFooter />
+          {/* <BottomFooter /> */}
           <Footer />
         </div>
       </div>

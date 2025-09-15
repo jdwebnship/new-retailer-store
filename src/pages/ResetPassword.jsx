@@ -83,7 +83,7 @@ function ResetPassword() {
               <div className="relative" key={field.name}>
                 <label
                   htmlFor={field.name}
-                  className="block text-sm mb-2 font-bold uppercase"
+                  className="block text-sm mb-2.5 font-bold uppercase"
                 >
                   {field.label}
                 </label>

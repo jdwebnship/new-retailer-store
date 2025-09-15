@@ -3,6 +3,7 @@ import axiosInstance from "../../utils/axiosInstance";
 
 const initialState = {
   product: null,
+  productDetails: null,
   loading: false,
   error: null,
 };
@@ -50,7 +51,7 @@ export const fetchProducts = createAsyncThunk(
 
 export const fetchProductsDetails = createAsyncThunk(
   "product/fetchProductsDetails",
-  async (slug, { rejectWithValue }) => {
+  async ({slug}, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.get(`/singal-product-details/${slug}`);
       return response.data;
@@ -78,6 +79,20 @@ const productSlice = createSlice({
         state.currentPage = action.payload.currentPage;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to fetch products information";
+      })
+
+      .addCase(fetchProductsDetails.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchProductsDetails.fulfilled, (state, action) => {
+        state.loading = false;
+        state.productDetails = action.payload.data;
+        state.currentPage = action.payload.currentPage;
+      })
+      .addCase(fetchProductsDetails.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch products information";
       });

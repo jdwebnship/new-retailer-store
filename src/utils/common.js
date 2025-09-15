@@ -15,11 +15,13 @@ export const getProductUrl = (product) => {
 
   const variant = product?.selectedVariant?.product_variation;
 
-  const cleanSlug = product?.slug || product?.product_slug
-    ?.trim()
-    ?.toLowerCase()
-    ?.replace(/\s+/g, "-")
-    ?.replace(/[^a-z0-9-]/g, "");
+  const cleanSlug =
+    product?.slug ||
+    product?.product_slug
+      ?.trim()
+      ?.toLowerCase()
+      ?.replace(/\s+/g, "-")
+      ?.replace(/[^a-z0-9-]/g, "");
   return `/products/${cleanSlug}${variant ? `?variant=${variant}` : ""}`;
 };
 
@@ -28,9 +30,10 @@ export const getProductImage = (product) => {
     return "/placeholder.png";
   }
 
-  const image = product.product_images && product.product_images.split(",").length
-    ? product.product_images.split(",")[0]
-    : "/placeholder.png";
+  const image =
+    product.product_images && product.product_images.split(",").length
+      ? product.product_images.split(",")[0]
+      : "/placeholder.png";
   return image;
 };
 
@@ -71,7 +74,7 @@ export const formatStatus = (status) => {
   if (!status) return "";
   return status
     .split("_")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
 
@@ -91,10 +94,20 @@ export const getWhatsappLink = (e, product, phone_number) => {
   }
 };
 
- export const isInWishlist = (product_id, wishlistData) => {
+export const isInWishlist = (product_id, wishlistData) => {
   if (!wishlistData || !Array.isArray(wishlistData)) {
     return false;
   }
-  return wishlistData.some((item) => item.product_id == product_id || item.retailer_product_id == product_id);
+  return wishlistData.some(
+    (item) =>
+      item.product_id == product_id || item.retailer_product_id == product_id
+  );
 };
 
+export function toTitleCase(str) {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}

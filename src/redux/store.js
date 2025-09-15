@@ -4,7 +4,13 @@ import authSlice from "../redux/slices/authSlice";
 import storeInfoSlice from "../redux/slices/storeInfoSlice";
 import productSlice from "../redux/slices/productSlice";
 import homeSectionsSlice from "../redux/slices/homeSectionsSlice";
-import wishlistSlice from "../redux/slices/WishListSlice"
+import wishlistSlice from "../redux/slices/WishListSlice";
+import newArrivalsSlice from "../redux/slices/newArrivalsSlice";
+import resetPasswordSlice from "../redux/slices/resetPasswordSlice";
+import shippingAddressSlice from "../redux/slices/shippingAddressSlice";
+import accountDetailsSlice from "../redux/slices/accountDetailsSlice";
+import customerOrdersSlice from "../redux/slices/customerOrdersSlice";
+import orderPopupSlice from "../redux/slices/orderPopupSlice";
 // import cartReducer from "./slices/cartSlice";
 // import wishlistReducer from "./slices/wishlistSlice";
 // import storeReducer from "./slices/storeSlice";
@@ -22,7 +28,12 @@ const appReducer = combineReducers({
   products: productSlice,
   homeSections: homeSectionsSlice,
   wishlist: wishlistSlice,
-
+  newArrivals: newArrivalsSlice,
+  resetPassword: resetPasswordSlice,
+  shippingAddress: shippingAddressSlice,
+  accountDetails: accountDetailsSlice,
+  customerOrders: customerOrdersSlice,
+  orderPopup: orderPopupSlice,
   // cart: cartReducer,
   // orders: ordersReducer,
   // accountDetails: accountDetailsReducer,

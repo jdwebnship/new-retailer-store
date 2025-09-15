@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import CommonHeader from "../components/CommonHeader";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import watch from "../assets/watch.png";
 
@@ -24,14 +24,14 @@ function Checkout() {
     <div>
       <CommonHeader />
       {/* Form */}
-      <div className="2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0]">
-        <div className="grid lg:grid-cols-2 gap-8 text-start w-full lg:gap-16">
-          <div className="w-full">
+      <div className="w-full max-w-auto 2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.5rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-[0]">
+        <div className="grid lg:grid-cols-2 gap-8 text-start w-full xl:gap-16">
+          <div className="w-full ">
             <form action="">
               <div className="flex flex-col gap-6">
-                <div className="">
+                <div className="w-full">
                   <label
-                    className="block text-sm mb-2 font-bold uppercase"
+                    className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="phonenumber"
                   >
                     Phone Number
@@ -45,9 +45,9 @@ function Checkout() {
                 </div>
                 <h3 className="text-2xl font-bold">Shipping Details</h3>
                 <hr className="opacity-10" />
-                <div className="">
+                <div className="w-full">
                   <label
-                    className="block text-sm mb-2 font-bold uppercase"
+                    className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="email"
                   >
                     Email Address
@@ -91,7 +91,7 @@ function Checkout() {
                 </div>
                 <div className="">
                   <label
-                    className="block text-sm mb-2 font-bold uppercase"
+                    className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="email"
                   >
                     Address
@@ -167,7 +167,7 @@ function Checkout() {
             </form>
           </div>
           <div
-            className="p-7 rounded-[1.875rem]"
+            className="p-4 md:p-7 rounded-[1.875rem]"
             style={{
               backgroundColor: theme.bottomFooterBackgroundColor,
               height: "fit-content",
@@ -175,125 +175,122 @@ function Checkout() {
           >
             <div className="flex  flex-col gap-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-2xl">Your Orders</h3>
+                <h3 className="text-2xl font-bold">Your Orders</h3>
                 <a href="" className="underline">
                   Edit Cart
                 </a>
               </div>
               <div className="bottom-card">
-                <div className="flex gap-[0.82rem] justify-between">
-                  <div className="flex  gap-[0.82rem]">
-                    <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden flex-shrink-0">
-                      <img src={watch} alt="" />
+                <div className="flex sm:gap-[0.82rem] justify-between">
+                  <div className="flex gap-[0.5rem] sm:gap-[0.82rem]">
+                    <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
+                      <img
+                        src={watch}
+                        alt="Longines Heritage Classic Copper-Black watch"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
-                      <h6 className="font-bold">
-                        Longine_s Heritage Classic Copper-Black
-                      </h6>
-                      <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
-                        <p
-                          className="font-bold"
-                          style={{
-                            margin: 0,
-                          }}
-                        >
-                          <span>₹</span>3,298
-                        </p>
-                        <p
-                          className="font-regular line-through text-sm"
-                          style={{
-                            margin: 0,
-                            color: "#555",
-                          }}
-                        >
-                          <span>₹</span>19,999
-                        </p>
+                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                        Longines Heritage Classic Copper-Black
+                      </h3>
+                      <div className="flex mt-[0.5rem] items-center gap-4">
+                        <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                          Size:{" "}
+                          <strong className="font-bold text-[#111111] ml-2">
+                            L
+                          </strong>
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
+                            ₹3,298
+                          </span>
+                          <span className="leading-none line-through text-sm text-[#808080]">
+                            ₹19,999
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <p className="font-bold">
-                    <span className="pr-2">X</span>3
-                  </p>
+                  <p className="font-bold text-sm sm:text-base">× 3</p>
                 </div>
               </div>
               <div className="bottom-card">
-                <div className="flex gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.82rem]">
-                    <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden flex-shrink-0">
-                      <img src={watch} alt="" />
+                <div className="flex sm:gap-[0.82rem] justify-between">
+                  <div className="flex gap-[0.5rem] sm:gap-[0.82rem]">
+                    <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
+                      <img
+                        src={watch}
+                        alt="Longines Heritage Classic Copper-Black watch"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
-                      <h6 className="font-bold">
-                        Longine_s Heritage Classic Copper-Black
-                      </h6>
-                      <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
-                        <p
-                          className="font-bold"
-                          style={{
-                            margin: 0,
-                          }}
-                        >
-                          <span>₹</span>3,298
-                        </p>
-                        <p
-                          className="font-regular line-through text-sm"
-                          style={{
-                            margin: 0,
-                            color: "#555",
-                          }}
-                        >
-                          <span>₹</span>19,999
-                        </p>
+                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                        Longines Heritage Classic Copper-Black
+                      </h3>
+                      <div className="flex mt-[0.5rem] items-center gap-4">
+                        <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                          Size:{" "}
+                          <strong className="font-bold text-[#111111] ml-2">
+                            L
+                          </strong>
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
+                            ₹3,298
+                          </span>
+                          <span className="leading-none line-through text-sm text-[#808080]">
+                            ₹19,999
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <p className="font-bold">
-                    <span className="pr-2">X</span>3
-                  </p>
+                  <p className="font-bold text-sm sm:text-base">× 3</p>
                 </div>
               </div>
               <div className="bottom-card">
-                <div className="flex gap-[0.82rem] justify-between">
-                  <div className="flex gap-[0.82rem]">
-                    <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden flex-shrink-0">
-                      <img src={watch} alt="" />
+                <div className="flex sm:gap-[0.82rem] justify-between">
+                  <div className="flex gap-[0.5rem] sm:gap-[0.82rem]">
+                    <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
+                      <img
+                        src={watch}
+                        alt="Longines Heritage Classic Copper-Black watch"
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                     <div>
-                      <h6 className="font-bold">
-                        Longine_s Heritage Classic Copper-Black
-                      </h6>
-                      <div className="flex flex-wrap gap-[0.82rem] items-center mt-[0.5rem]">
-                        <p
-                          className="font-bold"
-                          style={{
-                            margin: 0,
-                          }}
-                        >
-                          <span>₹</span>3,298
-                        </p>
-                        <p
-                          className="font-regular line-through text-sm"
-                          style={{
-                            margin: 0,
-                            color: "#555",
-                          }}
-                        >
-                          <span>₹</span>19,999
-                        </p>
+                      <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                        Longines Heritage Classic Copper-Black
+                      </h3>
+                      <div className="flex mt-[0.5rem] items-center gap-4">
+                        <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                          Size:{" "}
+                          <strong className="font-bold text-[#111111] ml-2">
+                            L
+                          </strong>
+                        </span>
+                        <div className="flex items-center gap-2">
+                          <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
+                            ₹3,298
+                          </span>
+                          <span className="leading-none line-through text-sm text-[#808080]">
+                            ₹19,999
+                          </span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <p className="font-bold">
-                    <span className="pr-2">X</span>3
-                  </p>
+                  <p className="font-bold text-sm sm:text-base">× 3</p>
                 </div>
               </div>
             </div>
-            <div className="relative flex w-full border-2 border-blue-[#111111] rounded-2xl overflow-hidden my-6">
+            <div className="relative flex w-full border-2 border-blue-[#111111] rounded-[0.625rem] overflow-hidden my-6">
               <input
                 type="text"
                 placeholder="Coupon Code"
-                className="flex-1 px-4 py-4 text-gray-700 placeholder-gray-400 bg-transparent border-none outline-none"
+                className="flex-1 px-4 py-4 text-gray-700 placeholder-gray-[#808080] bg-transparent border-none outline-none"
               />
               <button className="px-8 lg:px-14 py-2 bg-black text-white hover:bg-gray-800 transition-colors">
                 Apply
@@ -305,7 +302,7 @@ function Checkout() {
               <h3 className="text-2xl font-bold mb-4">Payment Method</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <label
-                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
                     paymentMethod === "cod"
                       ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       : "border-[#AAAAAA] hover:border-black/60"
@@ -339,7 +336,7 @@ function Checkout() {
                 </label>
 
                 <label
-                  className={`flex items-center gap-3 p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
                     paymentMethod === "prepaid"
                       ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       : "border-[#AAAAAA] hover:border-black/60"
@@ -400,12 +397,12 @@ function Checkout() {
               Place Order
             </button>
             <div className="text-center mt-6">
-              <a
+              <Link
                 className="sm:text-lg uppercase font-normal underline hover:text-[#007BFF]"
-                href=""
+                to={"/shop"}
               >
                 Continue Shopping
-              </a>
+              </Link>
             </div>
           </div>
         </div>
