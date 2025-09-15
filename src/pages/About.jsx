@@ -4,7 +4,7 @@ function About() {
     <div>
       <CommonHeader />
       <div className="max-w-[80rem] mx-auto lg:py-[6.25rem] md:py-[5rem] py-[3.5rem]">
-        <div className="flex flex-col md:flex-row gap-6 px-4 items-center sm:mb-10 mb-7.5">
+        <div className="px-4 sm:mb-10 mb-7.5">
           <div className="space-y-5 text-left w-full">
             <p className="md:text-[1.375rem] text-lg">
               Established in 2018, JDwebship is a tech-based logistics
@@ -25,7 +25,7 @@ function About() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-6 px-4 items-center sm:mb-10 mb-7.5">
+        <div className="px-4 sm:mb-10 mb-7.5">
           <div className="space-y-5 text-left w-full">
             <h2 className="md:text-[2rem] text-2xl font-bold mb-4">Our Mission</h2>
             <p className="md:text-[1.375rem] text-lg">
