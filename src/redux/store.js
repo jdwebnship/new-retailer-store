@@ -11,7 +11,7 @@ import shippingAddressSlice from "../redux/slices/shippingAddressSlice";
 import accountDetailsSlice from "../redux/slices/accountDetailsSlice";
 import customerOrdersSlice from "../redux/slices/customerOrdersSlice";
 import orderPopupSlice from "../redux/slices/orderPopupSlice";
-// import cartReducer from "./slices/cartSlice";
+import contactSlice from "./slices/contactSlice";
 import cartSlice from "./slices/cartSlice";
 // import wishlistReducer from "./slices/wishlistSlice";
 // import storeReducer from "./slices/storeSlice";
@@ -32,7 +32,7 @@ const appReducer = combineReducers({
   accountDetails: accountDetailsSlice,
   customerOrders: customerOrdersSlice,
   orderPopup: orderPopupSlice,
-  // cart: cartReducer,
+  contact: contactSlice,
   cart: cartSlice,
   // orders: ordersReducer,
   // store: storeReducer,

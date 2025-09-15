@@ -70,7 +70,6 @@ function Product() {
   }, [searchParams]);
 
   const currentPage = getPageFromUrl() - 1;
-  const currentPageNum = getPageFromUrl();
 
   // Set default sort parameter if not present in URL
   useEffect(() => {

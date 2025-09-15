@@ -1,3 +1,12 @@
+import { useEffect } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  submitContactForm,
+  resetContactState,
+} from "../redux/slices/contactSlice";
+import { toast } from "react-toastify";
 import CommonHeader from "../components/CommonHeader";
 import Facebook from "../assets/facebook.svg";
 import Instagram from "../assets/instagram.svg";
@@ -6,7 +15,63 @@ import Call from "../assets/call.svg";
 import Map from "../assets/map-pin1.svg";
 import Twitter from "../assets/twitter.svg";
 
+// Validation schema
+const validationSchema = Yup.object({
+  firstname: Yup.string().required("First name is required"),
+  lastname: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  phone_number: Yup.string()
+    .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
+    .required("Phone number is required"),
+  subject: Yup.string().required("Subject is required"),
+  message: Yup.string().required("Message is required"),
+  subscribe: Yup.boolean(),
+});
+
 function Contacts() {
+  const dispatch = useDispatch();
+  const { loading, success, error, message } = useSelector(
+    (state) => state.contact
+  );
+
+  const formik = useFormik({
+    initialValues: {
+      firstname: "",
+      lastname: "",
+      email: "",
+      phone_number: "",
+      subject: "",
+      message: "",
+      subscribe: false,
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      const formData = new FormData();
+      formData.append("firstname", values.firstname);
+      formData.append("lastname", values.lastname);
+      formData.append("email", values.email);
+      formData.append("phone_number", values.phone_number);
+      formData.append("subject", values.subject);
+      formData.append("message", values.message);
+      formData.append("subscribe", values.subscribe ? "1" : "0");
+
+      dispatch(submitContactForm(formData));
+    },
+  });
+
+  useEffect(() => {
+    if (success) {
+      formik.resetForm();
+      dispatch(resetContactState());
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(resetContactState());
+    }
+  }, [success, error, message, dispatch, formik]);
+
   return (
     <div>
       <CommonHeader />
@@ -152,112 +217,179 @@ function Contacts() {
                 feedback, or just want to connect — our team is here
               </p>
             </div>
-            <div className="mb-6 flex flex-col sm:flex-row">
-              <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+            <form onSubmit={formik.handleSubmit}>
+              <div className="mb-6 flex flex-col sm:flex-row">
+                <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                  <label
+                    className="block text-sm mb-2.5 font-bold uppercase"
+                    htmlFor="firstname"
+                  >
+                    First Name *
+                  </label>
+                  <input
+                    id="firstname"
+                    name="firstname"
+                    type="text"
+                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
+                    placeholder="Enter your First name"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.firstname}
+                  />
+                  {formik.touched.firstname && formik.errors.firstname && (
+                    <p className="text-red-500 text-sm absolute">
+                      {formik.errors.firstname}
+                    </p>
+                  )}
+                </div>
+                <div className="w-full sm:w-1/2 sm:pl-3">
+                  <label
+                    className="block text-sm mb-2.5 font-bold uppercase"
+                    htmlFor="lastname"
+                  >
+                    Last Name *
+                  </label>
+                  <input
+                    id="lastname"
+                    name="lastname"
+                    type="text"
+                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
+                    placeholder="Enter your Last name"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    value={formik.values.lastname}
+                  />
+                  {formik.touched.lastname && formik.errors.lastname && (
+                    <p className="text-red-500 text-sm absolute">
+                      {formik.errors.lastname}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="mb-6">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="fname"
+                  htmlFor="email"
                 >
-                  First Name
+                  Email *
                 </label>
                 <input
-                  id="fname"
-                  name="fname"
-                  type="text"
-                  className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
-                  placeholder="Enter your Firts name"
+                  id="email"
+                  name="email"
+                  type="email"
+                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
+                  placeholder="Enter your email"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
                 />
+                {formik.touched.email && formik.errors.email && (
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.email}
+                  </p>
+                )}
               </div>
-              <div className="w-full sm:w-1/2 sm:pl-3">
+              <div className="mb-6">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="lname"
+                  htmlFor="phone_number"
                 >
-                  Last Name
+                  Phone Number *
                 </label>
                 <input
-                  id="lname"
-                  name="lname"
-                  type="text"
-                  className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
-                  placeholder="Enter your Last name"
+                  id="phone_number"
+                  name="phone_number"
+                  type="tel"
+                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
+                  placeholder="Enter your 10-digit phone number"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.phone_number}
                 />
+                {formik.touched.phone_number && formik.errors.phone_number && (
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.phone_number}
+                  </p>
+                )}
               </div>
-            </div>
-            <div className="mb-6">
-              <label
-                className="block text-sm mb-2.5 font-bold uppercase"
-                htmlFor="Email "
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                name="email"
-                type="text"
-                className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
-                placeholder="Enter your email"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                className="block text-sm mb-2.5 font-bold uppercase"
-                htmlFor="phonenumber"
-              >
-                Phone Number
-              </label>
-              <input
-                id="phonenumber"
-                name="phonenumber"
-                type="text"
-                className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
-                placeholder="Enter your phone number"
-              />
-            </div>
-            <div className="mb-6">
-              <label
-                className="block text-sm mb-2.5 font-bold uppercase"
-                htmlFor="phonenumber"
-              >
-                Phone Number
-              </label>
-              <select
-                name=""
-                id=""
-                className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
-              >
-                <option value="" className="opacity-50">
-                  Select a subject
-                </option>
-                <option value="order">Order Inquiry</option>
-                <option value="rreturns">Returns & Refunds</option>
-                <option value="product">Product Question</option>
-              </select>
-            </div>
+              <div className="mb-6">
+                <label
+                  className="block text-sm mb-2.5 font-bold uppercase"
+                  htmlFor="subject"
+                >
+                  Subject *
+                </label>
+                <select
+                  id="subject"
+                  name="subject"
+                  className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.subject}
+                >
+                  <option value="" className="opacity-50">
+                    Select a subject
+                  </option>
+                  <option value="order">Order Inquiry</option>
+                  <option value="returns">Returns & Refunds</option>
+                  <option value="product">Product Question</option>
+                </select>
+                {formik.touched.subject && formik.errors.subject && (
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.subject}
+                  </p>
+                )}
+              </div>
 
-            <div className="mb-6">
-              <label
-                className="block text-sm mb-2.5 font-bold uppercase"
-                htmlFor="phonenumber"
-              >
-                Message
-              </label>
-              <textarea
-                id="phonenumber"
-                name="phonenumber"
-                type="text"
-                className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
-                placeholder="How can we help you?"
-              />
-            </div>
+              <div className="mb-6">
+                <label
+                  className="block text-sm mb-2.5 font-bold uppercase"
+                  htmlFor="message"
+                >
+                  Message *
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  rows="4"
+                  className={`w-full border rounded-lg p-[0.82rem] border-[#AAAAAA]`}
+                  placeholder="Enter your message"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.message}
+                ></textarea>
+                {formik.touched.message && formik.errors.message && (
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.message}
+                  </p>
+                )}
+              </div>
 
-            <button
-              type="submit"
-              className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center disabled:opacity-50"
-            >
-              Send Message
-            </button>
-            {/* </Form> */}
+              <div className="mb-6">
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    name="subscribe"
+                    className="form-checkbox h-5 w-5 text-blue-600"
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                    checked={formik.values.subscribe}
+                  />
+                  <span className="ml-2">
+                    I would like to receive updates and promotions via email.
+                  </span>
+                </label>
+              </div>
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="bg-[#111111] text-white py-3 px-8 rounded-lg hover:bg-[#333333] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {loading ? "Sending..." : "Send Message"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
