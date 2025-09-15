@@ -82,7 +82,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
       onClose={() => setIsModalOpen(false)}
       className="relative z-50"
     >
-      <DialogBackdrop className="fixed inset-0 bg-black bg-opacity-50 transition-opacity duration-300" />
+      <DialogBackdrop className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-50 transition-opacity duration-300" />
 
       <div className="fixed inset-0 flex items-center justify-center p-5 lg:p-0">
         <DialogPanel className="relative bg-white rounded-[1.5rem] shadow-lg w-full max-w-[67.5rem] mx-5 lg:mx-0 flex flex-col lg:flex-row overflow-hidden">
@@ -126,21 +126,21 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                 <div>
                   <DialogTitle
                     as="h2"
-                    className="text-[1.5rem] lg:text-[2rem] font-bold text-gray-900 mb-6"
+                    className="text-[1.5rem] lg:text-[2rem] font-bold mb-6"
                   >
                     Store Name
                   </DialogTitle>
-                  <p className="mb-1 text-base lg:text-2xl font-bold text-gray-700">
+                  <p className="mb-1 text-base lg:text-2xl font-bold">
                     Sign in or Create account.
                   </p>
-                  <p className="mb-6 text-sm lg:text-lg text-gray-500">
+                  <p className="mb-6 text-sm lg:text-lg">
                     Login or Create account with your phone number.
                   </p>
                 </div>
                 <div className="mb-4">
                   <label
                     htmlFor="phone-number"
-                    className="block text-sm font-bold text-gray-700 mb-2"
+                    className="block text-sm font-bold mb-2"
                   >
                     PHONE NUMBER
                   </label>
@@ -149,7 +149,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                     type="tel"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full border border-gray-400 rounded-md px-4 py-[0.82rem] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full border border-gray-400 rounded-md px-4 py-[0.82rem] outline-none"
                     placeholder="Enter your phone number"
                     aria-describedby="phone-error"
                   />
@@ -161,25 +161,25 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                 </div>
                 <button
                   onClick={handleContinue}
-                  className="w-full bg-blue-600 text-white rounded-[0.625rem] py-4 uppercase font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  className="w-full btn rounded-[0.625rem] py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed"
                   disabled={
                     !phoneNumber || !/^\+?[1-9]\d{9,14}$/.test(phoneNumber)
                   }
                 >
                   Continue
                 </button>
-                <p className="mt-2 text-sm text-gray-500 text-left">
+                <p className="text-sm text-left">
                   By signing in, you agree to our{" "}
                   <a
                     href="#"
-                    className="underline font-medium text-blue-600 hover:text-blue-800"
+                    className="underline font-medium hover:text-blue-800"
                   >
                     Terms & Conditions
                   </a>{" "}
                   and{" "}
                   <a
                     href="#"
-                    className="underline font-medium text-blue-600 hover:text-blue-800"
+                    className="underline font-medium hover:text-blue-800"
                   >
                     Privacy Policy
                   </a>
@@ -195,9 +195,9 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                   >
                     Verify Your Phone Number
                   </DialogTitle>
-                  <p className="mb-6 text-lg text-gray-500 text-left">
+                  <p className="mb-6 text-lg text-left">
                     Enter the verification code sent to{" "}
-                    <span className="font-bold text-gray-700">
+                    <span className="font-bold">
                       {phoneNumber}
                     </span>
                   </p>
@@ -212,7 +212,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                           type="text"
                           value={digit}
                           onChange={(e) => handleOtpChange(e, index)}
-                          className="w-full border border-gray-400 rounded-md px-4 py-[0.82rem] text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          className="w-full border border-gray-400 rounded-md px-4 py-[0.82rem] text-center outline-none"
                           maxLength="1"
                           inputMode="numeric"
                           aria-label={`OTP digit ${index + 1}`}
@@ -232,7 +232,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                         </span>
                       </button>
                       {timer > 0 && (
-                        <span className="block w-full text-right text-gray-500">
+                        <span className="block w-full text-right ">
                           ({timer}s)
                         </span>
                       )}
@@ -241,14 +241,14 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                   <div className="flex flex-col gap-[0.9879rem]">
                     <button
                       onClick={handleConfirm}
-                      className="w-full bg-blue-600 text-white rounded-[0.625rem] py-4 uppercase font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-400 disabled:cursor-not-allowed"
+                      className="w-full btn rounded-[0.625rem] py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed"
                       disabled={otp.join("").length !== 4}
                     >
                       Confirm
                     </button>
                     <button
                       onClick={() => setStep("phone")}
-                      className="w-full border-2 border-gray-400 text-gray-700 rounded-[0.625rem] py-4 uppercase font-medium hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full border-1 border-[#000000] text-[#111111] rounded-[0.625rem] py-4 uppercase font-medium outline-none cursor-pointer"
                     >
                       Back
                     </button>
