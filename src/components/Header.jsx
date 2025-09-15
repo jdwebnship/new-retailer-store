@@ -216,7 +216,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               <div
                 className="relative h-[5rem]"
                 onMouseEnter={() => setIsShopMegaMenuOpen(true)}
-                onMouseLeave={() => setIsShopMegaMenuOpen()} // Fixed: should be false on mouse leave
+                onMouseLeave={() => setIsShopMegaMenuOpen(false)}
               >
                 <Link
                   className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center outline-none"

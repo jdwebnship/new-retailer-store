@@ -40,6 +40,29 @@ function Product() {
     ],
   });
 
+  // Update filters when URL parameters change
+  useEffect(() => {
+    setFilters({
+      in_stock:
+        searchParams.get("in_stock") !== null
+          ? searchParams.get("in_stock") === "true"
+          : true,
+      out_of_stock: searchParams.get("out_of_stock") === "true" || true,
+      categories: searchParams.get("categories")
+        ? searchParams.get("categories").split(",")
+        : [],
+      sizes: searchParams.get("sizes")
+        ? searchParams.get("sizes").split(",")
+        : [],
+      priceRange: [
+        searchParams.get("min_price") ? Number(searchParams.get("min_price")) : 0,
+        searchParams.get("max_price")
+          ? Number(searchParams.get("max_price"))
+          : 10000,
+      ],
+    });
+  }, [searchParams]);
+
   const getPageFromUrl = useCallback(() => {
     const page = parseInt(searchParams.get("page"), 10);
     return isNaN(page) || page < 1 ? 1 : page;
