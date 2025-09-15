@@ -82,7 +82,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
       onClose={() => setIsModalOpen(false)}
       className="relative z-50"
     >
-      <DialogBackdrop className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-50 transition-opacity duration-300" />
+      <DialogBackdrop className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-50 transition-opacity duration-300 overflow-hidden" />
 
       <div className="fixed inset-0 flex items-center justify-center p-5 lg:p-0">
         <DialogPanel className="relative bg-white rounded-[1.5rem] shadow-lg w-full max-w-[67.5rem] mx-5 lg:mx-0 flex flex-col lg:flex-row overflow-hidden">
