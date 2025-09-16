@@ -8,6 +8,10 @@ const initialState = {
   loading: false,
   error: null,
   isAuthenticated: false,
+  verificationLoading: false,
+  sent: false,
+  verified: false,
+  verificationError: null,
 };
 
 // Register
@@ -111,6 +115,69 @@ export const resetpasswordwithtoken = createAsyncThunk(
   }
 );
 
+export const sendOTP = createAsyncThunk(
+  "otp/send",
+  async (mobile, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/otp/send", {
+        user_token: import.meta.env.VITE_API_KEY,
+        mobile,
+      });
+
+      console.log("response", response);
+
+      if (response?.data?.success) {
+        toast.success(response?.data?.message || "OTP sent successfully");
+        return response.data; // ✅ return success data
+      }
+
+      // Handle specific "not registered" case
+      if (response?.data?.message?.includes("not registered")) {
+        // toast.error(response?.data?.message);
+        return rejectWithValue({
+          userNotRegistered: true,
+          message: response.data.message,
+          mobile,
+        });
+      }
+
+      // Generic failure case
+      return rejectWithValue({
+        userNotRegistered: false,
+        message: response?.data?.message || "Failed to send OTP",
+        mobile,
+      });
+    } catch (error) {
+      console.error("sendOTP error:", error);
+      return rejectWithValue({
+        userNotRegistered: false,
+        message: error.response?.data?.message || error.message,
+        mobile,
+      });
+    }
+  }
+);
+
+// Async thunk for verifying OTP
+export const verifyOTP = createAsyncThunk(
+  "otp/verify",
+  async ({ mobile, otp }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/otp/verify/checkout", {
+        mobile,
+        otp,
+      });
+      if (response?.data?.success) {
+        toast.success(response?.data?.message || "OTP verified successfully");
+      }
+      return response.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Invalid OTP");
+      return rejectWithValue(error.response?.data || "OTP verification failed");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -171,6 +238,38 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.payload || "Login failed";
         state.isAuthenticated = false;
+      })
+
+      .addCase(sendOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendOTP.fulfilled, (state) => {
+        state.loading = false;
+        state.sent = true;
+        state.verified = false;
+      })
+      .addCase(sendOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to send OTP";
+        state.sent = false;
+      })
+
+      // Verify OTP Reducers
+      .addCase(verifyOTP.pending, (state) => {
+        state.verificationLoading = true;
+        state.verificationError = null;
+      })
+      .addCase(verifyOTP.fulfilled, (state, action) => {
+        state.verificationLoading = false;
+        state.verified = true;
+        state.user = action.payload.data;
+        state.isAuthenticated = action.payload.success ? true : false;
+      })
+      .addCase(verifyOTP.rejected, (state, action) => {
+        state.verificationLoading = false;
+        state.verificationError = action.payload || "OTP verification failed";
+        state.verified = false;
       })
 
       // logout

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Dialog,
   DialogBackdrop,
@@ -6,8 +7,17 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import modalImg from "../assets/images/modal.jpg";
+import { toast } from "react-toastify";
+import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
 
-const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
+const ModalComponent = ({
+  isModalOpen,
+  setIsModalOpen,
+  setShowSignUpModal,
+}) => {
+  const dispatch = useDispatch();
+  const { verificationError } = useSelector((state) => state.auth);
+
   const [step, setStep] = useState("phone"); // "phone" or "otp"
   const [phoneNumber, setPhoneNumber] = useState("");
   const [otp, setOtp] = useState(["", "", "", ""]); // Array for 4 OTP digits
@@ -31,24 +41,69 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
   };
 
   // Handle phone number submission
-  const handleContinue = () => {
+  const handleContinue = async () => {
     if (phoneNumber && /^\+?[1-9]\d{9,14}$/.test(phoneNumber)) {
-      setStep("otp");
-      setTimer(30);
+      // Remove any non-digit characters and add country code if missing
+      const cleanNumber = phoneNumber.replace(/\D/g, "");
+      const mobile = cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
+
+      try {
+        await dispatch(sendOTP(mobile)).unwrap();
+        setStep("otp");
+        setTimer(30);
+      } catch (error) {
+        console.error("Failed to send OTP:", error);
+        // if (error?.userNotRegistered && typeof onOTPSendError === "function") {
+        //   onOTPSendError(error);
+        // } else {
+        //   // Show error toast for other errors
+        //   toast.error(error?.message || "Failed to send OTP");
+        // }
+      }
     }
   };
 
   // Handle OTP submission
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     const otpValue = otp.join("");
     if (otpValue.length === 4) {
-      alert(`OTP ${otpValue} verified!`); // Replace with actual verification logic
-      setIsModalOpen(false);
+      try {
+        const cleanNumber = phoneNumber.replace(/\D/g, "");
+        const mobile =
+          cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
+
+        const res = await dispatch(
+          verifyOTP({ mobile, otp: otpValue })
+        ).unwrap();
+
+        console.log("resfmdsgfmsdgf", res.data.is_existing_customer);
+
+        if (!res?.data?.is_existing_customer) {
+          setShowSignUpModal(true);
+        }
+        // On successful verification, close the modal
+        setIsModalOpen(false);
+        // Reset OTP state for next time
+        // dispatch(resetOTPState());
+      } catch (error) {
+        console.error("OTP verification failed:", error);
+      }
     }
   };
 
   // Handle resend code
-  const handleResend = () => {
+  const handleResend = async () => {
+    if (timer > 0) return;
+
+    const cleanNumber = phoneNumber.replace(/\D/g, "");
+    const mobile = cleanNumber.length === 10 ? `91${cleanNumber}` : cleanNumber;
+
+    try {
+      await dispatch(sendOTP(mobile)).unwrap();
+      setTimer(30); // Reset timer on successful resend
+    } catch (error) {
+      console.error("Failed to resend OTP:", error);
+    }
     setOtp(["", "", "", ""]);
     setTimer(30);
     // Add logic to resend OTP here
@@ -179,121 +234,6 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                   </a>
                   .
                 </p>
-
-                <div>
-                  <p className="mb-1 text-base lg:text-2xl font-bold">
-                    Sign up your account
-                  </p>
-                  {/* <p className="mb-6 text-sm lg:text-lg">
-                    Login or Create account with your phone number.
-                  </p> */}
-                </div>
-                <div className="sm:mb-0 mb-6 flex flex-col sm:flex-row space-x-4">
-                  <div className="sm:w-1/2 w-full mb-[0.9375rem] relative">
-                    <label className="block text-sm mb-2.5 font-bold uppercase">
-                      First name
-                    </label>
-                    <input
-                      id="firstName"
-                      name="firstName"
-                      type="text"
-                      className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none"
-                      placeholder="Enter your first name"
-                      value=""
-                      onChange=""
-                      onBlur=""
-                    />
-                  </div>
-                  <div className="sm:w-1/2 w-full mb-[0.9375rem] relative">
-                    <label className="block text-sm mb-2.5 font-bold uppercase">
-                      Last name
-                    </label>
-                    <input
-                      id="lastName"
-                      name="lastName"
-                      type="text"
-                      className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none"
-                      placeholder="Enter your last name"
-                      value=""
-                      onChange=""
-                      onBlur=""
-                    />
-                  </div>
-                </div>
-
-                {/* Email */}
-                <div className="relative mb-[0.9375rem]">
-                  <label className="block text-sm mb-2.5 font-bold uppercase">
-                    Email
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none"
-                    placeholder="Enter your email address"
-                    value=""
-                    onChange=""
-                    onBlur=""
-                  />
-                </div>
-
-                {/* Password */}
-                <div className="relative mb-[0.9375rem]">
-                  <label className="block text-sm mb-2.5 font-bold uppercase">
-                    Password
-                  </label>
-                  <div className="relative mb-[0.9375rem]">
-                    <input
-                      id="password"
-                      name="password"
-                      type=""
-                      className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none pr-12"
-                      placeholder="Enter your password"
-                      value=""
-                      onChange=""
-                      onBlur=""
-                    />
-                    {/* <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer"
-                    >
-                      {showPassword ? (
-                        <Eye className="h-5 w-5" />
-                      ) : (
-                        <EyeOff className="h-5 w-5" />
-                      )}
-                    </button> */}
-                  </div>
-                </div>
-
-                <button
-                  onClick={handleContinue}
-                  className="w-full btn rounded-[0.625rem] py-4 uppercase font-medium outline-none mb-[0.9375rem] disabled:bg-gray-400 disabled:cursor-not-allowed"
-                  disabled={
-                    !phoneNumber || !/^\+?[1-9]\d{9,14}$/.test(phoneNumber)
-                  }
-                >
-                  Continue
-                </button>
-                <p className="text-sm text-left">
-                  By signing in, you agree to our{" "}
-                  <a
-                    href="#"
-                    className="underline font-medium hover:text-blue-800"
-                  >
-                    Terms & Conditions
-                  </a>{" "}
-                  and{" "}
-                  <a
-                    href="#"
-                    className="underline font-medium hover:text-blue-800"
-                  >
-                    Privacy Policy
-                  </a>
-                  .
-                </p>
               </div>
             ) : (
               <div className="space-y-6 w-full">
@@ -304,6 +244,11 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                   >
                     Verify Your Phone Number
                   </DialogTitle>
+                  {verificationError && (
+                    <p className="text-red-500 text-sm mb-2">
+                      {verificationError}
+                    </p>
+                  )}
                   <p className="mb-6 text-lg text-left">
                     Enter the verification code sent to{" "}
                     <span className="font-bold">{phoneNumber}</span>

@@ -3,6 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
 import ModalComponent from "../components/modal";
+import SignUpModal from "../components/SignUpModal";
 import { useDispatch, useSelector } from "react-redux";
 import {
   fetchCart,
@@ -15,6 +16,8 @@ function Cart() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
     dispatch(fetchCart());
@@ -40,8 +43,20 @@ function Cart() {
   }, [cartItems]);
 
   const proceedToCheckout = () => {
+    if (!isAuthenticated) {
+      setIsModalOpen(true);
+      return;
+    }
     navigate("/checkout", { state: { items: cartItems || [] } });
   };
+
+  // const handleOTPSendError = (error) => {
+  //   if (error?.userNotRegistered) {
+  //     setPhoneNumber(error.mobile);
+  //     setShowSignUpModal(true);
+  //     setIsModalOpen(false);
+  //   }
+  // };
 
   return (
     <div>
@@ -136,6 +151,13 @@ function Cart() {
       <ModalComponent
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        // onOTPSendError={handleOTPSendError}
+        setShowSignUpModal={setShowSignUpModal}
+      />
+      <SignUpModal
+        isOpen={showSignUpModal}
+        onClose={() => setShowSignUpModal(false)}
+        phoneNumber={phoneNumber}
       />
     </div>
   );
