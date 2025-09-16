@@ -673,7 +673,7 @@ function Product() {
                 </p>
                 <button
                   onClick={clearAllFilters}
-                  className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center mt-5"
+                  className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center mt-5"
                 >
                   Clear all filters
                 </button>

@@ -13,11 +13,11 @@ function ProductSliderSection() {
   const { buttonTextColor } = useTheme();
   const dispatch = useDispatch();
   const { newArrivals } = useSelector((state) => state.newArrivals);
-  const newTreniding = newArrivals?.products
+  const newTreniding = newArrivals?.products;
 
   useEffect(() => {
     dispatch(postNewArrivals());
-  }, [dispatch])
+  }, [dispatch]);
 
   return (
     <div className="py-[3.125rem] lg:py-[100px]">
@@ -53,16 +53,17 @@ function ProductSliderSection() {
           }}
           className="mySwiper"
         >
-          {newTreniding && newTreniding.map((product, index) => (
-            <SwiperSlide key={index}>
-              <CardComponent product={product} />
-            </SwiperSlide>
-          ))}
+          {newTreniding &&
+            newTreniding.map((product, index) => (
+              <SwiperSlide key={index}>
+                <CardComponent product={product} />
+              </SwiperSlide>
+            ))}
         </Swiper>
         <div className="mt-[30px] lg:mt-[3.125rem] text-center">
           <a
             href="#"
-            className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center"
+            className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center"
           >
             Shop ALL New Trending
             <span>

@@ -32,7 +32,7 @@ function SingleImage({ data }) {
         </p>
         <Link
           to="/shop"
-          className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center"
+          className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center"
         >
           View Collection
           <span>
@@ -85,7 +85,7 @@ function Video({ data }) {
         </p>
         <Link
           to="/shop"
-          className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center"
+          className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center"
         >
           View Collection
           <span>
