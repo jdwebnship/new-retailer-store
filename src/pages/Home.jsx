@@ -9,7 +9,7 @@ import SocialAdvertisementImage from "../components/SocialAdvertisementImage";
 function Home() {
   return (
     <div>
-      <div className="relative overflow-hidden h-[85vh]">
+      <div className="relative overflow-hidden h-[90vh]">
         <Banner />
       </div>
       <CommonHeader />

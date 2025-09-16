@@ -69,7 +69,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
     });
   }, [offsetY]);
 
-    // Toggle compact header on scroll
+  // Toggle compact header on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 60);
@@ -131,11 +131,10 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
 
             <div className="left-nav hidden lg:flex items-center h-full">
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-600 ease-in-out h-full flex items-center outline-none"
+                className="text-[0.875rem] pr-10 xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-600 ease-in-out h-full flex items-center outline-none"
                 to="/"
                 style={{
                   color: headerTextColor || "#111111",
-                  margin: "0 1rem 0 0",
                 }}
               >
                 Home
@@ -148,11 +147,10 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
                 onMouseLeave={() => setIsCategoryDropdownOpen(false)}
               >
                 <Link
-                  className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center outline-none"
+                  className="text-[0.875rem] pr-10 xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 h-full flex items-center outline-none"
                   to="/categories"
                   style={{
                     color: headerTextColor || "#111111",
-                    margin: "0 1rem",
                   }}
                 >
                   Category
@@ -239,7 +237,6 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
                   to="/shop"
                   style={{
                     color: headerTextColor || "#111111",
-                    margin: "0 1rem",
                   }}
                 >
                   Shop
@@ -400,21 +397,19 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
           <div className="right-nav flex items-center gap-3 sm:gap-4 h-full">
             <div className="hidden lg:flex items-center h-full">
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
+                className="text-[0.875rem] xl:text-[1rem] pr-10 font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
                 to="/about"
                 style={{
                   color: headerTextColor || "#111111",
-                  margin: "0 1rem",
                 }}
               >
                 About Us
               </Link>
               <Link
-                className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
+                className="text-[0.875rem] xl:text-[1rem] pr-4 font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
                 to="/contact"
                 style={{
                   color: headerTextColor || "#111111",
-                  margin: "0 1rem",
                 }}
               >
                 Contact Us
