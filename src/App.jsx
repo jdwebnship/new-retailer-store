@@ -79,14 +79,15 @@ function App() {
   }, []); // Empty dependency array: run once after mount
 
   return (
-    <div id="smooth-wrapper">
+    <div>
+      <></>
       <TopHeader visible={showTopHeader} onHeightChange={setTopHeaderHeight} />
       <Header
         offsetY={showTopHeader ? topHeaderHeight : 0}
         onHeightChange={setHeaderHeight}
         hasShadow={hasShadow}
       />
-      <div id="smooth-content">
+      <div>
         <div className="App">
           <main
             className="main-content"

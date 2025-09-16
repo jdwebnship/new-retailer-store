@@ -362,7 +362,7 @@ function Product() {
       <CommonHeader />
       <div className="mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-7.5 px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
-          <div className="lg:col-span-2 text-start filters">
+          <div className="lg:col-span-2 sticky self-start top-[100px] text-left">
             <div className={`${hasActiveFilters ? "lg:col-span-2" : "hidden"}`}>
               <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem]">
                 <div className="flex justify-between w-full">
@@ -524,7 +524,7 @@ function Product() {
                 <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem] text-[#111111]">
                   Category <span>({categories.length})</span>
                 </h4>
-                <div className="flex lg:flex-nowrap gap-5 lg:gap-[0.5rem] flex-col max-h-[30rem] overflow-y-auto">
+                <div className="flex lg:flex-nowrap gap-5 lg:gap-[0.5rem] flex-col">
                   {categories.map((category) => {
                     const name = category?.name || "Unnamed";
                     return (

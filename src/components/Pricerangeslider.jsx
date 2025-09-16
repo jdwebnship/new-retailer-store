@@ -30,7 +30,7 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
           value={value[0]}
           onChange={handleMinChange}
           className="
-            absolute top-[-0.4rem] sm:top-[-0.5rem] w-full bg-transparent appearance-none pointer-events-none
+            absolute top-[-0.4rem] md:top-[-0.3rem] w-full bg-transparent appearance-none pointer-events-none
             touch-action-pan-y
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:pointer-events-auto
@@ -58,7 +58,7 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
           value={value[1]}
           onChange={handleMaxChange}
           className="
-            absolute top-[-0.4rem] sm:top-[-0.5rem] w-full bg-transparent appearance-none pointer-events-none
+            absolute top-[-0.4rem] md:top-[-0.3rem] w-full bg-transparent appearance-none pointer-events-none
             touch-action-pan-y
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:pointer-events-auto

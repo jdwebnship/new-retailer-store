@@ -460,3 +460,6 @@ textarea {
 .social-login a:hover svg path {
   fill: #007BFF;
 }
+.social-login a:hover svg path{
+    fill: #007BFF;
+}
