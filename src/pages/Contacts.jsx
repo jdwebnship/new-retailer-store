@@ -53,18 +53,22 @@ function Contacts() {
         Object.entries(values).forEach(([key, value]) => {
           formData.append(key, value);
         });
-        
+
         const token = localStorage.getItem("token");
         if (token) {
           formData.append("token", token);
         }
 
         await dispatch(submitContactForm(formData)).unwrap();
-        
-        toast.success("Message sent successfully! We will get back to you soon.");
+
+        toast.success(
+          "Message sent successfully! We will get back to you soon."
+        );
         resetForm();
       } catch (error) {
-        const errorMessage = error?.response?.data?.message || "Failed to send message. Please try again later.";
+        const errorMessage =
+          error?.response?.data?.message ||
+          "Failed to send message. Please try again later.";
         toast.error(errorMessage);
       } finally {
         setSubmitting(false);
@@ -93,7 +97,10 @@ function Contacts() {
               <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                 Contact Information
               </h3>
-              <div className="flex gap-2 text-base items-center">
+              <a
+                className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                href=""
+              >
                 <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                   <img
                     className="w-[1.125rem] h-[1.125rem]"
@@ -101,39 +108,30 @@ function Contacts() {
                     alt=""
                   />
                 </span>
-                <a
-                  class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                  href=""
-                >
-                  supprt@jdshipnweb.com
-                </a>
-              </div>
-              <div className="flex gap-2 text-base items-center">
-                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                <span>supprt@jdshipnweb.com</span>
+              </a>
+              <a
+                className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                href=""
+              >
+                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0 ">
                   <img
                     className="w-[1.125rem] h-[1.125rem]"
                     src={Call}
                     alt=""
                   />
                 </span>
-                <a
-                  class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                  href=""
-                >
-                  +91 9876543210
-                </a>
-              </div>
-              <div className="flex gap-2 text-base items-center">
+                <span>+91 9876543210</span>
+              </a>
+              <a
+                className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                href=""
+              >
                 <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                   <img className="w-[1.125rem] h-[1.125rem]" src={Map} alt="" />
                 </span>
-                <a
-                  class="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                  href=""
-                >
-                  123 Business Street, City, Country – ZIP
-                </a>
-              </div>
+                <span>123 Business Street, City, Country – ZIP</span>
+              </a>
             </div>
 
             <div class="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
@@ -153,7 +151,10 @@ function Contacts() {
                   Follow Our Journey
                 </h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                  <div className="flex gap-2 text-base items-center">
+                  <a
+                    className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    href=""
+                  >
                     <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
@@ -161,14 +162,12 @@ function Contacts() {
                         alt=""
                       />
                     </span>
-                    <a
-                      href="#"
-                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    >
-                      Facebook
-                    </a>
-                  </div>
-                  <div className="flex gap-2 text-base items-center">
+                    <span>Facebook</span>
+                  </a>
+                  <a
+                    className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    href=""
+                  >
                     <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
@@ -176,14 +175,12 @@ function Contacts() {
                         alt=""
                       />
                     </span>
-                    <a
-                      href="#"
-                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    >
-                      Instagram
-                    </a>
-                  </div>
-                  <div className="flex gap-2 text-base items-center">
+                    <span>Instagram</span>
+                  </a>
+                  <a
+                    className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    href="#"
+                  >
                     <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
@@ -191,14 +188,12 @@ function Contacts() {
                         alt=""
                       />
                     </span>
-                    <a
-                      href="#"
-                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    >
-                      Twitter
-                    </a>
-                  </div>
-                  <div className="flex gap-2 text-base items-center">
+                    <span>Twitter</span>
+                  </a>
+                  <a
+                    className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+                    href=""
+                  >
                     <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
@@ -206,13 +201,8 @@ function Contacts() {
                         alt=""
                       />
                     </span>
-                    <a
-                      href="#"
-                      className="hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    >
-                      Twitter
-                    </a>
-                  </div>
+                    <span>Twitter</span>
+                  </a>
                 </div>
               </div>
             </div>

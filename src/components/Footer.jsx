@@ -39,7 +39,7 @@ function Footer() {
               {storeInfo?.storeinfo?.store_name ?? "Store name"}
             </h2>
           </div>
-          <div className="text-left">
+          <div className="text-left customer-care">
             <h2 className="mb-4 font-bold text-lg">Customer Care</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
@@ -139,8 +139,8 @@ function Footer() {
           </div>
 
           <div className="text-left">
-            <h2 className="mb-4 font-bold text-lg">Social Media</h2>
-            <ul className="font-regular flex flex-col gap-4">
+            <h2 className="mb-4 font-bold text-lg ">Social Media</h2>
+            <ul className="font-regular flex flex-col gap-4 social-login">
               <li className="mb-1">
                 <Link
                   to={storeInfo?.storeinfo?.facebook || "#"}

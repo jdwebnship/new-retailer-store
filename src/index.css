@@ -415,3 +415,16 @@ textarea {
     transform: translate(calc(-50% + -4.5rem), 0);
   }
 }
+
+.customer-care a svg path,
+.social-login  a svg path{
+    transition: all ease-in-out 0.5s;
+}
+
+.customer-care a:hover svg path{
+    stroke: #007BFF;
+}
+
+.social-login a:hover svg path{
+    fill: #007BFF;
+}
