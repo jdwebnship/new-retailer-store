@@ -22,6 +22,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState(false);
+  const [isSticky, setIsSticky] = useState(false);
   const ref = useRef(null);
   const dispatch = useDispatch();
   const { storeInfo, loading } = useSelector((state) => state.storeInfo);
@@ -70,6 +71,16 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
     });
   }, [offsetY]);
 
+    // Toggle compact header on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsSticky(window.scrollY > 60);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div>
       <header
@@ -85,7 +96,9 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
         }}
       >
         <nav
-          className="flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] h-[5rem]"
+          className={`flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] lg:gap-1 gap-4 transition-[height,background-color] duration-300 ease-out ${
+            isSticky ? "sm:h-[5rem] h-[4.5rem]" : "sm:h-[6.25rem] h-[5rem]"
+          }`}
           style={{
             backgroundColor: theme?.headerBackgroundColor || "#ffffff",
             color: headerTextColor || "#ffffff",
@@ -93,7 +106,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               theme?.fontFamily || "system-ui, -apple-system, sans-serif",
           }}
         >
-          <div className="flex items-center gap-3 lg:gap-4">
+          <div className="flex items-center gap-3 lg:gap-4 h-full">
             {/* Hamburger for mobile */}
             <button
               type="button"
@@ -118,7 +131,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               </svg>
             </button>
 
-            <div className="left-nav hidden lg:flex items-center h-[5rem]">
+            <div className="left-nav hidden lg:flex items-center h-full">
               <Link
                 className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-600 ease-in-out h-full flex items-center outline-none"
                 to="/"
@@ -132,7 +145,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
 
               {/* Categories Dropdown */}
               <div
-                className="relative h-[5rem]"
+                className="relative h-full"
                 onMouseEnter={() => setIsCategoryDropdownOpen(true)}
                 onMouseLeave={() => setIsCategoryDropdownOpen(false)}
               >
@@ -219,7 +232,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               {/* Shop Mega Menu */}
 
               <div
-                className="relative h-[5rem]"
+                className="relative h-full"
                 onMouseEnter={() => setIsShopMegaMenuOpen(true)}
                 onMouseLeave={() => setIsShopMegaMenuOpen(false)}
               >
@@ -364,14 +377,18 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
           </div>
 
           <Link
-            className="center-nav flex-1 flex items-center justify-center absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            className="center-nav flex-1 flex items-center justify-center relative sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2"
             to="/"
           >
             {storeInfo?.storeinfo?.logo?.trim() ? (
               <img
                 src={storeInfo.storeinfo.logo}
                 alt={storeInfo?.storeinfo?.store_name || "Store logo"}
-                className="sm:w-16 sm:h-16 w-14 h-14"
+                className={`${
+                  isSticky
+                    ? "sm:w-[4rem] sm:h-[4rem] w-14 h-14"
+                    : "sm:w-[5rem] sm:h-[5rem] w-16 h-16"
+                } transition-[width,height] duration-300 ease-out`}
               />
             ) : (
               <h1
@@ -382,8 +399,8 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
               </h1>
             )}
           </Link>
-          <div className="right-nav flex items-center gap-3 sm:gap-4 h-[5rem]">
-            <div className="hidden lg:flex items-center h-[5rem]">
+          <div className="right-nav flex items-center gap-3 sm:gap-4 h-full">
+            <div className="hidden lg:flex items-center h-full">
               <Link
                 className="text-[0.875rem] xl:text-[1rem] font-medium hover:!text-[#007BFF] uppercase transition-all duration-300 py-3 h-full flex items-center outline-none"
                 to="/about"

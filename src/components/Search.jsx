@@ -77,7 +77,7 @@ function Search() {
   };
 
   return (
-    <div className="relative h-[5rem]" ref={searchContainerRef}>
+    <div className="relative h-full" ref={searchContainerRef}>
       {/* Search Icon Button */}
       <button
         onClick={handleSearchClick}

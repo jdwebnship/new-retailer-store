@@ -27,7 +27,7 @@ function Profile() {
   }, []);
 
   return (
-    <div className="relative h-[5rem]" ref={dropdownRef}>
+    <div className="relative h-full" ref={dropdownRef}>
       {/* Profile Icon Button */}
       <button
         onClick={() => {
