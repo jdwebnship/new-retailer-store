@@ -119,22 +119,12 @@ function ProductDetail() {
   const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
   const { quantity, increase, decrease, canIncrease, canDecrease } =
     useCartQuantity(
-      1, // initial
-      5, // maxLimit
-      availableStock, // stock from API
-      cartQuantity, // already in cart
-      selectedVariant?.id // resetKey → resets quantity when variant changes
+      1, 
+      5, 
+      availableStock, 
+      cartQuantity, 
+      selectedVariant?.id
     );
-
-  // const increaseQuantity = () => {
-  //   setQuantity((prev) =>
-  //     Math.min(prev + 1, Math.min(availableStock - cartQuantity, MAX_LIMIT))
-  //   );
-  // };
-
-  // const decreaseQuantity = () => {
-  //   setQuantity((prev) => Math.max(1, prev - 1));
-  // };
 
   const handleAddToCart = () => {
     // e.stopPropagation();

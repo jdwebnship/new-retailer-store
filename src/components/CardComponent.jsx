@@ -14,13 +14,14 @@ import {
 } from "../redux/slices/WishListSlice";
 
 const CardComponent = ({ product, isWishlistKey = false }) => {
+  console.log("isWishlistKey", isWishlistKey);
   const productData = isWishlistKey
     ? {
         name: product.product_name,
         slug: product.product_slug,
         new_price: product.price,
         final_price: product.final_price,
-        images: product.product_images,
+        product_images: product.product_images,
         id: product.retailer_product_id || product.product_id,
         product_id: product.product_id,
         retailer_product_id: product.retailer_product_id,
@@ -28,16 +29,18 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         wholesaler_id: product.wholesaler_id,
       }
     : product;
+
+    console.log("productData", productData);
   const { textColor } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { storeInfo } = useSelector((state) => state.storeInfo);
-  // const { wishlist } = useSelector((state) => state.wishlist);
+  const { wishlist } = useSelector((state) => state.wishlist);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
-  // const wishlistData = productData?.data?.wishlist;
+  const wishlistData = wishlist?.data?.wishlist;
   const isWishlist =
-    (isAuthenticated && isInWishlist(productData?.id, productData)) || false;
+    (isAuthenticated && isInWishlist(productData?.id, wishlistData)) || false;
 
   const addToWishList = () => {
     if (isAuthenticated) {
