@@ -2,9 +2,11 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  addToCart,
   addToCartGuest,
   addToCartUser,
   removeFromCartapi,
+  updateCartItem,
 } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
@@ -89,7 +91,6 @@ export default CartPopup;
 // CartItem Component
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const cartQuantity = item.quantity;
   const availableStock =
@@ -101,21 +102,15 @@ const CartItem = ({ item }) => {
       maxLimit: 5,
       availableStock,
       cartQuantity,
-      resetKey: item.id, // reset if product changes
+      resetKey: item.id,
       onChange: (newQty, action) => {
-        if (isAuthenticated) {
-          dispatch(
-            addToCartUser({ ...item, quantity: action === "increase" ? 1 : -1 })
-          );
-        } else {
-          dispatch(
-            addToCartGuest({
-              ...item,
-              quantity: action === "increase" ? 1 : -1,
-            })
-          );
+        if (action === "decrease" && quantity === 1) {
+          dispatch(removeFromCartapi(item));
+          return;
         }
-      },
+        const quantityChange = action === "increase" ? 1 : -1;
+        dispatch(updateCartItem({ item, qty: quantityChange }));
+      }
     });
 
   return (
@@ -143,10 +138,10 @@ const CartItem = ({ item }) => {
         <div className="flex items-center justify-between gap-3">
           <div className="flex items-center border border-[#AAAAAA] rounded-lg w-fit">
             <button
-              className="px-2.5 py-1 cursor-pointer disabled:cursor-not-allowed"
+              className="px-2.5 py-1 cursor-pointer"
               style={{ minWidth: "1.2rem" }}
               onClick={decrease}
-              disabled={!canDecrease}
+              // disabled={!canDecrease}
             >
               -
             </button>

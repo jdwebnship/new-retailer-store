@@ -71,7 +71,6 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
     retailer_id,
     retailer_product_id,
   }) => {
-    console.log("0fopds", { product_id, retailer_id, retailer_product_id });
     const payload = {
       retailer_product_id: retailer_product_id ? retailer_product_id : "",
       product_id: !retailer_product_id ? product_id : "",

@@ -3,26 +3,36 @@ import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
 
 const initialState = {
-  cartItems: [], // Ensure this is always an empty array initially
+  cartItems: [],
   loading: false,
   error: null,
-  isCartOpen: false, // Add cart popup state
+  isCartOpen: false,
 };
 
 export const fetchCart = createAsyncThunk(
   "cart/fetchCart",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
+    const { auth } = getState();
+    if (!auth?.isAuthenticated) {
+      return;
+    }
     try {
-      const response = await axiosInstance.get("/customer/cart");
-      return response.data.data.cart || [];
+      if (auth?.isAuthenticated) {
+        const response = await axiosInstance.get("/customer/cart");
+        return response.data.data?.cart || [];
+      }
     } catch (error) {
       const message =
-        error.response?.data?.message || "Failed to fetch cart items";
+        error.response?.data?.message ||
+        error.message ||
+        "Failed to fetch cart items";
+
       toast.error(message);
       return rejectWithValue(message);
     }
   }
 );
+
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
@@ -45,11 +55,11 @@ export const addToCart = createAsyncThunk(
           id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-                id: item.selectedVariant.id,
-                product_variation: item.selectedVariant.product_variation,
-                final_price: item.selectedVariant.final_price,
-                stock: item.selectedVariant.stock,
-              }
+              id: item.selectedVariant.id,
+              product_variation: item.selectedVariant.product_variation,
+              final_price: item.selectedVariant.final_price,
+              stock: item.selectedVariant.stock,
+            }
             : null,
         };
 
@@ -92,11 +102,11 @@ export const addToCart = createAsyncThunk(
           product_id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-                id: item.selectedVariant.id,
-                product_variation: item.selectedVariant.product_variation,
-                final_price: item.selectedVariant.final_price,
-                stock: item.selectedVariant.stock,
-              }
+              id: item.selectedVariant.id,
+              product_variation: item.selectedVariant.product_variation,
+              final_price: item.selectedVariant.final_price,
+              stock: item.selectedVariant.stock,
+            }
             : null,
         };
         dispatch(addToCartUser(cartItem));
@@ -120,28 +130,63 @@ export const addToCart = createAsyncThunk(
 
 export const updateCartItem = createAsyncThunk(
   "cart/updateCartItem",
-  async ({ itemId, quantity }, { rejectWithValue }) => {
+  async ({ item, qty }, { dispatch, rejectWithValue, getState }) => {
     try {
-      const response = await axiosInstance.put(
-        `/customer/update-cart/${itemId}`,
-        { quantity }
-      );
+      const { auth } = getState();
+      if (!auth?.isAuthenticated) {
+        dispatch(
+          updateQuantityGuest({
+            ...item,
+            quantity: qty,
+          })
+        );
+        toast.success("Cart quantity updated");
+      } else {
+        const data = {
+          retailer_id: item.retailer_id,
+          wholesaler_id: item?.wholesaler_id ?? null,
+          quantity: qty,
+          product_id: item?.retailer_product_id || item?.product_id,
+        };
+        const response = await axiosInstance.post('/customer/add-to-cart', data);
+        if (response?.data?.success) {
+          dispatch(fetchCart());
+          const apiResult = response?.data?.data?.results;
+          const productObj = Array.isArray(apiResult) && Array.isArray(apiResult[0])
+            ? apiResult[0][0]
+            : apiResult[0];
 
-      if (!response.data.status) {
-        throw new Error(response.data.message || "Failed to update cart item");
+          dispatch(
+            updateQuantityUser({
+              ...item,
+              id: productObj.product_id,
+              quantity: productObj.quantity,
+            })
+          );
+          toast.success(response?.data?.message || "Cart updated successfully");
+        } else {
+          const msg =
+            Array.isArray(response?.data?.message) && response?.data?.message?.length
+              ? response.data.message.join(", ")
+              : response?.data?.message || "Failed to update cart";
+
+          toast.error(msg);
+          return rejectWithValue(msg);
+        }
       }
 
-      return { itemId, quantity };
     } catch (error) {
       const message =
         error.response?.data?.message ||
         error.message ||
         "Failed to update cart item";
+
       toast.error(message);
       return rejectWithValue(message);
     }
   }
 );
+
 
 export const removeFromCartapi = createAsyncThunk(
   "cart/removeFromCartapi",
@@ -151,7 +196,6 @@ export const removeFromCartapi = createAsyncThunk(
       id: item?.id || item?.product_id || item?.retailer_product_id,
       selected_variant: item?.selected_variant || item?.selectedVariant || null,
     };
-
     try {
       if (auth?.isAuthenticated) {
         const data = {
@@ -194,6 +238,9 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.cartItems = [];
     },
+    setCart: (state, action) => {
+      state.cartItems = action.payload;
+    },
     addToCartGuest: (state, action) => {
       if (!state.cartItems) state.cartItems = [];
       const existingItem = state.cartItems.find((item) => {
@@ -204,7 +251,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-              action.payload.selected_variant?.product_variation)
+            action.payload.selected_variant?.product_variation)
         );
       });
       if (existingItem) {
@@ -218,13 +265,13 @@ const cartSlice = createSlice({
       if (!state.cartItems) state.cartItems = [];
       const existingItem = state.cartItems.find((item) => {
         if (!item) return false;
-        const itemId = item.id ?? item.product_id;
+        const itemId = item.id || item.product_id;
         return (
           (itemId === action.payload.product_id ||
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-              action.payload.selected_variant?.product_variation)
+            action.payload.selected_variant?.product_variation)
         );
       });
 
@@ -355,20 +402,6 @@ const cartSlice = createSlice({
       state.error = action.payload;
     });
 
-    // Add to Cart
-    // builder.addCase(addToCart.fulfilled, (state, action) => {
-    //   const existingItem = state.cartItems.find(
-    //     (item) => item.id === action.payload.id &&
-    //       JSON.stringify(item.selected_variant) === JSON.stringify(action.payload.selected_variant)
-    //   );
-
-    //   if (existingItem) {
-    //     existingItem.quantity += action.payload.quantity;
-    //   } else {
-    //     state.cartItems.push(action.payload);
-    //   }
-    //   state.loading = false;
-    // });
     builder.addCase(addToCart.pending, (state) => {
       state.loading = true;
       state.error = null;
@@ -396,27 +429,12 @@ const cartSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     });
-
-    // Remove from Cart
-    // builder.addCase(removeFromCart.fulfilled, (state, action) => {
-    //   state.cartItems = state.cartItems.filter(
-    //     (item) => item.id !== action.payload
-    //   );
-    //   state.loading = false;
-    // });
-    // builder.addCase(removeFromCart.pending, (state) => {
-    //   state.loading = true;
-    //   state.error = null;
-    // });
-    // builder.addCase(removeFromCart.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = action.payload;
-    // });
   },
 });
 
 export const {
   clearCart,
+  setCart,
   addToCartGuest,
   addToCartUser,
   removeFromCart,

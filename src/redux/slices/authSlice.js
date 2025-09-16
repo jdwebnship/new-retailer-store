@@ -145,7 +145,6 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(registerUser.fulfilled, (state, action) => {
-        console.log("action.payload", action.payload);
         state.loading = false;
         state.user = action.payload.data;
         state.isAuthenticated = action.payload.data.email_verification_token

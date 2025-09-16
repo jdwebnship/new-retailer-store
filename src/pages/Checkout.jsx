@@ -18,8 +18,6 @@ function Checkout() {
     navigate("/payment", { state: { items } });
   };
 
-  console.log("cartItems", cartItems);
-
   const subtotal = items.reduce((s, it) => s + it.price * it.quantity, 0);
 
   // const subtotal = cartItems?.reduce((sum, item) => sum + (item.final_price * (item.quantity || 1)), 0) || 0;

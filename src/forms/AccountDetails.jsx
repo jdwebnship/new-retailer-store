@@ -32,7 +32,6 @@ const AccountDetails = () => {
     onSubmit: async (values, { resetForm }) => {
       try {
         const resultAction = await dispatch(updateAccountDetails(values));
-        console.log("resultAction", resultAction);
         if (updateAccountDetails.fulfilled.match(resultAction)) {
           dispatch(updateAccountDetailsSuccess(resultAction?.payload?.data));
         }

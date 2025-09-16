@@ -34,8 +34,6 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
     dispatch(fetchStoreInfo());
   }, [dispatch]);
 
-  console.log("cartItems", cartItems);
-
   // Prevent background scroll when drawer is open
   useEffect(() => {
     if (isMenuOpen) {
