@@ -209,7 +209,7 @@ function Contacts() {
           </div>
           <div className="rounded-2xl lg:w-8/12 lg:pl-5">
             <div className="mb-6">
-              <h6 className="text-3xl font-bold uppercase mb-3">
+              <h6 className="sm:text-3xl text-2xl font-bold uppercase mb-3">
                 How can we help?
               </h6>
               <p className="text-base">
@@ -370,7 +370,7 @@ function Contacts() {
               </div>
 
               <div className="mb-6">
-                <label className="flex items-center">
+                <label className="flex">
                   <input
                     type="checkbox"
                     name="subscribe"

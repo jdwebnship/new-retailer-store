@@ -374,6 +374,23 @@ textarea {
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+/* About Page */
+.prose p {
+  font-size: 1.375rem;
+  /* margin-bottom: 1.25rem; */
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: 2rem;
+  font-weight: 700;
+  /* margin-bottom: 1.25rem; */
+}
+
 @media only screen and (max-width: 639px) {
   .profile-dropdown {
     transform: translate(calc(-50% + -8.5rem), 0);
@@ -383,8 +400,23 @@ textarea {
     transform: translate(calc(-50% + -8.5rem), 0);
   }
 
-  .search-box,.profile-dropdown{
-    animation:none;
+  .search-box,
+  .profile-dropdown {
+    animation: none;
+  }
+
+  .prose p {
+    font-size: 1.125rem;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    font-size: 1.5rem;
+    /* margin-bottom: 1rem; */
   }
 }
 
@@ -411,20 +443,20 @@ textarea {
     max-width: 17rem;
   }
 
-  .search-box  {
+  .search-box {
     transform: translate(calc(-50% + -4.5rem), 0);
   }
 }
 
 .customer-care a svg path,
-.social-login  a svg path{
-    transition: all ease-in-out 0.5s;
+.social-login a svg path {
+  transition: all ease-in-out 0.5s;
 }
 
-.customer-care a:hover svg path{
-    stroke: #007BFF;
+.customer-care a:hover svg path {
+  stroke: #007BFF;
 }
 
-.social-login a:hover svg path{
-    fill: #007BFF;
+.social-login a:hover svg path {
+  fill: #007BFF;
 }
