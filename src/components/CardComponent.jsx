@@ -14,7 +14,6 @@ import {
 } from "../redux/slices/WishListSlice";
 
 const CardComponent = ({ product, isWishlistKey = false }) => {
-  console.log("isWishlistKey", isWishlistKey);
   const productData = isWishlistKey
     ? {
         name: product.product_name,
@@ -29,8 +28,6 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         wholesaler_id: product.wholesaler_id,
       }
     : product;
-
-    console.log("productData", productData);
   const { textColor } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
