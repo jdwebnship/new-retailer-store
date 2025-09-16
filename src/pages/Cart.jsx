@@ -69,11 +69,11 @@ function Cart() {
   };
 
   const { subtotal, tax, total, itemCount } = useMemo(() => {
-    if (!cartItems?.cart?.length) {
+    if (!cartItems?.length) {
       return { subtotal: 0, tax: 0, total: 0, itemCount: 0 };
     }
 
-    const sub = cartItems.cart.reduce((sum, item) => {
+    const sub = cartItems.reduce((sum, item) => {
       return sum + parseFloat(item.final_price) * item.quantity;
     }, 0);
 
@@ -82,15 +82,12 @@ function Cart() {
       subtotal: sub,
       tax: t,
       total: sub + t,
-      itemCount: cartItems.cart.reduce(
-        (count, item) => count + item.quantity,
-        0
-      ),
+      itemCount: cartItems.reduce((count, item) => count + item.quantity, 0),
     };
   }, [cartItems]);
 
   const proceedToCheckout = () => {
-    navigate("/checkout", { state: { items: cartItems?.cart || [] } });
+    navigate("/checkout", { state: { items: cartItems || [] } });
   };
 
   return (
@@ -104,10 +101,8 @@ function Cart() {
               {itemCount > 0 &&
                 `(${itemCount} ${itemCount === 1 ? "item" : "items"})`}
             </h1>
-            {loading ? (
-              <div className="text-center p-6">Loading cart...</div>
-            ) : cartItems?.cart?.length > 0 ? (
-              cartItems?.cart?.map((item) => {
+            {cartItems?.length > 0 ? (
+              cartItems?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0];
                 return (
                   <div
@@ -224,7 +219,7 @@ function Cart() {
                   setIsModalOpen(true);
                   document.body.style.overflow = "hidden";
                 }}
-                disabled={!cartItems?.cart?.length || loading}
+                disabled={!cartItems?.length}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
               >
                 Checkout
@@ -232,7 +227,7 @@ function Cart() {
             ) : (
               <button
                 onClick={proceedToCheckout}
-                disabled={!cartItems?.cart?.length || loading}
+                disabled={!cartItems?.length}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
               >
                 Checkout

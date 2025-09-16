@@ -124,12 +124,6 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
             {step === "phone" ? (
               <div className="space-y-6 w-full">
                 <div>
-                  <DialogTitle
-                    as="h2"
-                    className="text-[1.5rem] lg:text-[2rem] font-bold mb-6"
-                  >
-                    Store Name
-                  </DialogTitle>
                   <p className="mb-1 text-base lg:text-2xl font-bold">
                     Sign in or Create account.
                   </p>
@@ -197,9 +191,7 @@ const ModalComponent = ({ isModalOpen, setIsModalOpen }) => {
                   </DialogTitle>
                   <p className="mb-6 text-lg text-left">
                     Enter the verification code sent to{" "}
-                    <span className="font-bold">
-                      {phoneNumber}
-                    </span>
+                    <span className="font-bold">{phoneNumber}</span>
                   </p>
                 </div>
                 <div className="flex flex-col justify-between h-full">

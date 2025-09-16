@@ -186,7 +186,7 @@ function Checkout() {
                   Edit Cart
                 </Link>
               </div>
-              {cartItems?.cart.map((item) => {
+              {cartItems?.cart?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0] || watch;
                 return (
                   <div key={item.cart_id} className="bottom-card">

@@ -163,15 +163,15 @@ function Product() {
     }
     if (filters.in_stock) {
       params.set("in_stock", "true");
-      params.set("page", "1");
+      // params.set("page", "1");
     }
     if (filters.out_of_stock) {
       params.set("out_of_stock", "true");
-      params.set("page", "1");
+      // params.set("page", "1");
     }
     if (filters.sort_by) {
       params.set("sort_by", filters.sort_by);
-      params.set("page", "1");
+      // params.set("page", "1");
     }
 
     setSearchParams(params, { replace: true });
@@ -347,8 +347,7 @@ function Product() {
     filters.categories.length > 0 ||
     filters.sizes.length > 0 ||
     filters.priceRange[0] > 0 ||
-    filters.priceRange[1] < 10000 ||
-    filters.sort_by != "recently_added";
+    filters.priceRange[1] < 10000;
 
   const activeFilterCount =
     (filters.in_stock ? 1 : 0) +
@@ -356,8 +355,7 @@ function Product() {
     filters.categories.length +
     filters.sizes.length +
     (filters.priceRange[0] > 0 || filters.priceRange[1] < 10000 ? 1 : 0) +
-    (searchQuery ? 1 : 0) +
-    (filters.sort_by ? 1 : 0);
+    (searchQuery ? 1 : 0);
 
   return (
     <div className="">
@@ -478,7 +476,7 @@ function Product() {
                       />
                     </span>
                   )}
-                  {filters.sort_by && (
+                  {/* {filters.sort_by && (
                     <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                       {filters.sort_by}
                       <img
@@ -488,7 +486,7 @@ function Product() {
                         onClick={() => handleCheckboxChange("sort_by", null)}
                       />
                     </span>
-                  )}
+                  )} */}
                 </div>
               </div>
             </div>
@@ -633,7 +631,7 @@ function Product() {
           </div>
 
           <div className="lg:col-span-10 lg:pl-[1.875rem]">
-            <div className="flex flex-wrap gap-2 justify-between mb-[1.5rem]">
+            <div className="flex flex-wrap gap-2 justify-between mb-[1.5rem] items-center">
               <select
                 className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={filters.sort_by || ""}
@@ -648,15 +646,14 @@ function Product() {
                 <option value="price_low_to_high">Price Low To High</option>
               </select>
               <span className="text-[#808080] uppercase">
-                {ProductLoading ? (
-                  "Loading..."
-                ) : pageForm && pageTo ? (
-                  <>
-                    Showing {pageForm}-{pageTo} of {totalItems}
-                  </>
-                ) : (
-                  "No products found"
-                )}
+                {ProductLoading
+                  ? "Loading..."
+                  : pageForm &&
+                    pageTo && (
+                      <>
+                        Showing {pageForm}-{pageTo} of {totalItems} results.
+                      </>
+                    )}
               </span>
             </div>
             {ProductLoading ? (
