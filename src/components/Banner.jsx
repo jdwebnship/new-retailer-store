@@ -22,7 +22,7 @@ function SingleImage({ data }) {
           {data?.title || "Wardrobe Refresh"}
         </p>
         <div
-          className="text-[2rem] lg:text-[52px] xl:text-[62px] uppercase text-white mb-[8px]"
+          className="text-[2rem] lg:text-[52px] xl:text-[62px] uppercase text-white mb-[8px] font-bold"
           dangerouslySetInnerHTML={{
             __html: data?.content || "<p>New styles are here</p>",
           }}
@@ -75,7 +75,7 @@ function Video({ data }) {
           {data?.title || "Wardrobe Refresh"}
         </p>
         <div
-          className="text-[2rem] lg:text-[52px] xl:text-[62px] uppercase text-white mb-[8px]"
+          className="text-[2rem] lg:text-[52px] xl:text-[62px] uppercase text-white mb-[8px] font-bold"
           dangerouslySetInnerHTML={{
             __html: data?.content || "<p>New styles are here</p>",
           }}
