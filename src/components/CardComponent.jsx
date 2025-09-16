@@ -96,7 +96,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
       >
         {getProductImage(productData) && (
           <div
-            className="relative before:content-[''] before:block before:float-left before:pt-[143%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] rounded-[1.125rem] flex flex-col align-items-center justify-center"
+            className="relative before:content-[''] before:block before:float-left before:pt-[126%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] rounded-[1.125rem] flex flex-col align-items-center justify-center"
             style={{
               height: "100%",
               borderRadius: "1.125rem",
