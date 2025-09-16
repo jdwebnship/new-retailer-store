@@ -101,9 +101,7 @@ function Cart() {
               {itemCount > 0 &&
                 `(${itemCount} ${itemCount === 1 ? "item" : "items"})`}
             </h1>
-            {loading ? (
-              <div className="text-center p-6">Loading cart...</div>
-            ) : cartItems?.length > 0 ? (
+            {cartItems?.length > 0 ? (
               cartItems?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0];
                 return (
@@ -221,7 +219,7 @@ function Cart() {
                   setIsModalOpen(true);
                   document.body.style.overflow = "hidden";
                 }}
-                disabled={!cartItems?.length || loading}
+                disabled={!cartItems?.length}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
               >
                 Checkout
@@ -229,7 +227,7 @@ function Cart() {
             ) : (
               <button
                 onClick={proceedToCheckout}
-                disabled={!cartItems?.length || loading}
+                disabled={!cartItems?.length}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
               >
                 Checkout
