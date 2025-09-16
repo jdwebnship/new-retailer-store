@@ -129,6 +129,10 @@ function CommonHeader({ className = "", ...props }) {
       title: "Contact",
       breadcrumb: true,
     },
+    "*": {
+      title: "Page Not Found",
+      breadcrumb: true,
+    },
   };
 
   // Breadcrumb component for reusability

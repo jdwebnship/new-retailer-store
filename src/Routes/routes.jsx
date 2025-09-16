@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { lazy, Suspense } from "react";
 import { Contact } from "lucide-react";
 import Contacts from "../pages/Contacts";
+import NotFound from "../pages/NotFound";
 
 // Lazy-loaded routes
 const About = lazy(() => import("../pages/About"));
@@ -143,7 +144,7 @@ function AppRoutes() {
           }
         />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
   );

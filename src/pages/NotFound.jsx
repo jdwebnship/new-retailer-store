@@ -31,13 +31,13 @@ function NotFound() {
         <div className="flex flex-row gap-4 justify-center my-5">
           <a
             href=""
-            className="inline w-full lg:w-1/2 text-center gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center"
+            className="inline w-full lg:w-1/2 text-center gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center uppercase"
           >
             Go to Homepage
           </a>
           <a
             href=""
-            className="inline w-full lg:w-1/2 text-center gap-2 border px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center"
+            className="inline w-full lg:w-1/2 text-center gap-2 border px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center uppercase"
           >
             Contact Support
           </a>
