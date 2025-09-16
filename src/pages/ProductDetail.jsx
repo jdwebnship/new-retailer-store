@@ -11,16 +11,20 @@ import { useNavigate, useParams } from "react-router-dom";
 import { fetchProductsDetails } from "../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getWhatsappLink, isInWishlist } from "../utils/common";
-import { addtowishList, removeFromwishList } from "../redux/slices/WishListSlice";
+import {
+  addtowishList,
+  removeFromwishList,
+} from "../redux/slices/WishListSlice";
 import useVariantQuery from "../hooks/useVariantQuery";
 import { toast } from "react-toastify";
-import { addToCart } from "../redux/slices/cartSlice";
+import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
+import useCartQuantity from "../hooks/useCartQuantity";
 
 function ProductDetail() {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [quantity, setQuantity] = useState(1);
+  // const [quantity, setQuantity] = useState(1);
   const [activeIndex, setActiveIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const [productVariations, setProductVariations] = useState([]);
@@ -32,9 +36,11 @@ function ProductDetail() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
-  const product = productDetails?.product
+  const product = productDetails?.product;
   const wishlistData = wishlist?.data?.wishlist;
-  const productImg = product?.product_images ? product?.product_images.split(',') : []
+  const productImg = product?.product_images
+    ? product?.product_images.split(",")
+    : [];
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 
@@ -42,8 +48,6 @@ function ProductDetail() {
   const [mainHeight, setMainHeight] = useState("400px"); // Initial fallback
   const mainContainerRef = useRef(null);
   const thumbContainerRef = useRef(null);
-
-  
 
   const addToWishList = () => {
     if (isAuthenticated) {
@@ -82,17 +86,22 @@ function ProductDetail() {
       if (product.productVariations.length === 1) {
         setVariant(product.productVariations[0].product_variation);
       }
+    } else {
+      setProductVariations([]);
     }
   }, [product?.productVariations]);
 
   const handleVariantSelect = (selectedVariant) => {
     setVariant(selectedVariant);
-    setQuantity(1); // Reset quantity when variant changes
+    // setQuantity(1); // Reset quantity when variant changes
   };
 
   const discount =
-    product?.old_price && product?.new_price
-      ? (((product?.old_price - product?.new_price) / product?.old_price) * 100).toFixed(0)
+    product?.old_price && product?.final_price
+      ? (
+          ((product?.old_price - product?.final_price) / product?.old_price) *
+          100
+        ).toFixed(0)
       : 0;
 
   const selectedVariant = productVariations.find(
@@ -107,51 +116,60 @@ function ProductDetail() {
     )
     .reduce((sum, item) => sum + item.quantity, 0);
 
-  console.log("cartQuantity", cartQuantity);
-
-  const MAX_LIMIT = 5;
   const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
-
-  const increaseQuantity = () => {
-    setQuantity((prev) =>
-      Math.min(prev + 1, Math.min(availableStock - cartQuantity, MAX_LIMIT))
+  const { quantity, increase, decrease, canIncrease, canDecrease } =
+    useCartQuantity(
+      1, // initial
+      5, // maxLimit
+      availableStock, // stock from API
+      cartQuantity, // already in cart
+      selectedVariant?.id // resetKey → resets quantity when variant changes
     );
-  };
 
-  const decreaseQuantity = () => {
-    setQuantity((prev) => Math.max(1, prev - 1));
-  };
+  // const increaseQuantity = () => {
+  //   setQuantity((prev) =>
+  //     Math.min(prev + 1, Math.min(availableStock - cartQuantity, MAX_LIMIT))
+  //   );
+  // };
 
-  const handleAddToCart = (e) => {
-    e.stopPropagation();
+  // const decreaseQuantity = () => {
+  //   setQuantity((prev) => Math.max(1, prev - 1));
+  // };
+
+  const handleAddToCart = () => {
+    // e.stopPropagation();
     if (availableStock === 0) {
       toast.warning("Product is not avaliable");
     } else if (cartQuantity + quantity > availableStock) {
       toast.warning("Cannot add more than available stock");
     } else if (productVariations?.length) {
       if (selectedVariant) {
-        dispatch(addToCart({
-          item: {
-            ...product,
-            selectedVariant: {
-              id: selectedVariant.id,
-              product_variation: selectedVariant.product_variation,
-              final_price: selectedVariant.final_price,
-              stock: selectedVariant.stock,
+        dispatch(
+          addToCart({
+            item: {
+              ...product,
+              selectedVariant: {
+                id: selectedVariant.id,
+                product_variation: selectedVariant.product_variation,
+                final_price: selectedVariant.final_price,
+                stock: selectedVariant.stock,
+              },
             },
-          },
-          quantity,
-        }));
+            quantity,
+          })
+        );
       } else {
         toast.warning("Please select a size");
       }
     } else {
-      dispatch(addToCart({
-        item: {
-          ...product,
-        },
-        quantity,
-      }));
+      dispatch(
+        addToCart({
+          item: {
+            ...product,
+          },
+          quantity,
+        })
+      );
     }
   };
 
@@ -187,11 +205,16 @@ function ProductDetail() {
         const spaceBetween = 15;
         const containerWidth = thumbContainerRef.current.offsetWidth;
         const aspectRatio =
-          thumbImg && thumbImg.complete && thumbImg.naturalWidth > 0 && thumbImg.naturalHeight > 0
+          thumbImg &&
+          thumbImg.complete &&
+          thumbImg.naturalWidth > 0 &&
+          thumbImg.naturalHeight > 0
             ? thumbImg.naturalWidth / thumbImg.naturalHeight
             : 1.5;
         const singleThumbHeight = containerWidth / aspectRatio;
-        const totalThumbHeight = singleThumbHeight * slidesPerView + spaceBetween * (slidesPerView - 1);
+        const totalThumbHeight =
+          singleThumbHeight * slidesPerView +
+          spaceBetween * (slidesPerView - 1);
         setThumbHeight(`${totalThumbHeight}px`);
       }
 
@@ -282,15 +305,15 @@ function ProductDetail() {
                   breakpoints={{
                     0: {
                       direction: "horizontal",
-                      slidesPerView: 3
+                      slidesPerView: 3,
                     },
                     768: {
                       slidesPerView: 4,
-                      direction: "vertical"
+                      direction: "vertical",
                     },
                     1440: {
                       slidesPerView: 4,
-                      direction: "vertical"
+                      direction: "vertical",
                     },
                   }}
                   modules={[Navigation, Thumbs]}
@@ -304,12 +327,17 @@ function ProductDetail() {
                   {productImg.map((src, index) => (
                     <SwiperSlide key={index}>
                       <div
-                        className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${activeIndex === index
-                          ? "grayscale-0 opacity-100"
-                          : "grayscale opacity-50"
-                          }`}
+                        className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${
+                          activeIndex === index
+                            ? "grayscale-0 opacity-100"
+                            : "grayscale opacity-50"
+                        }`}
                       >
-                        <img src={src} alt="" className="absolute top-0 left-0 object-contain w-full h-full block" />
+                        <img
+                          src={src}
+                          alt=""
+                          className="absolute top-0 left-0 object-contain w-full h-full block"
+                        />
                       </div>
                     </SwiperSlide>
                   ))}
@@ -382,12 +410,22 @@ function ProductDetail() {
 
           {/* Details Column */}
           <div className="w-full lg:max-w-[calc((((100vw-5rem)+2rem)/12)*5-2rem)] xl:max-w-[calc((((100vw-7.5rem)+3.125rem)/12)*5-3.125rem)] 2xl:max-w-[calc((((100vw-7.5rem)+6.25rem)/12)*5-6.25rem)] text-left px-3.5">
-            <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5">{product.name}</h3>
+            <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5">
+              {product.name}
+            </h3>
             <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-lg p-4 w-auto flex-auto">
-              <span className="mr-3 text-[1.5rem] font-bold">₹{product.new_price.toFixed(2)}</span>
-              <span className="mr-3 line-through text-[1rem] text-[#808080]">₹{product.old_price.toFixed(2)}</span>
-              <span className="mr-1 text-[0.875rem] discount bg-[#111111] px-[0.375rem] text-[#FFFFFF] rounded-sm">{discount}%</span>
-              <span className="mr-1 text-[0.75rem] text-[#808080] uppercase">off</span>
+              <span className="mr-3 text-[1.5rem] font-bold">
+                ₹{product.final_price.toFixed(2)}
+              </span>
+              <span className="mr-3 line-through text-[1rem] text-[#808080]">
+                ₹{product.old_price.toFixed(2)}
+              </span>
+              <span className="mr-1 text-[0.875rem] discount bg-[#111111] px-[0.375rem] text-[#FFFFFF] rounded-sm">
+                {discount}%
+              </span>
+              <span className="mr-1 text-[0.75rem] text-[#808080] uppercase">
+                off
+              </span>
             </div>
             <div className="item-stock-status mb-6">
               <p className="text-2xl flex items-center">
@@ -396,7 +434,8 @@ function ProductDetail() {
               </p>
             </div>
             {/* Available Sizes */}
-            {(product?.variations?.length > 0 || product?.productVariations?.length > 0) && (
+            {(product?.variations?.length > 0 ||
+              product?.productVariations?.length > 0) && (
               <div className="mb-6">
                 <h4 className="text-sm font-bold mb-2 uppercase">Size</h4>
                 <div className="flex flex-wrap gap-2">
@@ -404,9 +443,13 @@ function ProductDetail() {
                     <button
                       key={item.id}
                       disabled={!item?.stock}
-                      onClick={() => handleVariantSelect(item?.product_variation)}
+                      onClick={() =>
+                        handleVariantSelect(item?.product_variation)
+                      }
                       className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${
-                        variant === item?.product_variation ? "border-black" : ""
+                        variant === item?.product_variation
+                          ? "border-black"
+                          : ""
                       }`}
                     >
                       {item?.product_variation}
@@ -422,9 +465,9 @@ function ProductDetail() {
               <div className="quantity-wrapper">
                 <div className="inline-flex items-center border border-gray-300 rounded-md py-2 h-full">
                   <button
-                    onClick={decreaseQuantity}
+                    onClick={decrease}
                     className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition"
-                    disabled={quantity === 1}
+                    disabled={!canDecrease}
                   >
                     <svg
                       className="w-5 h-5"
@@ -444,12 +487,9 @@ function ProductDetail() {
                     {quantity}
                   </span>
                   <button
-                    onClick={increaseQuantity}
-                    className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition"
-                    disabled={
-                      quantity + cartQuantity >= availableStock ||
-                      quantity >= MAX_LIMIT
-                    }
+                    onClick={increase}
+                    className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition disabled:cursor-not-allowed"
+                    disabled={!canIncrease}
                   >
                     <svg
                       className="w-5 h-5"
@@ -468,9 +508,16 @@ function ProductDetail() {
                 </div>
               </div>
               <button
-                onClick={handleAddToCart}
-                className="flex-1 btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none">
-                Add to Cart
+                onClick={() => {
+                  if (!canIncrease) {
+                    dispatch(openCartPopup());
+                  } else {
+                    handleAddToCart();
+                  }
+                }}
+                className="flex-1 btn sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none"
+              >
+                {!canIncrease ? "Go to Cart" : "Add to Cart"}
               </button>
             </div>
             <div className="text-xl mb-6 price-wrapper flex flex-wrap rounded-lg w-auto flex-auto gap-3.5">
@@ -480,8 +527,16 @@ function ProductDetail() {
                   e.stopPropagation();
                   getWhatsappLink(e, product, phone_number);
                 }}
-                className="flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center">
-                <span className="max-w-[1.5rem] mr-2"><img className="w-full h-auto" src={whatsapp} alt="WhatsApp" /></span>Enquiry on whatsapp
+                className="flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
+              >
+                <span className="max-w-[1.5rem] mr-2">
+                  <img
+                    className="w-full h-auto"
+                    src={whatsapp}
+                    alt="WhatsApp"
+                  />
+                </span>
+                Enquiry on whatsapp
               </button>
               <button
                 onClick={(e) => {
@@ -489,7 +544,8 @@ function ProductDetail() {
                   e.stopPropagation();
                   addToWishList();
                 }}
-                className="flex-[100%] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center">
+                className="flex-[100%] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
+              >
                 <span className="max-w-[1.5rem] mr-2">
                   <svg
                     width="24"
@@ -512,7 +568,9 @@ function ProductDetail() {
             </div>
             {product.description && (
               <div className="description-wrapper">
-                <h4 className="text-sm font-bold mb-2 uppercase">Description</h4>
+                <h4 className="text-sm font-bold mb-2 uppercase">
+                  Description
+                </h4>
                 <p className="mb-4">{product?.description}</p>
               </div>
             )}

@@ -19,6 +19,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         name: product.product_name,
         slug: product.product_slug,
         new_price: product.price,
+        final_price: product.final_price,
         images: product.product_images,
         id: product.retailer_product_id || product.product_id,
         product_id: product.product_id,
@@ -192,13 +193,13 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
             </h3>
           )}
 
-          {productData?.new_price && (
+          {productData?.final_price && (
             <div className="flex gap-2">
               <p
                 className="font-bold"
                 style={{ margin: 0, fontSize: "1.125rem", color: textColor }}
               >
-                ₹{productData?.new_price}
+                ₹{productData?.final_price}
               </p>
               {product?.old_price !== 0 && (
                 <p

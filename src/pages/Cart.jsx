@@ -11,15 +11,17 @@ import {
 } from "../redux/slices/cartSlice";
 
 function Cart() {
-  const { cartItems, loading, error } = useSelector((state) => state.cart);
+  const { cartItems, loading } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchCart());
-  }, [dispatch]);
+    if (isAuthenticated) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, isAuthenticated]);
 
   const handleUpdateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
@@ -104,10 +106,6 @@ function Cart() {
             </h1>
             {loading ? (
               <div className="text-center p-6">Loading cart...</div>
-            ) : error ? (
-              <div className="text-center p-6 text-red-600">
-                Error loading cart: {error}
-              </div>
             ) : cartItems?.cart?.length > 0 ? (
               cartItems?.cart?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0];

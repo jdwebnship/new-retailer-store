@@ -14,6 +14,8 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import OrderDetailsPopup from "../model/OrderDetailsPopup";
+import CartPopup from "./CartPopup";
+import { closeCartPopup } from "../redux/slices/cartSlice";
 
 function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
   const { theme, headerTextColor } = useTheme();
@@ -23,12 +25,15 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
   const ref = useRef(null);
   const dispatch = useDispatch();
   const { storeInfo, loading } = useSelector((state) => state.storeInfo);
+  const { isCartOpen, cartItems } = useSelector((state) => state.cart);
   const categories = storeInfo?.sub_category_list || [];
   const [isShopMegaMenuOpen, setIsShopMegaMenuOpen] = useState(false);
   const orderPopup = useSelector((state) => state.orderPopup);
   useEffect(() => {
     dispatch(fetchStoreInfo());
   }, [dispatch]);
+
+  console.log("cartItems", cartItems);
 
   // Prevent background scroll when drawer is open
   useEffect(() => {
@@ -559,158 +564,15 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
           </nav>
         </aside>
       </header>
-      {/* Cart POP up Start*/}
-      {/* <div className="overlay w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-99"></div>
-      <div className="cart-popup flex flex-col justify-between fixed right-0 top-0 z-100 w-full max-w-[31.25rem] h-dvh bg-white shadow-lg p-7.5 overflow-y-auto">
-        <div>
-          <div className="flex justify-between items-center border-b border-[#11111126] pb-5 mb-6">
-            <h2 className="text-2xl font-bold">Cart(3)</h2>
-            <img src={close} alt="" />
-          </div>
+      {/* Cart POP up */}
+      {isCartOpen && (
+        <CartPopup
+          items={cartItems}
+          onClose={() => dispatch(closeCartPopup())}
+        />
+      )}
 
-          <div className="flex flex-col gap-6">
-            <div className="flex gap-4">
-              <img
-                src={s05}
-                alt=""
-                className="sm:w-25 sm:h-25 w-20 h-20 rounded-[1.125rem] object-cover"
-              />
-              <div className="flex-1 flex flex-col justify-between gap-2">
-                <div className="flex justify-between">
-                  <p className="text-base font-bold">
-                    Longine_s Heritage Classic...
-                  </p>
-                  <p className="text-base font-bold">₹3,298</p>
-                </div>
-                <div className="text-left">
-                  <span className="leading-none inline-block text-base text-[#AAAAAA]">
-                    Size:
-                    <strong className="font-bold text-[#111111] ml-2">L</strong>
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center border border-[#AAAAAA] rounded-lg w-fit">
-                    <button
-                      className="px-2.5 py-1 cursor-pointer"
-                      style={{ minWidth: "1.2rem" }}
-                    >
-                      -
-                    </button>
-                    <span className="px-3">2</span>
-                    <button
-                      className="px-2.5 py-1 cursor-pointer"
-                      style={{ minWidth: "1.2rem" }}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button className="text-sm text-[#111111] underline cursor-pointer hover:text-[#007BFF] transition-all duration-300">
-                    REMOVE
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <img
-                src={s05}
-                alt=""
-                className="sm:w-25 sm:h-25 w-20 h-20 rounded-[1.125rem] object-cover"
-              />
-              <div className="flex-1 flex flex-col justify-between gap-2">
-                <div className="flex justify-between">
-                  <p className="text-base font-bold">
-                    Longine_s Heritage Classic...
-                  </p>
-                  <p className="text-base font-bold">₹3,298</p>
-                </div>
-                <div className="text-left">
-                  <span className="leading-none inline-block text-base text-[#AAAAAA]">
-                    Size:
-                    <strong className="font-bold text-[#111111] ml-2">L</strong>
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center border border-[#AAAAAA] rounded-lg w-fit">
-                    <button
-                      className="px-2.5 py-1 cursor-pointer"
-                      style={{ minWidth: "1.2rem" }}
-                    >
-                      -
-                    </button>
-                    <span className="px-3">2</span>
-                    <button
-                      className="px-2.5 py-1 cursor-pointer"
-                      style={{ minWidth: "1.2rem" }}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button className="text-sm text-[#111111] underline cursor-pointer hover:text-[#007BFF] transition-all duration-300">
-                    REMOVE
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div className="flex gap-4">
-              <img
-                src={s05}
-                alt=""
-                className="sm:w-25 sm:h-25 w-20 h-20 rounded-[1.125rem] object-cover"
-              />
-              <div className="flex-1 flex flex-col justify-between gap-2">
-                <div className="flex justify-between">
-                  <p className="text-base font-bold">
-                    Longine_s Heritage Classic...
-                  </p>
-                  <p className="text-base font-bold">₹3,298</p>
-                </div>
-                <div className="text-left">
-                  <span className="leading-none inline-block text-base text-[#AAAAAA]">
-                    Size:
-                    <strong className="font-bold text-[#111111] ml-2">L</strong>
-                  </span>
-                </div>
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center border border-[#AAAAAA] rounded-lg w-fit">
-                    <button
-                      className="px-2.5 py-1 cursor-pointer"
-                      style={{ minWidth: "1.2rem" }}
-                    >
-                      -
-                    </button>
-                    <span className="px-3">2</span>
-                    <button
-                      className="px-2.5 py-1 cursor-pointer"
-                      style={{ minWidth: "1.2rem" }}
-                    >
-                      +
-                    </button>
-                  </div>
-                  <button className="text-sm text-[#111111] underline cursor-pointer hover:text-[#007BFF] transition-all duration-300">
-                    REMOVE
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="mt-6 flex flex-col gap-3 border-t border-[#11111126] pt-6">
-          <button className="btn py-4 rounded-md cursor-pointer">
-            CHECKOUT
-          </button>
-          <button className="border border-black hover:bg-black hover:text-white transition-all duration-300 py-4 rounded-md cursor-pointer uppercase">
-            View Cart
-          </button>
-          <a className="text-[#111111] text-lg underline hover:text-[#007BFF] cursor-pointer transition-all duration-300 text-center">
-            CONTINUE SHOPPING
-          </a>
-        </div>
-      </div> */}
-      {/* Cart POP up End*/}
-
-      {/* Order POP up Start*/}
       {orderPopup?.open && <OrderDetailsPopup />}
-      {/* Order POP up End*/}
     </div>
   );
 }
