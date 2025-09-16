@@ -12,10 +12,10 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
   return (
     <div className="w-full">
       {/* Slider container */}
-      <div className="relative w-full h-1 bg-gray-200 rounded-full mb-[0.75rem]">
+      <div className="relative w-full h-2 md:h-1 bg-gray-200 rounded-full mb-5 sm:mb-3">
         {/* Filled range track */}
         <div
-          className="absolute h-1 bg-black rounded-full"
+          className="absolute h-2 md:h-1 bg-black rounded-full"
           style={{
             left: `${(value[0] / 10000) * 100}%`,
             right: `${100 - (value[1] / 10000) * 100}%`,
@@ -29,13 +29,25 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
           step="100"
           value={value[0]}
           onChange={handleMinChange}
-          className="absolute top-[-0.275rem] w-full bg-transparent appearance-none pointer-events-none
+          className="
+            absolute top-[-0.4rem] sm:top-[-0.5rem] w-full bg-transparent appearance-none pointer-events-none
+            touch-action-pan-y
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:pointer-events-auto
-            [&::-webkit-slider-thumb]:h-[0.75rem] [&::-webkit-slider-thumb]:w-[0.75rem]
+            [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5
+            md:[&::-webkit-slider-thumb]:h-3 md:[&::-webkit-slider-thumb]:w-3
             [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white
-            [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-black
-            [&::-webkit-slider-thumb]:cursor-pointer"
+            [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black
+            [&::-webkit-slider-thumb]:cursor-pointer
+            [&::-moz-range-thumb]:appearance-none
+            [&::-moz-range-thumb]:pointer-events-auto
+            [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5
+            md:[&::-moz-range-thumb]:h-3 md:[&::-moz-range-thumb]:w-3
+            [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white
+            [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black
+            [&::-moz-range-thumb]:cursor-pointer
+            z-[2]
+          "
         />
         {/* Max handle */}
         <input
@@ -45,13 +57,25 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
           step="100"
           value={value[1]}
           onChange={handleMaxChange}
-          className="absolute top-[-0.275rem] w-full bg-transparent appearance-none pointer-events-none
+          className="
+            absolute top-[-0.4rem] sm:top-[-0.5rem] w-full bg-transparent appearance-none pointer-events-none
+            touch-action-pan-y
             [&::-webkit-slider-thumb]:appearance-none
             [&::-webkit-slider-thumb]:pointer-events-auto
-            [&::-webkit-slider-thumb]:h-[0.75rem] [&::-webkit-slider-thumb]:w-[0.75rem]
+            [&::-webkit-slider-thumb]:h-5 [&::-webkit-slider-thumb]:w-5
+            md:[&::-webkit-slider-thumb]:h-3 md:[&::-webkit-slider-thumb]:w-3
             [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white
-            [&::-webkit-slider-thumb]:border [&::-webkit-slider-thumb]:border-black
-            [&::-webkit-slider-thumb]:cursor-pointer"
+            [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-black
+            [&::-webkit-slider-thumb]:cursor-pointer
+            [&::-moz-range-thumb]:appearance-none
+            [&::-moz-range-thumb]:pointer-events-auto
+            [&::-moz-range-thumb]:h-5 [&::-moz-range-thumb]:w-5
+            md:[&::-moz-range-thumb]:h-3 md:[&::-moz-range-thumb]:w-3
+            [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-white
+            [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-black
+            [&::-moz-range-thumb]:cursor-pointer
+            z-[3]
+          "
         />
       </div>
 
