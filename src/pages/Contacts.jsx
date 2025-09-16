@@ -374,7 +374,7 @@ function Contacts() {
                   <input
                     type="checkbox"
                     name="subscribe"
-                    className="form-checkbox h-5 w-5 text-blue-600"
+                    className="form-checkbox h-5 w-5 text-blue-600 shrink-0"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     checked={formik.values.subscribe}
