@@ -109,7 +109,7 @@ function ProductDetail() {
   );
 
   const cartQuantity = cartItems
-    .filter(
+    ?.filter(
       (item) =>
         item.product_id === product.id &&
         (!selectedVariant || item.selected_variant?.id === selectedVariant.id)
