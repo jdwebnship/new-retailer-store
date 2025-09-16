@@ -20,8 +20,10 @@ function Cart() {
   const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
-    dispatch(fetchCart());
-  }, []);
+    if (isAuthenticated) {
+      dispatch(fetchCart());
+    }
+  }, [isAuthenticated]);
 
 
   const { subtotal, tax, total, itemCount } = useMemo(() => {
@@ -69,9 +71,7 @@ function Cart() {
               {itemCount > 0 &&
                 `(${itemCount} ${itemCount === 1 ? "item" : "items"})`}
             </h1>
-            {loading ? (
-              <div className="text-center p-6">Loading cart...</div>
-            ) : cartItems?.length > 0 ? (
+            {cartItems?.length > 0 ? (
               cartItems.map((item) => (
                 <OrderList
                   key={item.cart_id}

@@ -10,30 +10,14 @@ import UpdateAddressForm from "../forms/UpdateAddressForm";
 import AccountDetails from "../forms/AccountDetails";
 import Orders from "../components/Orders";
 import { fetchWishList } from "../redux/slices/WishListSlice";
+import Wishlist from "../components/wishList";
 
-const renderContent = (selected, wishlistData) => {
+const renderContent = (selected) => {
   switch (selected) {
     case "orders":
       return <Orders />;
     case "wishlist":
-      return (
-        <div className="w-full">
-          <div className="flex justify-between w-full pb-[1.5rem] items-center">
-            <h3 className="text-2xl font-bold">Wishlist</h3>
-          </div>
-          <hr className="opacity-10" />
-          {/* Card */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-[1.5rem] gap-y-[1.875rem] lg:gap-y-[4.375rem] mt-[1.5rem]">
-            {wishlistData?.map((wishlist, index) => (
-              <CardComponent
-                key={index}
-                product={wishlist}
-                isWishlistKey={true}
-              />
-            ))}
-          </div>
-        </div>
-      );
+      return <Wishlist />;
     case "address":
       return <UpdateAddressForm />;
     case "password":
@@ -58,10 +42,6 @@ const renderContent = (selected, wishlistData) => {
 };
 
 const MyAccount = () => {
-  const { wishlist } = useSelector((state) => state.wishlist);
-
-  const wishlistData = wishlist?.data?.wishlist || [];
-
   const [selected, setSelected] = useState("orders");
   const { theme, bottomFooterTextColor } = useTheme();
   const dispatch = useDispatch();
@@ -70,15 +50,6 @@ const MyAccount = () => {
   const handleLogout = async () => {
     dispatch(logoutUser({ navigate }));
   };
-
-  const hasFetchedWishlist = useRef(false);
-
-  useEffect(() => {
-    if (selected === "wishlist" && !hasFetchedWishlist.current) {
-      dispatch(fetchWishList());
-      hasFetchedWishlist.current = true;
-    }
-  }, [dispatch, selected]);
 
   const menuItems = [
     {
@@ -272,7 +243,7 @@ const MyAccount = () => {
             </ul>
           </nav>
           {/* Right Content */}
-          <div className="w-full">{renderContent(selected, wishlistData)}</div>
+          <div className="w-full">{renderContent(selected)}</div>
         </div>
       </div>
     </div>
