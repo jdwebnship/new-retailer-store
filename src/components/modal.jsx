@@ -25,18 +25,38 @@ const ModalComponent = ({
 
   // Handle OTP input
   const handleOtpChange = (e, index) => {
-    const value = e.target.value;
-    if (/^[0-9]?$/.test(value)) {
+    const value = e.target.value.replace(/\D/g, ""); // Only digits
+    if (value.length === 1) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-
-      // Move focus to next input or previous on backspace
-      if (value && index < 3) {
+      // Move focus to next input if not last
+      if (index < 3) {
         document.getElementById(`otp-input-${index + 1}`).focus();
-      } else if (!value && index > 0) {
+      }
+    } else if (value.length === 0) {
+      // Allow clearing the field and move focus to previous
+      const newOtp = [...otp];
+      newOtp[index] = "";
+      setOtp(newOtp);
+      if (index > 0) {
         document.getElementById(`otp-input-${index - 1}`).focus();
       }
+    } else if (value.length > 1) {
+      // If user pastes more than one digit, ignore (paste is handled separately)
+      return;
+    }
+  };
+
+  // Handle OTP paste
+  const handleOtpPaste = (e) => {
+    e.preventDefault();
+    const paste = e.clipboardData.getData("text").replace(/\D/g, "");
+    if (paste.length === 4) {
+      setOtp(paste.split(""));
+      setTimeout(() => {
+        document.getElementById("otp-input-3").focus();
+      }, 0);
     }
   };
 
@@ -158,7 +178,7 @@ const ModalComponent = ({
           <div className="relative w-full lg:w-1/2 p-3 xs:p-4 sm:p-6 md:p-8 lg:p-[3.75rem] flex flex-col justify-start text-left">
             <button
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-2 right-2 sm:top-4 sm:right-4 text-xl sm:text-2xl focus:outline-none"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 text-xl sm:text-2xl focus:outline-none cursor-pointer"
               aria-label="Close modal"
             >
               <svg
@@ -203,7 +223,10 @@ const ModalComponent = ({
                     aria-describedby="phone-error"
                   />
                   {phoneNumber && !/^\+?[1-9]\d{9,14}$/.test(phoneNumber) && (
-                    <p id="phone-error" className="mt-1 text-xs xs:text-sm sm:text-sm text-red-500">
+                    <p
+                      id="phone-error"
+                      className="mt-1 text-xs xs:text-sm sm:text-sm text-red-500"
+                    >
                       Please enter a valid phone number
                     </p>
                   )}
@@ -264,17 +287,18 @@ const ModalComponent = ({
                           type="text"
                           value={digit}
                           onChange={(e) => handleOtpChange(e, index)}
+                          onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                          onPaste={handleOtpPaste}
                           className="w-full border border-[#AAAAAA] rounded-lg px-1 xs:px-2 sm:px-4 py-2 sm:py-[0.82rem] text-center outline-none text-base"
-                          maxLength="1"
                           inputMode="numeric"
                           aria-label={`OTP digit ${index + 1}`}
                         />
                       ))}
                     </div>
-                    <div className="flex flex-col xs:flex-row justify-between items-center gap-1 sm:gap-0">
+                    <div className="flex justify-between items-center gap-1 sm:gap-0">
                       <button
                         onClick={handleResend}
-                        className={`w-full xs:w-auto text-gray-900 underline opacity-20 hover:opacity-100 ${
+                        className={`w-full xs:w-auto text-gray-900 underline opacity-20 hover:opacity-100 cursor-pointer ${
                           timer > 0 ? "cursor-not-allowed" : ""
                         } text-xs xs:text-sm sm:text-sm`}
                         disabled={timer > 0}

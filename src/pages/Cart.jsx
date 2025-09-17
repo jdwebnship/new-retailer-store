@@ -114,7 +114,6 @@ function Cart() {
               <button
                 onClick={() => {
                   setIsModalOpen(true);
-                  document.body.style.overflow = "hidden";
                 }}
                 disabled={!cartItems?.length}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"

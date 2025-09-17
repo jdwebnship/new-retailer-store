@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { removeFromCartapi, updateCartItem } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
+import minus from "../assets/minus.svg";
+import plus from "../assets/plus.svg";
 
 export default function OrderList({ item }) {
   const dispatch = useDispatch();
@@ -25,7 +27,7 @@ export default function OrderList({ item }) {
         }
         const quantityChange = action === "increase" ? 1 : -1;
         dispatch(updateCartItem({ item, qty: quantityChange }));
-      }
+      },
     });
 
   return (
@@ -68,10 +70,10 @@ export default function OrderList({ item }) {
       <div className="flex items-center gap-8 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
         <button
           onClick={decrease}
-          className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer"
+          className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer flex justify-center"
           style={{ minWidth: "2.5rem" }}
         >
-          –
+          <img src={minus} alt="" />
         </button>
         <span className="text-base font-normal text-[#111111] select-none">
           {quantity}
@@ -79,10 +81,10 @@ export default function OrderList({ item }) {
         <button
           onClick={increase}
           disabled={!canIncrease}
-          className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer disabled:cursor-not-allowed"
+          className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer flex justify-center disabled:cursor-not-allowed"
           style={{ minWidth: "2.5rem" }}
         >
-          +
+          <img src={plus} alt="" />
         </button>
       </div>
 
