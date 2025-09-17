@@ -240,9 +240,7 @@ const ModalComponent = ({
                 <button
                   onClick={handleContinue}
                   className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
-                  disabled={
-                    !phoneNumber || !/^\d{10}$/.test(phoneNumber)
-                  }
+                  disabled={!phoneNumber || !/^\d{10}$/.test(phoneNumber)}
                 >
                   Continue
                 </button>

@@ -118,22 +118,20 @@ function ProductDetail() {
 
   const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
   const { quantity, increase, decrease, canIncrease, canDecrease } =
-    useCartQuantity(
-      1, 
-      5, 
-      availableStock, 
-      cartQuantity, 
-      selectedVariant?.id
-    );
+    useCartQuantity(1, 5, availableStock, cartQuantity, selectedVariant?.id);
 
   const handleAddToCart = () => {
+    console.log("5555");
     // e.stopPropagation();
     if (availableStock === 0) {
       toast.warning("Product is not avaliable");
+      console.log("444");
     } else if (cartQuantity + quantity > availableStock) {
       toast.warning("Cannot add more than available stock");
+      console.log("333");
     } else if (productVariations?.length) {
       if (selectedVariant) {
+        console.log("2222");
         dispatch(
           addToCart({
             item: {
@@ -152,6 +150,7 @@ function ProductDetail() {
         toast.warning("Please select a size");
       }
     } else {
+      console.log("11111");
       dispatch(
         addToCart({
           item: {

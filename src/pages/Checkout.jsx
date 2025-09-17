@@ -1,31 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import watch from "../assets/watch.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCart } from "../redux/slices/cartSlice";
 
 function Checkout() {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  const items = location.state?.items || [];
   const { theme } = useTheme();
+  const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState("");
   const userData = user?.customer || {};
 
-  const handleContinue = (e) => {
-    e.preventDefault();
-    navigate("/payment", { state: { items } });
-  };
+  console.log("userData", cartItems);
 
-  const subtotal = items.reduce((s, it) => s + it.price * it.quantity, 0);
+  // Fetch cart items when component mounts
+  useEffect(() => {
+    if (user?.isAuthenticated) {
+      dispatch(fetchCart());
+    }
+  }, [dispatch, user?.isAuthenticated]);
 
-  // const subtotal = cartItems?.reduce((sum, item) => sum + (item.final_price * (item.quantity || 1)), 0) || 0;
-  const tax = subtotal * 0.07;
-  const total = subtotal + tax;
+  const { subtotal, total, itemCount } = useMemo(() => {
+    if (!cartItems?.length) {
+      return { subtotal: 0, total: 0, itemCount: 0 };
+    }
+
+    const sub = cartItems.reduce((sum, item) => {
+      return (
+        sum +
+        parseFloat(item.final_price || item.price || 0) * (item.quantity || 1)
+      );
+    }, 0);
+
+    return {
+      subtotal: sub,
+      total: sub, // You can add tax or shipping here if needed
+      itemCount: cartItems.reduce(
+        (count, item) => count + (item.quantity || 1),
+        0
+      ),
+    };
+  }, [cartItems]);
 
   return (
     <div>
@@ -338,20 +358,22 @@ function Checkout() {
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Subtotal</span>
                 <span className="sm:text-lg font-medium">
-                  <span>₹</span> 29,682
+                  ₹
+                  {subtotal.toLocaleString("en-IN", {
+                    maximumFractionDigits: 2,
+                  })}
                 </span>
               </div>
-              <div className="flex justify-between">
-                <span className="sm:text-lg font-medium">Discount</span>
-                <span className="sm:text-lg font-medium">2</span>
-              </div>
+
               <div className="flex justify-between">
                 <span className="sm:text-lg font-medium">Shipping</span>
                 <span className="sm:text-lg font-medium">Free</span>
               </div>
               <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
-                <span className="md:text-2xl text-lg font-medium">2</span>
+                <span className="md:text-2xl text-lg font-medium">
+                  ₹{total.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                </span>
               </div>
             </div>
             <button

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addToCart,
@@ -115,9 +115,13 @@ const CartPopup = ({ items = [], onClose }) => {
           >
             View Cart
           </button>
-          <a className="text-[#111111] text-lg underline hover:text-[#007BFF] cursor-pointer transition-all duration-300 text-center">
+          <Link
+            to="/shop"
+            onClick={() => onClose()}
+            className="text-[#111111] text-lg underline hover:text-[#007BFF] cursor-pointer transition-all duration-300 text-center"
+          >
             CONTINUE SHOPPING
-          </a>
+          </Link>
         </div>
       </div>
     </>
@@ -141,14 +145,14 @@ const CartItem = ({ item }) => {
       availableStock,
       cartQuantity,
       resetKey: item.id,
-      onChange: (newQty, action) => {
-        if (action === "decrease" && quantity === 1) {
-          dispatch(removeFromCartapi(item));
-          return;
-        }
-        const quantityChange = action === "increase" ? 1 : -1;
-        dispatch(updateCartItem({ item, qty: quantityChange }));
-      },
+      // onChange: (newQty, action) => {
+      //   if (action === "decrease" && quantity === 1) {
+      //     dispatch(removeFromCartapi(item));
+      //     return;
+      //   }
+      //   const quantityChange = action === "increase" ? 1 : -1;
+      //   dispatch(updateCartItem({ item, qty: quantityChange }));
+      // },
     });
 
   return (
@@ -179,7 +183,7 @@ const CartItem = ({ item }) => {
               className="px-2.5 py-1 cursor-pointer"
               style={{ minWidth: "1.2rem" }}
               onClick={decrease}
-              // disabled={!canDecrease}
+              disabled={!canDecrease}
             >
               -
             </button>

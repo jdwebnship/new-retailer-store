@@ -45,7 +45,7 @@ function Cart() {
       dispatch(openCheckoutModal());
       return;
     }
-    navigate("/checkout", { state: { items: cartItems || [] } });
+    navigate("/checkout");
   };
 
   // const handleOTPSendError = (error) => {

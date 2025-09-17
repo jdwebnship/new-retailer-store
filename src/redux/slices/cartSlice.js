@@ -40,6 +40,7 @@ export const addToCart = createAsyncThunk(
       const { auth } = getState();
       // If user is not logged in, add to guest cart
       if (!auth?.isAuthenticated) {
+        console.log("77777");
         const guestCartItem = {
           quantity: quantity,
           product_name: item?.name || item?.product_name,
@@ -63,9 +64,11 @@ export const addToCart = createAsyncThunk(
         };
 
         dispatch(addToCartGuest(guestCartItem));
+        console.log("guestCartItem", guestCartItem);
         dispatch(openCartPopup());
         toast.success("Item added to cart");
       } else {
+        console.log("88888");
         // If user is logged in, call the API
         const data = {
           retailer_id: item?.retailer_id,
