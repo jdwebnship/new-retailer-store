@@ -27,12 +27,11 @@ export const fetchCart = createAsyncThunk(
         error.message ||
         "Failed to fetch cart items";
 
-      toast.error(message);
+      // toast.error(message);
       return rejectWithValue(message);
     }
   }
 );
-
 
 export const addToCart = createAsyncThunk(
   "cart/addToCart",
@@ -55,11 +54,11 @@ export const addToCart = createAsyncThunk(
           id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-              id: item.selectedVariant.id,
-              product_variation: item.selectedVariant.product_variation,
-              final_price: item.selectedVariant.final_price,
-              stock: item.selectedVariant.stock,
-            }
+                id: item.selectedVariant.id,
+                product_variation: item.selectedVariant.product_variation,
+                final_price: item.selectedVariant.final_price,
+                stock: item.selectedVariant.stock,
+              }
             : null,
         };
 
@@ -102,11 +101,11 @@ export const addToCart = createAsyncThunk(
           product_id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-              id: item.selectedVariant.id,
-              product_variation: item.selectedVariant.product_variation,
-              final_price: item.selectedVariant.final_price,
-              stock: item.selectedVariant.stock,
-            }
+                id: item.selectedVariant.id,
+                product_variation: item.selectedVariant.product_variation,
+                final_price: item.selectedVariant.final_price,
+                stock: item.selectedVariant.stock,
+              }
             : null,
         };
         dispatch(addToCartUser(cartItem));
@@ -148,13 +147,17 @@ export const updateCartItem = createAsyncThunk(
           quantity: qty,
           product_id: item?.retailer_product_id || item?.product_id,
         };
-        const response = await axiosInstance.post('/customer/add-to-cart', data);
+        const response = await axiosInstance.post(
+          "/customer/add-to-cart",
+          data
+        );
         if (response?.data?.success) {
           dispatch(fetchCart());
           const apiResult = response?.data?.data?.results;
-          const productObj = Array.isArray(apiResult) && Array.isArray(apiResult[0])
-            ? apiResult[0][0]
-            : apiResult[0];
+          const productObj =
+            Array.isArray(apiResult) && Array.isArray(apiResult[0])
+              ? apiResult[0][0]
+              : apiResult[0];
 
           dispatch(
             updateQuantityUser({
@@ -166,7 +169,8 @@ export const updateCartItem = createAsyncThunk(
           toast.success(response?.data?.message || "Cart updated successfully");
         } else {
           const msg =
-            Array.isArray(response?.data?.message) && response?.data?.message?.length
+            Array.isArray(response?.data?.message) &&
+            response?.data?.message?.length
               ? response.data.message.join(", ")
               : response?.data?.message || "Failed to update cart";
 
@@ -174,7 +178,6 @@ export const updateCartItem = createAsyncThunk(
           return rejectWithValue(msg);
         }
       }
-
     } catch (error) {
       const message =
         error.response?.data?.message ||
@@ -186,7 +189,6 @@ export const updateCartItem = createAsyncThunk(
     }
   }
 );
-
 
 export const removeFromCartapi = createAsyncThunk(
   "cart/removeFromCartapi",
@@ -251,7 +253,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-            action.payload.selected_variant?.product_variation)
+              action.payload.selected_variant?.product_variation)
         );
       });
       if (existingItem) {
@@ -271,7 +273,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-            action.payload.selected_variant?.product_variation)
+              action.payload.selected_variant?.product_variation)
         );
       });
 

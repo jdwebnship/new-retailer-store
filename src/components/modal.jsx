@@ -7,8 +7,8 @@ import {
   DialogTitle,
 } from "@headlessui/react";
 import modalImg from "../assets/images/modal.jpg";
-import { toast } from "react-toastify";
 import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
+import { Link } from "react-router-dom";
 
 const ModalComponent = ({
   isModalOpen,
@@ -76,13 +76,13 @@ const ModalComponent = ({
           verifyOTP({ mobile, otp: otpValue })
         ).unwrap();
 
-        console.log("resfmdsgfmsdgf", res.data.is_existing_customer);
-
-        if (!res?.data?.is_existing_customer) {
-          setShowSignUpModal(true);
+        if (res?.success) {
+          if (!res?.data?.is_existing_customer) {
+            setShowSignUpModal(true);
+          }
+          setIsModalOpen(false);
         }
         // On successful verification, close the modal
-        setIsModalOpen(false);
         // Reset OTP state for next time
         // dispatch(resetOTPState());
       } catch (error) {
@@ -96,7 +96,7 @@ const ModalComponent = ({
     if (timer > 0) return;
 
     const cleanNumber = phoneNumber.replace(/\D/g, "");
-    const mobile = cleanNumber.length === 10 ? `91${cleanNumber}` : cleanNumber;
+    const mobile = cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
 
     try {
       await dispatch(sendOTP(mobile)).unwrap();
@@ -219,19 +219,19 @@ const ModalComponent = ({
                 </button>
                 <p className="text-xs xs:text-sm sm:text-sm text-left">
                   By signing in, you agree to our{" "}
-                  <a
-                    href="#"
+                  <Link
+                    to="/terms-use"
                     className="underline font-medium hover:text-blue-800"
                   >
                     Terms & Conditions
-                  </a>{" "}
+                  </Link>{" "}
                   and{" "}
-                  <a
-                    href="#"
+                  <Link
+                    to="/privacy-policy"
                     className="underline font-medium hover:text-blue-800"
                   >
                     Privacy Policy
-                  </a>
+                  </Link>
                   .
                 </p>
               </div>

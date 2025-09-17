@@ -31,6 +31,26 @@ export const registerUser = createAsyncThunk(
   }
 );
 
+export const registerGuestUser = createAsyncThunk(
+  "auth/register-guest",
+  async ({ data, navigate }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post(
+        "/customer/update-user-details",
+        data
+      );
+      console.log("respons3333e", response);
+      if (response?.data?.success || response?.status) {
+        toast.success(response?.data?.message);
+        navigate("/checkout");
+      }
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response?.data?.message || "Login failed");
+    }
+  }
+);
+
 // Login with email
 export const login = createAsyncThunk(
   "auth/login",
@@ -169,6 +189,8 @@ export const verifyOTP = createAsyncThunk(
       });
       if (response?.data?.success) {
         toast.success(response?.data?.message || "OTP verified successfully");
+      } else {
+        toast.error(response?.data?.message || "Invalid OTP");
       }
       return response.data;
     } catch (error) {
@@ -219,6 +241,23 @@ const authSlice = createSlice({
           : true;
       })
       .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Register failed";
+        state.isAuthenticated = false;
+      })
+
+      .addCase(registerGuestUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(registerGuestUser.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.data;
+        state.isAuthenticated = action.payload.data.email_verification_token
+          ? false
+          : true;
+      })
+      .addCase(registerGuestUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Register failed";
         state.isAuthenticated = false;

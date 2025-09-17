@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Eye, EyeOff } from "lucide-react";
-import { registerUser } from "../redux/slices/authSlice";
+import { registerGuestUser } from "../redux/slices/authSlice";
 import modalImg from "../assets/images/modal.jpg";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 // Initial values
 const initialValues = {
@@ -14,7 +15,6 @@ const initialValues = {
   lastName: "",
   email: "",
   password: "",
-  mobile: "",
   terms: false,
 };
 
@@ -32,13 +32,13 @@ const validationSchema = Yup.object({
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
       "Password must contain at least one uppercase, one lowercase, one number, and one special character"
     ),
-  mobile: Yup.string()
-    .matches(/^[0-9]{10}$/, "Enter a valid 10-digit mobile number")
-    .required("Mobile number is required"),
+
   terms: Yup.boolean().oneOf([true], "Please accept the terms & conditions"),
 });
 
-const SignUpModal = ({ isOpen, onClose, phoneNumber }) => {
+const SignUpModal = ({ isOpen, onClose }) => {
+  const { user } = useSelector((state) => state.auth);
+
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,7 +46,6 @@ const SignUpModal = ({ isOpen, onClose, phoneNumber }) => {
   const formik = useFormik({
     initialValues: {
       ...initialValues,
-      mobile: phoneNumber || "",
     },
     validationSchema,
     enableReinitialize: true,
@@ -57,11 +56,10 @@ const SignUpModal = ({ isOpen, onClose, phoneNumber }) => {
         lastname: values.lastName,
         email: values.email,
         password: values.password,
-        phone_number: values.mobile,
+        id: user.customer.id || "",
       };
       try {
-        dispatch(registerUser({ data: payload, onSuccess: onClose }));
-        navigate("/checkout");
+        dispatch(registerGuestUser({ data: payload, navigate })).unwrap();
       } catch (error) {
         console.error("Sign up failed:", error);
       }
@@ -221,35 +219,6 @@ const SignUpModal = ({ isOpen, onClose, phoneNumber }) => {
                 </div>
               </div>
 
-              {/* Mobile */}
-              <div className="relative">
-                <label className="block text-sm mb-2.5 font-bold uppercase">
-                  Mobile Number
-                </label>
-                <input
-                  id="mobile"
-                  name="mobile"
-                  inputMode="numeric"
-                  pattern="[0-9]*"
-                  type="text"
-                  className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none"
-                  placeholder="Enter your mobile number"
-                  value={formik.values.mobile}
-                  onChange={(e) => {
-                    // Only allow numbers
-                    const value = e.target.value.replace(/\D/g, "");
-                    formik.setFieldValue("mobile", value);
-                  }}
-                  onBlur={formik.handleBlur}
-                  disabled={!!phoneNumber}
-                />
-                {formik.touched.mobile && formik.errors.mobile && (
-                  <p className="text-red-500 text-sm absolute">
-                    {formik.errors.mobile}
-                  </p>
-                )}
-              </div>
-
               {/* Terms and Conditions */}
               <div className="flex items-start gap-2 mt-4">
                 <input
@@ -283,7 +252,7 @@ const SignUpModal = ({ isOpen, onClose, phoneNumber }) => {
               <button
                 type="submit"
                 className="w-full bg-black text-white rounded-[0.625rem] py-4 px-6 uppercase font-medium mt-6 hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                disabled={!formik.isValid || formik.isSubmitting}
+                // disabled={!formik.isValid || formik.isSubmitting}
               >
                 {formik.isSubmitting ? "Signing Up..." : "Sign Up"}
               </button>

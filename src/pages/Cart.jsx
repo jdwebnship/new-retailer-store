@@ -5,26 +5,22 @@ import { Link, useNavigate } from "react-router-dom";
 import ModalComponent from "../components/modal";
 import SignUpModal from "../components/SignUpModal";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchCart,
-} from "../redux/slices/cartSlice";
+import { fetchCart } from "../redux/slices/cartSlice";
 import OrderList from "../components/orderList";
 
 function Cart() {
-  const { cartItems, loading } = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
     if (isAuthenticated) {
       dispatch(fetchCart());
     }
   }, [isAuthenticated]);
-
 
   const { subtotal, tax, total, itemCount } = useMemo(() => {
     if (!cartItems?.length) {
@@ -73,10 +69,7 @@ function Cart() {
             </h1>
             {cartItems?.length > 0 ? (
               cartItems.map((item) => (
-                <OrderList
-                  key={item.cart_id}
-                  item={item}
-                />
+                <OrderList key={item.cart_id} item={item} />
               ))
             ) : (
               <div className="text-center p-6 border rounded-md">
@@ -157,7 +150,6 @@ function Cart() {
       <SignUpModal
         isOpen={showSignUpModal}
         onClose={() => setShowSignUpModal(false)}
-        phoneNumber={phoneNumber}
       />
     </div>
   );
