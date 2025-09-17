@@ -8,6 +8,7 @@ import { registerGuestUser } from "../redux/slices/authSlice";
 import modalImg from "../assets/images/modal.jpg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { syncGuestCartItems } from "../utils/helper";
 
 // Initial values
 const initialValues = {
@@ -38,7 +39,7 @@ const validationSchema = Yup.object({
 
 const SignUpModal = ({ isOpen, onClose }) => {
   const { user } = useSelector((state) => state.auth);
-
+  const { cartItems } = useSelector((state) => state.cart);
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
     },
     validationSchema,
     enableReinitialize: true,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       const payload = {
         user_token: import.meta.env.VITE_API_KEY,
         firstname: values.firstName,
@@ -59,9 +60,18 @@ const SignUpModal = ({ isOpen, onClose }) => {
         id: user.customer.id || "",
       };
       try {
-        dispatch(registerGuestUser({ data: payload, navigate })).unwrap();
+       
+        const response = await dispatch(registerGuestUser({ data: payload, navigate })).unwrap();
+        const token = response?.data?.token;
+        
+        if (token && cartItems?.length > 0) {
+          await syncGuestCartItems(token, cartItems,dispatch);
+        }
+        navigate("/checkout");
+        
       } catch (error) {
         console.error("Sign up failed:", error);
+        toast.error(error?.message || "Sign up failed. Please try again.");
       }
     },
   });

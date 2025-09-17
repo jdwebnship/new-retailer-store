@@ -39,10 +39,9 @@ export const registerGuestUser = createAsyncThunk(
         "/customer/update-user-details",
         data
       );
-      console.log("respons3333e", response);
       if (response?.data?.success || response?.status) {
         toast.success(response?.data?.message);
-        navigate("/checkout");
+    
       }
       return response.data;
     } catch (error) {
