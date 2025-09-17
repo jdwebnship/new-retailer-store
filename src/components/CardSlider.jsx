@@ -23,7 +23,7 @@ export default function CardSlider() {
             modules={[Navigation, Pagination, Autoplay]}
             className="newsSlider"
             spaceBetween={30}
-            slidesPerView={1.1}
+            slidesPerView={1}
             loop={true}
             autoplay={{
               delay: 3000,

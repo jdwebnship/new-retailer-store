@@ -35,7 +35,7 @@ function Footer() {
       <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] pt-[4.375rem]">
         <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6 pb-[1.875rem] lg:pb-[4.6875rem] gap-4">
           <div className="text-left">
-            <h2 className="uppercase mb-6 text-sm font-semibold text-[1.5rem] lg:text[2rem]">
+            <h2 className="uppercase text-sm font-semibold text-[1.5rem] ">
               {storeInfo?.storeinfo?.store_name ?? "Store name"}
             </h2>
           </div>
