@@ -361,7 +361,7 @@ function Product() {
     <div className="">
       <CommonHeader />
       <div className="mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-7.5 px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 px-4 sm:px-6 lg:px-10 xl:px-[3.6875rem]">
           <div className="lg:col-span-2 lg:sticky lg:self-start lg:top-[100px] text-left">
             <div className={`${hasActiveFilters ? "lg:col-span-2" : "hidden"}`}>
               <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem]">
@@ -633,7 +633,7 @@ function Product() {
           <div className="lg:col-span-10 lg:pl-[1.875rem]">
             <div className="flex flex-wrap gap-2 justify-between mb-[1.5rem] items-center">
               <select
-                className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="border border-gray-300 rounded px-3 py-1.5 text-sm focus:outline-none"
                 value={filters.sort_by || ""}
                 onChange={(e) => {
                   const sortValue = e.target.value || null;
@@ -645,7 +645,7 @@ function Product() {
                 <option value="price_high_to_low">Price High To Low</option>
                 <option value="price_low_to_high">Price Low To High</option>
               </select>
-              <span className="text-[#808080] uppercase">
+              <span className="text-[#808080] uppercase text-sm">
                 {ProductLoading
                   ? "Loading..."
                   : pageForm &&
@@ -661,7 +661,7 @@ function Product() {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
               </div>
             ) : filteredProducts.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-7.5 md:gap-y-[4.375rem]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-6 md:gap-y-[4.375rem]">
                 {filteredProducts.map((product) => (
                   <CardComponent key={product.id} product={product} />
                 ))}
@@ -691,8 +691,8 @@ function Product() {
                     pageCount={totalPages}
                     previousLabel=""
                     renderOnZeroPageCount={null}
-                    containerClassName="flex items-center flex-wrap sm:gap-2 custom-pagination cursor-pointer"
-                    pageClassName="px-3 py-1"
+                    containerClassName="flex items-center flex-wrap custom-pagination cursor-pointer"
+                    pageClassName="px-2 py-1"
                     pageLinkClassName="block w-full h-full"
                     previousClassName="px-2 cursor-pointer"
                     nextClassName="px-2 cursor-pointer"

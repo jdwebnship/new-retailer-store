@@ -80,12 +80,12 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
       </div>
 
       {/* Price boxes */}
-      <div className="flex justify-between gap-4">
-        <div className="flex items-center justify-center w-1/2 border rounded-lg px-3 py-2">
+      <div className="flex justify-between gap-6">
+        <div className="flex items-center justify-between w-1/2 border rounded-lg px-3 py-3">
           <span className="mr-1">₹</span>
           <span>{value[0].toLocaleString()}</span>
         </div>
-        <div className="flex items-center justify-center w-1/2 border rounded-lg px-3 py-2">
+        <div className="flex items-center justify-between w-1/2 border rounded-lg px-3 py-3">
           <span className="mr-1">₹</span>
           <span>{value[1].toLocaleString()}</span>
         </div>
