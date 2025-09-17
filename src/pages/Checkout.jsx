@@ -7,11 +7,14 @@ import { useSelector } from "react-redux";
 
 function Checkout() {
   const { cartItems } = useSelector((state) => state.cart);
+  const { user } = useSelector((state) => state.auth);
+
   const navigate = useNavigate();
   const location = useLocation();
   const items = location.state?.items || [];
   const { theme } = useTheme();
   const [paymentMethod, setPaymentMethod] = useState("");
+  const userData = user?.customer || {};
 
   const handleContinue = (e) => {
     e.preventDefault();
@@ -45,6 +48,8 @@ function Checkout() {
                     type="text"
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     placeholder="Enter your Phone number"
+                    value={userData.phone_number || ""}
+                    readOnly
                   />
                 </div>
                 <h3 className="text-2xl font-bold">Shipping Details</h3>
@@ -58,9 +63,11 @@ function Checkout() {
                   </label>
                   <input
                     id="email"
-                    type="text"
+                    type="email"
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     placeholder="Enter your email address"
+                    value={userData.email || ""}
+                    readOnly
                   />
                 </div>
                 <div className=" flex flex-col sm:flex-row">
@@ -76,6 +83,8 @@ function Checkout() {
                       id="fname"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your first name"
+                      value={userData.firstname || ""}
+                      readOnly
                     />
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-3">
@@ -90,6 +99,8 @@ function Checkout() {
                       id="lname"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your last name"
+                      value={userData.lastname || ""}
+                      readOnly
                     />
                   </div>
                 </div>
@@ -101,10 +112,12 @@ function Checkout() {
                     Address
                   </label>
                   <input
-                    id="email"
+                    id="address"
                     type="text"
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     placeholder="Enter your address"
+                    // value={userData.address || ""}
+                    // readOnly={!userData.address}
                   />
                 </div>
                 <div className=" flex flex-col sm:flex-row">
@@ -117,9 +130,11 @@ function Checkout() {
                     </label>
                     <input
                       type="text"
-                      id="fname"
+                      id="zipcode"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your zipcode"
+                      // value={userData.pincode || ""}
+                      // readOnly={!userData.pincode}
                     />
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-3">
@@ -131,9 +146,11 @@ function Checkout() {
                     </label>
                     <input
                       type="text"
-                      id="lname"
+                      id="altphone"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter your phone number"
+                      placeholder="Enter alternate phone number"
+                      // value={userData.alt_phone_number || ""}
+                      // readOnly={!userData.alt_phone_number}
                     />
                   </div>
                 </div>
@@ -150,6 +167,8 @@ function Checkout() {
                       id="city"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your city"
+                      // value={userData.city || ""}
+                      // readOnly={!userData.city}
                     />
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-3">
@@ -164,6 +183,8 @@ function Checkout() {
                       id="state"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your state"
+                      // value={userData.state || ""}
+                      // readOnly={!userData.state}
                     />
                   </div>
                 </div>
@@ -184,7 +205,7 @@ function Checkout() {
                   Edit Cart
                 </Link>
               </div>
-              {cartItems?.cart?.map((item) => {
+              {cartItems?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0] || watch;
                 return (
                   <div key={item.cart_id} className="bottom-card">

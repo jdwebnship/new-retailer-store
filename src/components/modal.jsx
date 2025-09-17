@@ -8,7 +8,7 @@ import {
 } from "@headlessui/react";
 import modalImg from "../assets/images/modal.jpg";
 import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ModalComponent = ({
   isModalOpen,
@@ -16,6 +16,7 @@ const ModalComponent = ({
   setShowSignUpModal,
 }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { verificationError } = useSelector((state) => state.auth);
 
   const [step, setStep] = useState("phone"); // "phone" or "otp"
@@ -99,6 +100,9 @@ const ModalComponent = ({
         if (res?.success) {
           if (!res?.data?.is_existing_customer) {
             setShowSignUpModal(true);
+          } else {
+            setShowSignUpModal(false);
+            navigate("/checkout");
           }
           setIsModalOpen(false);
         }

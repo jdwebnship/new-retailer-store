@@ -13,6 +13,7 @@ import customerOrdersSlice from "../redux/slices/customerOrdersSlice";
 import orderPopupSlice from "../redux/slices/orderPopupSlice";
 import contactSlice from "./slices/contactSlice";
 import cartSlice from "./slices/cartSlice";
+import uiSlice from "./slices/uiSlice";
 // import wishlistReducer from "./slices/wishlistSlice";
 // import storeReducer from "./slices/storeSlice";
 // import checkoutReducer from "./slices/checkoutSlice";
@@ -34,6 +35,7 @@ const appReducer = combineReducers({
   orderPopup: orderPopupSlice,
   contact: contactSlice,
   cart: cartSlice,
+  ui: uiSlice,
   // orders: ordersReducer,
   // store: storeReducer,
   // checkout: checkoutReducer,
@@ -56,6 +58,13 @@ const rootReducer = (state, action) => {
 
 // --- load persisted state
 const persistedState = loadState();
+console.log('Initial persistedState:', persistedState);
+
+// Don't persist UI state
+if (persistedState?.ui) {
+  console.log('Clearing persisted UI state');
+  delete persistedState.ui;
+}
 
 // --- create store
 const store = configureStore({
