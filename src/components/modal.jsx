@@ -10,6 +10,9 @@ import modalImg from "../assets/images/modal.jpg";
 import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { closeCheckoutModal } from "../redux/slices/uiSlice";
+import { fetchCart, clearCart } from "../redux/slices/cartSlice";
+import axiosInstance from "../utils/axiosInstance";
+import { toast } from "react-toastify";
 
 const ModalComponent = ({
   isModalOpen,
@@ -19,6 +22,12 @@ const ModalComponent = ({
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { verificationError } = useSelector((state) => state.auth);
+  const { cartItems } = useSelector((state) => state.cart);
+
+  // useEffect(() => {
+  //           dispatch(fetchCart());
+  //       }, []);
+
 
   const [step, setStep] = useState("phone"); // "phone" or "otp"
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -103,6 +112,10 @@ const ModalComponent = ({
             setShowSignUpModal(true);
           } else {
             setShowSignUpModal(false);
+            const token = res?.data?.token;
+            if (token && cartItems.length > 0) {
+              syncGuestCartItems(token);
+            }
             navigate("/checkout");
           }
           // setIsModalOpen(false);
@@ -114,6 +127,52 @@ const ModalComponent = ({
       } catch (error) {
         console.error("OTP verification failed:", error);
       }
+    }
+  };
+
+  const syncGuestCartItems = async (token) => {
+    if (!token || !cartItems?.length) {
+      return { success: false, message: 'No token or cart items found' };
+    }
+    
+    const cart_items = cartItems.map((item) => ({
+      product_id: item?.id || item?.product_id,
+      quantity: item.quantity || 1,
+      retailer_id: item.retailer_id || null,
+      wholesaler_id: item.wholesaler_id || null,
+      selected_variant: item.selected_variant || null,
+      id: (item.selected_variant && item.selected_variant.id) || null
+    }));
+
+    try {
+      const response = await axiosInstance.post(
+        '/customer/add-to-cart-guest',
+        { cart_items },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        }
+      );
+
+      if (response?.data?.success || response?.status === 200) {
+        // Refresh the cart from server
+        await dispatch(fetchCart());
+        return { 
+          success: true, 
+          message: response?.data?.message || 'Cart synced successfully' 
+        };
+      } else {
+        const errorMessage = response?.data?.message || 'Failed to sync cart';
+        throw new Error(errorMessage);
+      }
+    } catch (error) {
+      console.error('Error syncing cart:', error);
+      const errorMessage = error.response?.data?.message || 'Something went wrong while syncing cart';
+      dispatch(clearCart());
+      toast.error(errorMessage);
+      return { success: false, message: errorMessage };
     }
   };
 
