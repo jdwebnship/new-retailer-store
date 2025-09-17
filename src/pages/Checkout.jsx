@@ -248,9 +248,9 @@ function Checkout() {
                           <div className="flex mt-[0.5rem] items-center gap-4">
                             {item.selected_variant && (
                               <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
-                                {item.selected_variant.variant_name}:{" "}
+                                Size:{" "}
                                 <strong className="font-bold text-[#111111] ml-2">
-                                  {item.selected_variant.variant_value}
+                                {item.selected_variant.product_variation}
                                 </strong>
                               </span>
                             )}
