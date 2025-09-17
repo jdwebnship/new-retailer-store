@@ -462,3 +462,11 @@ textarea {
 .social-login a:hover svg path{
     fill: #007BFF;
 }
+
+
+.marquee-span span.dots{
+  background: #111111;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+}

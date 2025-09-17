@@ -29,21 +29,35 @@ function Advertisment() {
       }}
     >
       <Marquee>
-        <div className="flex gap-4 text-[0.875rem] mr-4">
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
+        <div className="flex gap-[1.875rem] text-[0.875rem] mr-[1.875rem] marquee-span items-center">
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
         </div>
       </Marquee>
       <div
@@ -109,21 +123,35 @@ function Advertisment() {
         </div>
       </div>
       <Marquee>
-        <div className="flex gap-4 text-[0.875rem] mr-4">
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
-          <span className="uppercase">Step into style </span> •{" "}
-          <span className="uppercase"> Empower your look</span> •
+        <div className="flex gap-[1.875rem] text-[0.875rem] mr-[1.875rem] marquee-span items-center">
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
+          <span className="uppercase">Step into style </span>
+          <span className="dots"></span>{" "}
+          <span className="uppercase"> Empower your look</span>
+          <span className="dots"></span>
         </div>
       </Marquee>
     </div>
