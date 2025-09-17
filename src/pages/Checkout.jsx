@@ -116,7 +116,7 @@ function Checkout() {
                     type="text"
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     placeholder="Enter your address"
-                    // value={userData.address || ""}
+                    value={userData.address || ""}
                     // readOnly={!userData.address}
                   />
                 </div>
@@ -133,7 +133,7 @@ function Checkout() {
                       id="zipcode"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your zipcode"
-                      // value={userData.pincode || ""}
+                      value={userData.pincode || ""}
                       // readOnly={!userData.pincode}
                     />
                   </div>
@@ -149,7 +149,7 @@ function Checkout() {
                       id="altphone"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter alternate phone number"
-                      // value={userData.alt_phone_number || ""}
+                      value={userData.alt_phone_number || ""}
                       // readOnly={!userData.alt_phone_number}
                     />
                   </div>
@@ -167,7 +167,7 @@ function Checkout() {
                       id="city"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your city"
-                      // value={userData.city || ""}
+                      value={userData.city || ""}
                       // readOnly={!userData.city}
                     />
                   </div>
@@ -183,7 +183,7 @@ function Checkout() {
                       id="state"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                       placeholder="Enter your state"
-                      // value={userData.state || ""}
+                      value={userData.state || ""}
                       // readOnly={!userData.state}
                     />
                   </div>

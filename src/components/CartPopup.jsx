@@ -10,16 +10,27 @@ import {
 } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
+import { openCheckoutModal } from "../redux/slices/uiSlice";
 
 const CartPopup = ({ items = [], onClose }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   useEffect(() => {
     document.body.classList.add("no-scroll");
     return () => {
       document.body.classList.remove("no-scroll");
     };
   }, []);
+
+  const proceedToCheckout = () => {
+    if (!isAuthenticated) {
+      dispatch(openCheckoutModal());
+      return;
+    }
+    navigate("/checkout");
+    onClose();
+  };
 
   return (
     <>
@@ -65,9 +76,36 @@ const CartPopup = ({ items = [], onClose }) => {
 
         {/* Footer */}
         <div className="mt-6 flex flex-col gap-3 border-t border-[#11111126] pt-6">
-          <button className="btn py-4 rounded-md cursor-pointer">
+          {/* <button
+            className="btn py-4 rounded-md cursor-pointer"
+            onClick={() => {
+              navigate("/cart");
+              dispatch(openCheckoutModal());
+              onClose();
+            }}
+          >
             CHECKOUT
-          </button>
+          </button> */}
+
+          {!isAuthenticated ? (
+            <button
+              onClick={() => {
+                navigate("/cart");
+                dispatch(openCheckoutModal());
+                onClose();
+              }}
+              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
+            >
+              Checkout
+            </button>
+          ) : (
+            <button
+              onClick={proceedToCheckout}
+              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
+            >
+              Checkout
+            </button>
+          )}
           <button
             onClick={() => {
               navigate("/cart");
@@ -110,7 +148,7 @@ const CartItem = ({ item }) => {
         }
         const quantityChange = action === "increase" ? 1 : -1;
         dispatch(updateCartItem({ item, qty: quantityChange }));
-      }
+      },
     });
 
   return (

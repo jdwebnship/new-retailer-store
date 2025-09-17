@@ -7,13 +7,15 @@ import SignUpModal from "../components/SignUpModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import OrderList from "../components/orderList";
+import { openCheckoutModal } from "../redux/slices/uiSlice";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isCheckoutModalOpen } = useSelector((state) => state.ui);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   useEffect(() => {
@@ -22,27 +24,25 @@ function Cart() {
     }
   }, [isAuthenticated]);
 
-  const { subtotal, tax, total, itemCount } = useMemo(() => {
+  const { subtotal, total, itemCount } = useMemo(() => {
     if (!cartItems?.length) {
-      return { subtotal: 0, tax: 0, total: 0, itemCount: 0 };
+      return { subtotal: 0, total: 0, itemCount: 0 };
     }
 
     const sub = cartItems.reduce((sum, item) => {
       return sum + parseFloat(item.final_price) * item.quantity;
     }, 0);
 
-    const t = sub * 0.07; // 7% tax
     return {
       subtotal: sub,
-      tax: t,
-      total: sub + t,
+      total: sub,
       itemCount: cartItems.reduce((count, item) => count + item.quantity, 0),
     };
   }, [cartItems]);
 
   const proceedToCheckout = () => {
     if (!isAuthenticated) {
-      setIsModalOpen(true);
+      dispatch(openCheckoutModal());
       return;
     }
     navigate("/checkout", { state: { items: cartItems || [] } });
@@ -98,10 +98,8 @@ function Cart() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="sm:text-lg font-medium">Taxes (7%)</span>
-                <span className="sm:text-lg font-medium">
-                  ₹{tax.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
-                </span>
+                <span className="sm:text-lg font-medium">Shipping Cost:</span>
+                <span className="sm:text-lg font-medium">Free</span>
               </div>
               <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
@@ -113,7 +111,8 @@ function Cart() {
             {!isAuthenticated ? (
               <button
                 onClick={() => {
-                  setIsModalOpen(true);
+                  // setIsModalOpen(true);
+                  dispatch(openCheckoutModal());
                 }}
                 disabled={!cartItems?.length}
                 className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
@@ -141,8 +140,8 @@ function Cart() {
         </div>
       </div>
       <ModalComponent
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
+        isModalOpen={isCheckoutModalOpen}
+        // setIsModalOpen={setIsModalOpen}
         // onOTPSendError={handleOTPSendError}
         setShowSignUpModal={setShowSignUpModal}
       />

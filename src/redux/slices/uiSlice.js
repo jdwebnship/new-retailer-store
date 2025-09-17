@@ -10,29 +10,29 @@ const uiSlice = createSlice({
   initialState,
   reducers: {
     openCheckoutModal: (state) => {
-      console.log('Redux: Opening checkout modal');
+      console.log("Redux: Opening checkout modal");
       state.isCheckoutModalOpen = true;
     },
     closeCheckoutModal: (state) => {
-      console.log('Redux: Closing checkout modal');
+      console.log("Redux: Closing checkout modal");
       state.isCheckoutModalOpen = false;
     },
-    openSignUpModal: (state) => {
-      console.log('Redux: Opening signup modal');
-      state.showSignUpModal = true;
-    },
-    closeSignUpModal: (state) => {
-      console.log('Redux: Closing signup modal');
-      state.showSignUpModal = false;
-    },
+    // openSignUpModal: (state) => {
+    //   console.log('Redux: Opening signup modal');
+    //   state.showSignUpModal = true;
+    // },
+    // closeSignUpModal: (state) => {
+    //   console.log('Redux: Closing signup modal');
+    //   state.showSignUpModal = false;
+    // },
   },
 });
 
 export const {
   openCheckoutModal,
   closeCheckoutModal,
-  openSignUpModal,
-  closeSignUpModal,
+  // openSignUpModal,
+  // closeSignUpModal,
 } = uiSlice.actions;
 
 export const selectIsCheckoutModalOpen = (state) =>

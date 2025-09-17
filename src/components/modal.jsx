@@ -9,10 +9,11 @@ import {
 import modalImg from "../assets/images/modal.jpg";
 import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
+import { closeCheckoutModal } from "../redux/slices/uiSlice";
 
 const ModalComponent = ({
   isModalOpen,
-  setIsModalOpen,
+  // setIsModalOpen,
   setShowSignUpModal,
 }) => {
   const dispatch = useDispatch();
@@ -63,10 +64,10 @@ const ModalComponent = ({
 
   // Handle phone number submission
   const handleContinue = async () => {
-    if (phoneNumber && /^\+?[1-9]\d{9,14}$/.test(phoneNumber)) {
-      // Remove any non-digit characters and add country code if missing
-      const cleanNumber = phoneNumber.replace(/\D/g, "");
-      const mobile = cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
+    const cleanNumber = phoneNumber.replace(/\D/g, "");
+    if (cleanNumber.length === 10) {
+      // Use the cleaned 10-digit number
+      const mobile = cleanNumber;
 
       try {
         await dispatch(sendOTP(mobile)).unwrap();
@@ -104,7 +105,8 @@ const ModalComponent = ({
             setShowSignUpModal(false);
             navigate("/checkout");
           }
-          setIsModalOpen(false);
+          // setIsModalOpen(false);
+          dispatch(closeCheckoutModal());
         }
         // On successful verification, close the modal
         // Reset OTP state for next time
@@ -158,7 +160,7 @@ const ModalComponent = ({
   return (
     <Dialog
       open={isModalOpen}
-      onClose={() => setIsModalOpen(false)}
+      onClose={() => dispatch(closeCheckoutModal())}
       className="relative z-50"
     >
       <DialogBackdrop className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-50 transition-opacity duration-300 overflow-hidden" />
@@ -181,7 +183,7 @@ const ModalComponent = ({
           {/* Right Side: Form Content */}
           <div className="relative w-full lg:w-1/2 p-3 xs:p-4 sm:p-6 md:p-8 lg:p-[3.75rem] flex flex-col justify-start text-left">
             <button
-              onClick={() => setIsModalOpen(false)}
+              onClick={() => dispatch(closeCheckoutModal())}
               className="absolute top-2 right-2 sm:top-4 sm:right-4 text-xl sm:text-2xl focus:outline-none cursor-pointer"
               aria-label="Close modal"
             >
@@ -226,7 +228,7 @@ const ModalComponent = ({
                     placeholder="Enter your phone number"
                     aria-describedby="phone-error"
                   />
-                  {phoneNumber && !/^\+?[1-9]\d{9,14}$/.test(phoneNumber) && (
+                  {phoneNumber && !/^\d{10}$/.test(phoneNumber) && (
                     <p
                       id="phone-error"
                       className="mt-1 text-xs xs:text-sm sm:text-sm text-red-500"
@@ -239,7 +241,7 @@ const ModalComponent = ({
                   onClick={handleContinue}
                   className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
                   disabled={
-                    !phoneNumber || !/^\+?[1-9]\d{9,14}$/.test(phoneNumber)
+                    !phoneNumber || !/^\d{10}$/.test(phoneNumber)
                   }
                 >
                   Continue
@@ -291,7 +293,7 @@ const ModalComponent = ({
                           type="text"
                           value={digit}
                           onChange={(e) => handleOtpChange(e, index)}
-                          onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                          // onKeyDown={(e) => handleOtpKeyDown(e, index)}
                           onPaste={handleOtpPaste}
                           className="w-full border border-[#AAAAAA] rounded-lg px-1 xs:px-2 sm:px-4 py-2 sm:py-[0.82rem] text-center outline-none text-base"
                           inputMode="numeric"

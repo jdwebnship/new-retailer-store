@@ -146,7 +146,7 @@ const OrderDetailsPopup = () => {
           <div className="relative pt-6">
             <div className="border  rounded-[1.125rem] p-6">
               <div className="flex items-start gap-3 mb-2">
-                <h3 className=" font-bold">ORDER SUMMARY:</h3>
+                <h3 className=" font-bold">ORDER SUMMARYddd:</h3>
               </div>
               <div className="space-y-2">
                 <div className="flex justify-between items-center">
