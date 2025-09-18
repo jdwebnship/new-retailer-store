@@ -33,7 +33,7 @@ export const SignupSchema = Yup.object({
       "Password must contain at least one uppercase, one lowercase, one number, and one special character"
     ),
   mobile: Yup.string()
-    .matches(/^\d{10}$/, "Enter a valid 10-digit mobile number")
+    .matches(/^[1-9]\d{9}$/, "Enter a valid 10-digit mobile number")
     .required("Mobile number is required"),
   terms: Yup.boolean().oneOf([true], "Please accept the terms & conditions"),
 });
@@ -63,4 +63,21 @@ export const resetPasswordSchema = Yup.object({
       [Yup.ref("password"), null],
       "New Passwords and Confirm Password must match"
     ),
+});
+
+export const ContactSchema = Yup.object({
+  firstname: Yup.string().required("First name is required"),
+  lastname: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .required("Email is required")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/,
+      "Enter a valid email address"
+    ),
+  phone_number: Yup.string()
+    .matches(/^[1-9]\d{9}$/, "Phone number must be 10 digits")
+    .required("Phone number is required"),
+  subject: Yup.string().required("Subject is required"),
+  message: Yup.string().required("Message is required"),
+  subscribe: Yup.boolean(),
 });

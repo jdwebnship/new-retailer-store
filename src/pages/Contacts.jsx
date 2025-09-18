@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import {
   submitContactForm,
@@ -14,21 +13,7 @@ import Mail from "../assets/mail.svg";
 import Call from "../assets/call.svg";
 import Map from "../assets/map-pin1.svg";
 import Twitter from "../assets/twitter.svg";
-
-// Validation schema
-const validationSchema = Yup.object({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  phone: Yup.string()
-    .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
-    .required("Phone number is required"),
-  subject: Yup.string().required("Subject is required"),
-  message: Yup.string().required("Message is required"),
-  subscribe: Yup.boolean(),
-});
+import { ContactSchema } from "../utils/validationSchema";
 
 function Contacts() {
   const dispatch = useDispatch();
@@ -38,22 +23,26 @@ function Contacts() {
 
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
+      firstname: "",
+      lastname: "",
       email: "",
-      phone: "",
+      phone_number: "",
       subject: "",
       message: "",
       subscribe: false,
     },
-    validationSchema,
+    validationSchema: ContactSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         const formData = new FormData();
-        Object.entries(values).forEach(([key, value]) => {
-          formData.append(key, value);
-        });
 
+        Object.entries(values).forEach(([key, value]) => {
+          if (key === "subscribe") {
+            formData.append(key, value ? "1" : "0");
+          } else {
+            formData.append(key, value);
+          }
+        });
         const token = localStorage.getItem("token");
         if (token) {
           formData.append("token", token);
@@ -61,9 +50,6 @@ function Contacts() {
 
         await dispatch(submitContactForm(formData)).unwrap();
 
-        toast.success(
-          "Message sent successfully! We will get back to you soon."
-        );
         resetForm();
       } catch (error) {
         const errorMessage =
@@ -222,56 +208,56 @@ function Contacts() {
                 <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3 relative">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
-                    htmlFor="firstName"
+                    htmlFor="firstname"
                   >
-                    First Name <span className="text-red-500">*</span>
+                    First Name
                   </label>
                   <input
-                    id="firstName"
-                    name="firstName"
+                    id="firstname"
+                    name="firstname"
                     type="text"
                     className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
                     placeholder="Enter your First name"
                     onChange={(e) => {
                       formik.setFieldValue(
-                        "firstName",
+                        "firstname",
                         e.target.value.trimStart()
                       );
                     }}
                     onBlur={formik.handleBlur}
-                    value={formik.values.firstName}
+                    value={formik.values.firstname}
                   />
-                  {formik.touched.firstName && formik.errors.firstName && (
+                  {formik.touched.firstname && formik.errors.firstname && (
                     <p className="text-red-500 text-sm absolute">
-                      {formik.errors.firstName}
+                      {formik.errors.firstname}
                     </p>
                   )}
                 </div>
                 <div className="w-full sm:w-1/2 sm:pl-3 relative">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
-                    htmlFor="lastName"
+                    htmlFor="lastname"
                   >
-                    Last Name <span className="text-red-500">*</span>
+                    Last Name
                   </label>
                   <input
-                    id="lastName"
-                    name="lastName"
+                    id="lastname"
+                    name="lastname"
                     type="text"
                     className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
                     placeholder="Enter your Last name"
                     onChange={(e) => {
                       formik.setFieldValue(
-                        "lastName",
+                        "lastname",
                         e.target.value.trimStart()
                       );
                     }}
                     onBlur={formik.handleBlur}
-                    value={formik.values.lastName}
+                    value={formik.values.lastname}
                   />
-                  {formik.touched.lastName && formik.errors.lastName && (
+                  {formik.touched.lastname && formik.errors.lastname && (
                     <p className="text-red-500 text-sm absolute">
-                      {formik.errors.lastName}
+                      {formik.errors.lastname}
                     </p>
                   )}
                 </div>
@@ -281,7 +267,7 @@ function Contacts() {
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="email"
                 >
-                  Email <span className="text-red-500">*</span>
+                  Email
                 </label>
                 <input
                   id="email"
@@ -307,25 +293,29 @@ function Contacts() {
               <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="phone"
+                  htmlFor="phone_number"
                 >
-                  Phone Number <span className="text-red-500">*</span>
+                  Phone Number
                 </label>
                 <input
-                  id="phone"
-                  name="phone"
+                  id="phone_number"
+                  name="phone_number"
                   type="tel"
                   className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
-                  placeholder="Enter your 10-digit phone number"
+                  placeholder="Enter your 10-digit phone_number number"
                   onChange={(e) => {
-                    formik.setFieldValue("phone", e.target.value.trimStart());
+                    const numericValue = e.target.value.replace(/\D/g, "");
+                    formik.setFieldValue(
+                      "phone_number",
+                      numericValue.trimStart()
+                    );
                   }}
                   onBlur={formik.handleBlur}
-                  value={formik.values.phone}
+                  value={formik.values.phone_number}
                 />
-                {formik.touched.phone && formik.errors.phone && (
+                {formik.touched.phone_number && formik.errors.phone_number && (
                   <p className="text-red-500 text-sm absolute">
-                    {formik.errors.phone}
+                    {formik.errors.phone_number}
                   </p>
                 )}
               </div>
@@ -334,7 +324,7 @@ function Contacts() {
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="subject"
                 >
-                  Subject <span className="text-red-500">*</span>
+                  Subject
                 </label>
                 <select
                   id="subject"
@@ -365,7 +355,7 @@ function Contacts() {
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="message"
                 >
-                  Message <span className="text-red-500">*</span>
+                  Message
                 </label>
                 <textarea
                   id="message"
@@ -374,10 +364,7 @@ function Contacts() {
                   className={`w-full border rounded-lg p-[0.82rem] border-[#AAAAAA] focus:outline-none`}
                   placeholder="Enter your message"
                   onChange={(e) => {
-                    formik.setFieldValue(
-                      "phone",
-                      e.target.value.trimStart()
-                    );
+                    formik.setFieldValue("message", e.target.value.trimStart());
                   }}
                   onBlur={formik.handleBlur}
                   value={formik.values.message}

@@ -1,9 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { lazy, Suspense } from "react";
-import { Contact } from "lucide-react";
-import Contacts from "../pages/Contacts";
-import NotFound from "../pages/NotFound";
 
 // Lazy-loaded routes
 const About = lazy(() => import("../pages/About"));
@@ -25,6 +22,8 @@ const Faq = lazy(() => import("../pages/Faq"));
 const Terms = lazy(() => import("../pages/Terms"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const Support = lazy(() => import("../pages/Support"));
+const Contacts = lazy(() => import("../pages/Contacts"));
+const NotFound = lazy(() => import("../pages/NotFound"));
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated } = useSelector((state) => state.auth);
