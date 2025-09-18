@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
-import { useTheme } from "../contexts/ThemeContext";
 import Slider from "./Slider";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { fetchHomeSections } from "../redux/slices/homeSectionsSlice";
+import ButtonLink from "./ButtonLink";
 
 function SingleImage({ data }) {
-  const { buttonTextColor } = useTheme();
   const imageUrl = data?.image_url || "https://via.placeholder.com/800x400";
 
   return (
@@ -36,29 +34,7 @@ function SingleImage({ data }) {
         <p className="text-white text-2xl lg:text-[22px] mb-6">
           Shine with our latest must-haves
         </p>
-        <Link
-          to="/shop"
-          className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center"
-        >
-          View Collection
-          <span>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7 17L17 7M17 7H7M17 7V17"
-                stroke={buttonTextColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </Link>
+        <ButtonLink to="/shop">View Collection</ButtonLink>
       </div>
     </div>
   );
@@ -91,29 +67,7 @@ function Video({ data }) {
         <p className="text-white text-2xl lg:text-[22px] mb-6">
           Shine with our latest must-haves
         </p>
-        <Link
-          to="/shop"
-          className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center"
-        >
-          View Collection
-          <span>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M7 17L17 7M17 7H7M17 7V17"
-                stroke={useTheme().buttonTextColor}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-        </Link>
+        <ButtonLink to="/shop">View Collection</ButtonLink>
       </div>
     </div>
   );

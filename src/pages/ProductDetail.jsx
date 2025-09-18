@@ -38,14 +38,15 @@ function ProductDetail() {
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
   const product = productDetails?.product;
   const wishlistData = wishlist?.data?.wishlist;
-  const productImg = product?.product_images
-    ? product?.product_images.split(",")
-    : [];
+  const productImg = React.useMemo(
+    () => (product?.product_images ? [product.product_images.split(",")] : []),
+    [product?.product_images]
+  );
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 
-  const [thumbHeight, setThumbHeight] = useState("515px"); // Initial fallback
-  const [mainHeight, setMainHeight] = useState("400px"); // Initial fallback
+  const [setThumbHeight] = useState("515px"); // Initial fallback
+  const [setMainHeight] = useState("400px"); // Initial fallback
   const mainContainerRef = useRef(null);
   const thumbContainerRef = useRef(null);
 

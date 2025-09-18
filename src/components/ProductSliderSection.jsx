@@ -1,5 +1,4 @@
 import { useEffect } from "react";
-import { useTheme } from "../contexts/ThemeContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { useDispatch, useSelector } from "react-redux";
@@ -8,12 +7,12 @@ import CardComponent from "./CardComponent";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css";
+import ButtonLink from "./ButtonLink";
 
 function ProductSliderSection() {
-  const { buttonTextColor } = useTheme();
   const dispatch = useDispatch();
   const { newArrivals } = useSelector((state) => state.newArrivals);
-  const newTreniding = newArrivals?.products;
+  const newTrending = newArrivals?.products;
 
   useEffect(() => {
     dispatch(postNewArrivals());
@@ -53,37 +52,15 @@ function ProductSliderSection() {
           }}
           className="mySwiper"
         >
-          {newTreniding &&
-            newTreniding.map((product, index) => (
+          {newTrending &&
+            newTrending.map((product, index) => (
               <SwiperSlide key={index}>
                 <CardComponent product={product} />
               </SwiperSlide>
             ))}
         </Swiper>
         <div className="mt-[30px] lg:mt-[3.125rem] text-center">
-          <a
-            href="#"
-            className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center"
-          >
-            Shop ALL New Trending
-            <span>
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M7 17L17 7M17 7H7M17 7V17"
-                  stroke={buttonTextColor}
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </span>
-          </a>
+          <ButtonLink to="/shop">Shop ALL New Trending</ButtonLink>
         </div>
       </section>
     </div>

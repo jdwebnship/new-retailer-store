@@ -3,7 +3,6 @@ import { useTheme } from "../contexts/ThemeContext";
 
 function CommonHeader({ className = "", ...props }) {
   const { theme, bottomFooterTextColor } = useTheme();
-  const { id } = useParams();
   const { slug } = useParams();
   const location = useLocation();
   // Define page titles and breadcrumb configurations

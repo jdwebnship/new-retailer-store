@@ -1,8 +1,7 @@
-import Advertisment from "../components/Advertisment";
+import Advertisement from "../components/Advertisement";
 import Banner from "../components/Banner";
 import CommonHeader from "../components/CommonHeader";
 import ProductSection from "../components/ProductSection";
-import SecondProductSection from "../components/SecondProductSection";
 import ShopCategory from "../components/ShopCategory";
 import SocialAdvertisementImage from "../components/SocialAdvertisementImage";
 
@@ -14,7 +13,7 @@ function Home() {
       </div>
       <CommonHeader />
       <ShopCategory />
-      <Advertisment />
+      <Advertisement />
       <ProductSection />
       {/* <SocialAdvertisementImage /> */}
     </div>
