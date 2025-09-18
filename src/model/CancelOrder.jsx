@@ -9,7 +9,10 @@ const cancelReasons = [
   { value: "Found Cheaper Elsewhere", label: "Found Cheaper Elsewhere" },
   { value: "Delivery Time is Too Long", label: "Delivery Time is Too Long" },
   { value: "Changed My Mind", label: "Changed My Mind" },
-  { value: "Product Details Are Incorrect", label: "Product Details Are Incorrect" },
+  {
+    value: "Product Details Are Incorrect",
+    label: "Product Details Are Incorrect",
+  },
   { value: "Payment Issue", label: "Payment Issue" },
   { value: "Quantity Issue", label: "Quantity Issue" },
   { value: "Not Needed Anymore", label: "Not Needed Anymore" },
@@ -19,7 +22,11 @@ const cancelReasons = [
 const validationSchema = Yup.object({
   reject_reason_select: Yup.string()
     .required("Please select a reason")
-    .test("reason-not-empty", "Please select a valid reason", (value) => value && value.trim() !== ""),
+    .test(
+      "reason-not-empty",
+      "Please select a valid reason",
+      (value) => value && value.trim() !== ""
+    ),
   reject_reason_input: Yup.string().when("reject_reason_select", {
     is: "Other",
     then: (schema) =>
@@ -28,7 +35,7 @@ const validationSchema = Yup.object({
         .required("Please specify your reason")
         .min(1, "Reason cannot be empty"),
     otherwise: (schema) => schema.notRequired().nullable(),
-  })
+  }),
 });
 
 const CancelOrder = ({ open, onClose, orderId }) => {
@@ -58,38 +65,43 @@ const CancelOrder = ({ open, onClose, orderId }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[400px]">
-        <h2 className="text-lg font-semibold mb-4">Cancel Order</h2>
+      <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[600px]">
+        <h2 className="font-semibold mb-4 text-3xl">Cancel Order</h2>
 
         <form onSubmit={formik.handleSubmit}>
-          <label
-            htmlFor="rejectReasonSelectNew"
-            className="block text-sm font-medium mb-1"
-          >
-            Select a reason
-          </label>
-          <select
-            id="rejectReasonSelectNew"
-            name="reject_reason_select"
-            value={formik.values.reject_reason_select}
-            onChange={(e) => formik.setFieldValue("reject_reason_select", e.target.value)}
-            onBlur={formik.handleBlur}
-            className="w-full border px-3 py-2 rounded-md mb-2"
-          >
-            {cancelReasons.map((opt, index) => (
-              <option key={index} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-          {formik.touched.reject_reason_select && formik.errors.reject_reason_select && (
-            <p className="text-red-500 text-sm mb-2">
-              {formik.errors.reject_reason_select}
-            </p>
-          )}
+          <div className="relative mb-4">
+            <label
+              htmlFor="rejectReasonSelectNew"
+              className="block text-sm font-medium mb-1"
+            >
+              Select a reason
+            </label>
+            <select
+              id="rejectReasonSelectNew"
+              name="reject_reason_select"
+              value={formik.values.reject_reason_select}
+              onChange={(e) =>
+                formik.setFieldValue("reject_reason_select", e.target.value)
+              }
+              onBlur={formik.handleBlur}
+              className="w-full border px-3 py-2 rounded-md mb-2 focus:outline-none border-[#AAAAAA]"
+            >
+              {cancelReasons.map((opt, index) => (
+                <option key={index} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+            {formik.touched.reject_reason_select &&
+              formik.errors.reject_reason_select && (
+                <p className="text-red-500 text-sm mb-2 absolute">
+                  {formik.errors.reject_reason_select}
+                </p>
+              )}
+          </div>
 
           {formik.values.reject_reason_select === "Other" && (
-            <>
+            <div className="relative">
               <label
                 htmlFor="reject_reason_input"
                 className="block text-sm font-medium mb-1"
@@ -102,16 +114,19 @@ const CancelOrder = ({ open, onClose, orderId }) => {
                 rows="3"
                 placeholder="Please specify your reason..."
                 value={formik.values.reject_reason_input}
-                onChange={(e) => formik.setFieldValue("reject_reason_input", e.target.value)}
+                onChange={(e) =>
+                  formik.setFieldValue("reject_reason_input", e.target.value)
+                }
                 onBlur={formik.handleBlur}
-                className="w-full border px-3 py-2 rounded-md mb-2"
+                className="w-full border px-3 py-2 rounded-md mb- focus:outline-none border-[#AAAAAA]"
               />
-              {formik.touched.reject_reason_input && formik.errors.reject_reason_input && (
-                <p className="text-red-500 text-sm mb-2">
-                  {formik.errors.reject_reason_input}
-                </p>
-              )}
-            </>
+              {formik.touched.reject_reason_input &&
+                formik.errors.reject_reason_input && (
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.reject_reason_input}
+                  </p>
+                )}
+            </div>
           )}
 
           <div className="flex justify-end gap-2 mt-4">
@@ -121,13 +136,13 @@ const CancelOrder = ({ open, onClose, orderId }) => {
                 onClose();
                 formik.resetForm();
               }}
-              className="px-4 py-2 border rounded-md bg-gray-200"
+              className="px-4 py-2 border bg-[#f22834] text-white border-[#f22834] rounded-md cursor-pointer"
             >
               Close
             </button>
             <button
               type="submit"
-              className="px-4 py-2 border rounded-md bg-[#0E1422] text-white"
+              className="px-4 py-2 border bg-[#25D366] cursor-pointer border-[#25D366] rounded-md  text-white"
             >
               Confirm Cancel
             </button>

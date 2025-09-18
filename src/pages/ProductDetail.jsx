@@ -113,7 +113,7 @@ function ProductDetail() {
   const cartQuantity = cartItems
     ?.filter(
       (item) =>
-        item.product_id === product.id &&
+        item.product_id === product?.id &&
         (!selectedVariant || item.selected_variant?.id === selectedVariant.id)
     )
     .reduce((sum, item) => sum + item.quantity, 0);
