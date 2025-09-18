@@ -7,13 +7,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { applyDiscount, clearDiscount, performCheckout } from "../redux/slices/checkoutSlice";
+import {
+  applyDiscount,
+  clearDiscount,
+  performCheckout,
+} from "../redux/slices/checkoutSlice";
 import { Trash2 } from "lucide-react";
 
 function Checkout() {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-  const { discount, discountLoading, loading } = useSelector((state) => state.checkout);
+  const { discount, discountLoading, loading } = useSelector(
+    (state) => state.checkout
+  );
 
   const { theme } = useTheme();
   const dispatch = useDispatch();
@@ -29,7 +35,7 @@ function Checkout() {
     if (discount && discountProductIds.includes(itemId)) {
       return {
         ...item,
-        discountedPrice: (parseFloat(item.final_price) - discountValue),
+        discountedPrice: parseFloat(item.final_price) - discountValue,
         discountApplied: true,
       };
     }
@@ -44,13 +50,15 @@ function Checkout() {
   const couponForm = useFormik({
     initialValues: { coupon_code: "" },
     onSubmit: (values, { setFieldError }) => {
-      dispatch(applyDiscount({
-        payload: {
-          coupon_code: values?.coupon_code.trim(),
-          phone_number: userData.phone_number
-        },
-        setFieldError
-      }));
+      dispatch(
+        applyDiscount({
+          payload: {
+            coupon_code: values?.coupon_code.trim(),
+            phone_number: userData.phone_number,
+          },
+          setFieldError,
+        })
+      );
     },
   });
 
@@ -66,7 +74,7 @@ function Checkout() {
   );
   const total = subtotal;
   const discTotal = Number(discount?.discount)
-    ? total - (Number(discount?.discount) * discount?.product_id?.length)
+    ? total - Number(discount?.discount) * discount?.product_id?.length
     : total;
 
   const priceDetails = [
@@ -101,10 +109,9 @@ function Checkout() {
       pincode: Yup.string()
         .matches(/^[0-9]{6}$/, "Must be a valid 6-digit pincode")
         .required("Pincode is required"),
-      alt_phone_number: Yup.string().matches(
-        /^[0-9]{10}$/,
-        "Must be a valid 10-digit number"
-      ).required("Alt Phone number is required"),
+      alt_phone_number: Yup.string()
+        .matches(/^[0-9]{10}$/, "Must be a valid 10-digit number")
+        .required("Alt Phone number is required"),
       city: Yup.string().required("City is required"),
       state: Yup.string().required("State is required"),
     }),
@@ -113,26 +120,30 @@ function Checkout() {
         const base = { quantity: item.quantity || 1 };
         return item.retailer_id
           ? {
-            ...base,
-            retailer_id: item.retailer_id,
-            retailer_product_id:
-              item?.product_id || item?.retailer_product_id,
-            final_amount: item?.discountApplied ? item?.discountedPrice : item?.final_price,
-            product_variation:
-              item?.selected_variant?.product_variation || null,
-            quantity: item?.quantity || null,
-            coupon_id: item?.discountApplied ? discount?.id : undefined,
-          }
+              ...base,
+              retailer_id: item.retailer_id,
+              retailer_product_id:
+                item?.product_id || item?.retailer_product_id,
+              final_amount: item?.discountApplied
+                ? item?.discountedPrice
+                : item?.final_price,
+              product_variation:
+                item?.selected_variant?.product_variation || null,
+              quantity: item?.quantity || null,
+              coupon_id: item?.discountApplied ? discount?.id : undefined,
+            }
           : {
-            ...base,
-            wholesaler_id: item.wholesaler_id,
-            product_id: item?.id || item?.product_id,
-            final_amount: item?.discountApplied ? item?.discountedPrice : item?.final_price,
-            product_variation:
-              item?.selected_variant?.product_variation || null,
-            quantity: item?.quantity || null,
-            coupon_id: item?.discountApplied ? discount?.id : undefined,
-          };
+              ...base,
+              wholesaler_id: item.wholesaler_id,
+              product_id: item?.id || item?.product_id,
+              final_amount: item?.discountApplied
+                ? item?.discountedPrice
+                : item?.final_price,
+              product_variation:
+                item?.selected_variant?.product_variation || null,
+              quantity: item?.quantity || null,
+              coupon_id: item?.discountApplied ? discount?.id : undefined,
+            };
       });
       console.log("Checkout form submitted:", productsData);
       const payload = {
@@ -176,7 +187,7 @@ function Checkout() {
                 <h3 className="text-2xl font-bold">Shipping Details</h3>
                 <hr className="opacity-10" />
                 {/* Email */}
-                <div>
+                <div className="relative">
                   <label className="block text-sm mb-2.5 font-bold uppercase">
                     Email Address
                   </label>
@@ -189,7 +200,7 @@ function Checkout() {
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                   />
                   {formik.touched.email && formik.errors.email && (
-                    <p className="text-red-500 text-sm mt-1">
+                    <p className="text-red-500 text-sm absolute">
                       {formik.errors.email}
                     </p>
                   )}
@@ -198,7 +209,7 @@ function Checkout() {
                 {/* First & Last Name */}
                 <div className="flex flex-col sm:flex-row">
                   <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
-                    <label className="block text-sm font-bold mb-1 uppercase">
+                    <label className="block text-sm font-bold mb-1 uppercase relative">
                       First Name
                     </label>
                     <input
@@ -210,12 +221,12 @@ function Checkout() {
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.firstname && formik.errors.firstname && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-sm absolute">
                         {formik.errors.firstname}
                       </p>
                     )}
                   </div>
-                  <div className="w-full sm:w-1/2 sm:pl-3">
+                  <div className="w-full sm:w-1/2 sm:pl-3 relative">
                     <label className="block text-sm font-bold mb-1 uppercase">
                       Last Name
                     </label>
@@ -228,7 +239,7 @@ function Checkout() {
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.lastname && formik.errors.lastname && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-sm absolute">
                         {formik.errors.lastname}
                       </p>
                     )}
@@ -236,7 +247,7 @@ function Checkout() {
                 </div>
 
                 {/* Address */}
-                <div>
+                <div className="relative">
                   <label className="block text-sm mb-2.5 font-bold uppercase">
                     Address
                   </label>
@@ -249,14 +260,14 @@ function Checkout() {
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                   />
                   {formik.touched.address && formik.errors.address && (
-                    <p className="text-red-500 text-sm mt-1">
+                    <p className="text-red-500 text-sm absolute">
                       {formik.errors.address}
                     </p>
                   )}
                 </div>
 
                 {/* Zip & Alt Phone */}
-                <div className="flex flex-col sm:flex-row">
+                <div className="flex flex-col sm:flex-row relative">
                   <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
                     <label className="block text-sm font-bold mb-1 uppercase">
                       Zip Code
@@ -270,12 +281,12 @@ function Checkout() {
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.pincode && formik.errors.pincode && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-sm absolute">
                         {formik.errors.pincode}
                       </p>
                     )}
                   </div>
-                  <div className="w-full sm:w-1/2 sm:pl-3">
+                  <div className="w-full sm:w-1/2 sm:pl-3 relative">
                     <label className="block text-sm font-bold mb-1 uppercase">
                       Alternate Phone
                     </label>
@@ -289,7 +300,7 @@ function Checkout() {
                     />
                     {formik.touched.alt_phone_number &&
                       formik.errors.alt_phone_number && (
-                        <p className="text-red-500 text-sm mt-1">
+                        <p className="text-red-500 text-sm absolute">
                           {formik.errors.alt_phone_number}
                         </p>
                       )}
@@ -298,7 +309,7 @@ function Checkout() {
 
                 {/* City & State */}
                 <div className="flex flex-col sm:flex-row">
-                  <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                  <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3 relative">
                     <label className="block text-sm font-bold mb-1 uppercase">
                       City
                     </label>
@@ -311,12 +322,12 @@ function Checkout() {
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.city && formik.errors.city && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-sm absolute">
                         {formik.errors.city}
                       </p>
                     )}
                   </div>
-                  <div className="w-full sm:w-1/2 sm:pl-3">
+                  <div className="w-full sm:w-1/2 sm:pl-3 relative">
                     <label className="block text-sm font-bold mb-1 uppercase">
                       State
                     </label>
@@ -329,7 +340,7 @@ function Checkout() {
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.state && formik.errors.state && (
-                      <p className="text-red-500 text-sm mt-1">
+                      <p className="text-red-500 text-sm absolute">
                         {formik.errors.state}
                       </p>
                     )}
@@ -372,29 +383,47 @@ function Checkout() {
                           <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
                             {item.product_name}
                           </h3>
-                          <div className="flex items-center gap-2 text-xs text-[#5C5F6A] mt-1">
+                          <div className="flex items-center gap-2 text-[#5C5F6A] mt-1">
+                            {item?.selected_variant && (
+                              <>
+                                <span className="text-base border-r pr-2 border-[#1111111f]">
+                                  <span className="font-bold text-[#AAAAAA]">
+                                    Size:{" "}
+                                  </span>
+                                  <span className="text-[#111111] font-bold">
+                                    {item.selected_variant.product_variation}
+                                  </span>
+                                </span>
+                              </>
+                            )}
                             <span>
                               {item?.discountApplied ? (
                                 <>
-                                  <span style={{ fontWeight: "bold", color: "green" }}>
-                                    Price: ₹{(item?.final_price * item?.quantity) - discount?.discount}
+                                  <span className="text-[#111111] font-bold pr-2">
+                                    <span>₹ </span>
+                                    {item?.final_price * item?.quantity -
+                                      discount?.discount}
                                   </span>{" "}
-                                  <span style={{ textDecoration: "line-through", color: "gray" }}>
+                                  <span
+                                    style={{
+                                      textDecoration: "line-through",
+                                      color: "gray",
+                                    }}
+                                  >
                                     ₹{item?.final_price * item?.quantity}
                                   </span>
                                 </>
                               ) : (
-                                <span>Price: ₹{item?.final_price * item?.quantity}</span>
+                                <span className="text-base ">
+                                  <span className="text-[#111111] font-bold pr-2">
+                                    ₹{item?.final_price * item?.quantity}{" "}
+                                  </span>
+                                  <span className="line-through text-sm text-[#808080]">
+                                    ₹19,999
+                                  </span>
+                                </span>
                               )}
                             </span>
-                            {item?.selected_variant && (
-                              <>
-                                <span>—</span>
-                                <span>
-                                  Size: {item.selected_variant.product_variation}
-                                </span>
-                              </>
-                            )}
                           </div>
                         </div>
                       </div>
@@ -420,45 +449,54 @@ function Checkout() {
                   <button
                     onClick={() => {
                       couponForm.resetForm();
-                      dispatch(clearDiscount())
+                      dispatch(clearDiscount());
                     }}
-                    className="ml-auto text-red-500 hover:text-red-700 text-sm font-medium"
+                    className="ml-auto text-red-500 hover:text-red-700 text-sm font-medium cursor-pointer"
                   >
                     <Trash2 size={18} strokeWidth={2} />
                   </button>
                 </div>
               ) : (
-                <form onSubmit={couponForm.handleSubmit} className="flex flex-col sm:flex-row gap-4">
-                  <div className="relative flex-1">
+                <form
+                  onSubmit={couponForm.handleSubmit}
+                  className="flex flex-col sm:flex-row border rounded-lg border-[#111111] relative"
+                >
+                  <div className="relative flex-1 ">
                     <input
                       type="text"
                       id="coupon_code"
                       name="coupon_code"
                       placeholder="Coupon Code"
-                      className={`w-full px-4 py-4 text-gray-700 placeholder-gray-500 bg-transparent border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black 
-                      ${couponForm.touched.coupon_code && couponForm.errors.coupon_code
-                          ? 'border-red-500'
-                          : discount ? 'border-green-500' : 'border-gray-300'
-                        }`}
+                      className={`w-full px-4 py-4 text-gray-700 placeholder-gray-500 bg-transparent focus:outline-none 
+                      ${
+                        couponForm.touched.coupon_code &&
+                        couponForm.errors.coupon_code
+                          ? "border-red-500"
+                          : discount
+                          ? "border-green-500"
+                          : "border-none"
+                      }`}
                       value={couponForm.values.coupon_code}
                       onChange={couponForm.handleChange}
                       onBlur={couponForm.handleBlur}
                       disabled={!!discount || discountLoading}
                     />
-                    {couponForm.touched.coupon_code && couponForm.errors.coupon_code && (
-                      <p className="mt-1 text-sm text-red-600">
-                        {couponForm.errors.coupon_code}
-                      </p>
-                    )}
+                    {couponForm.touched.coupon_code &&
+                      couponForm.errors.coupon_code && (
+                        <p className="mt-1 text-sm text-red-600 absolute">
+                          {couponForm.errors.coupon_code}
+                        </p>
+                      )}
                   </div>
                   <div className="flex gap-2">
                     <button
                       type="submit"
                       disabled={couponForm.values.coupon_code === ""}
-                      className={`px-6 py-4 text-white rounded-lg transition-colors 
-                        ${couponForm.values.coupon_code === ""
-                          ? 'bg-gray-400'
-                          : 'bg-black hover:bg-gray-800'
+                      className={`btn sm:px-[3rem] px-[0.9rem] py-[0.9rem] rounded-r-sm lg:text-lg focus:outline-none  
+                        ${
+                          couponForm.values.coupon_code === ""
+                            ? "bg-gray-400"
+                            : "bg-black hover:bg-gray-800"
                         }`}
                     >
                       Apply
@@ -473,10 +511,11 @@ function Checkout() {
               <h3 className="text-2xl font-bold mb-4">Payment Method</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "cod"
-                    ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                    : "border-[#AAAAAA] hover:border-black/60"
-                    }`}
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "cod"
+                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                      : "border-[#AAAAAA] hover:border-black/60"
+                  }`}
                 >
                   <input
                     type="radio"
@@ -486,14 +525,16 @@ function Checkout() {
                     onChange={() => setPaymentMethod("cod")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "cod"
-                      ? "border-black"
-                      : "border-[#AAAAAA]"
-                      }`}
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "cod"
+                        ? "border-black"
+                        : "border-[#AAAAAA]"
+                    }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "cod" ? "bg-black" : "bg-transparent"
-                        }`}
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "cod" ? "bg-black" : "bg-transparent"
+                      }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -504,10 +545,11 @@ function Checkout() {
                 </label>
 
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "prepaid"
-                    ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                    : "border-[#AAAAAA] hover:border-black/60"
-                    }`}
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "prepaid"
+                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                      : "border-[#AAAAAA] hover:border-black/60"
+                  }`}
                 >
                   <input
                     type="radio"
@@ -517,16 +559,18 @@ function Checkout() {
                     onChange={() => setPaymentMethod("prepaid")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "prepaid"
-                      ? "border-black"
-                      : "border-[#AAAAAA]"
-                      }`}
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "prepaid"
+                        ? "border-black"
+                        : "border-[#AAAAAA]"
+                    }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "prepaid"
-                        ? "bg-black"
-                        : "bg-transparent"
-                        }`}
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "prepaid"
+                          ? "bg-black"
+                          : "bg-transparent"
+                      }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -535,28 +579,31 @@ function Checkout() {
                 </label>
               </div>
             </div>
-            <div className="space-y-2 text-sm">
+            <div className="space-y-[0.9375rem] text-sm">
               {priceDetails
                 .filter((item) => item.display !== false)
                 .map((item, index) => (
-                  <div key={index} className="flex justify-between py-2">
+                  <div key={index} className="flex justify-between">
                     <span className="sm:text-lg font-medium text-gray-700">
                       {item.label}
                     </span>
                     <span
-                      className={`sm:text-lg font-medium ${item.label.toLowerCase() === "discount"
-                        ? "text-green-600"
-                        : "text-gray-900"
-                        }`}
+                      className={`sm:text-lg font-medium ${
+                        item.label.toLowerCase() === "discount"
+                          ? "text-green-600"
+                          : "text-gray-900"
+                      }`}
                     >
                       {item.isFree
                         ? "Free"
-                        : `${item.label.toLowerCase() === "discount" ? "-" : ""}₹${item.value?.toFixed(2)}`}
+                        : `${
+                            item.label.toLowerCase() === "discount" ? "-" : ""
+                          }₹${item.value?.toFixed(2)}`}
                     </span>
                   </div>
                 ))}
 
-              <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
+              <div className="border-t border-[#11111126] pt-6 mt-6 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
                 <span className="md:text-2xl text-lg font-medium">
                   ₹{discTotal?.toFixed(2)}
@@ -570,10 +617,9 @@ function Checkout() {
                 e.preventDefault();
                 formik.handleSubmit();
               }}
-              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase ${loading
-                ? 'bg-gray-400'
-                : 'bg-black hover:bg-gray-800'
-                }`}
+              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase ${
+                loading ? "bg-gray-400" : "bg-black hover:bg-gray-800"
+              }`}
               disabled={loading}
             >
               {loading ? "Loading..." : "Place Order"}
