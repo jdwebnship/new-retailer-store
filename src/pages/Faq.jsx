@@ -67,7 +67,7 @@ const Faq = () => {
   return (
     <>
       <CommonHeader title="Frequently Asked Questions" />
-      <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]  mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
+      <div className="px-5 mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
         <div className="container mx-auto">
           <div className="rounded-lg">
             <div className="space-y-4 lg:space-y-6">
