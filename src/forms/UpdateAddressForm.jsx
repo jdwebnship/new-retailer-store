@@ -73,7 +73,7 @@ const UpdateAddressForm = () => {
         >
           {({ isSubmitting, setFieldValue, values, errors, touched }) => (
             <Form>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="address"
@@ -93,7 +93,7 @@ const UpdateAddressForm = () => {
                   className="text-red-500 text-sm absolute"
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="pincode"
@@ -114,7 +114,7 @@ const UpdateAddressForm = () => {
                 />
               </div>
               <div className="mb-6 flex flex-col sm:flex-row">
-                <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3 relative">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="state"
@@ -144,7 +144,7 @@ const UpdateAddressForm = () => {
                     className="text-red-500 text-sm absolute"
                   />
                 </div>
-                <div className="w-full sm:w-1/2 sm:pl-3">
+                <div className="w-full sm:w-1/2 sm:pl-3 relative">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="city"

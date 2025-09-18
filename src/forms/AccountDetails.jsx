@@ -49,7 +49,7 @@ const AccountDetails = () => {
       <hr className="opacity-10" />
       <div className="mt-[1.5rem]">
         <form onSubmit={formik.handleSubmit}>
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <label
               className="block text-sm mb-2.5 font-bold uppercase"
               htmlFor="fname"
@@ -69,7 +69,7 @@ const AccountDetails = () => {
               </p>
             )}
           </div>
-          <div className="mb-6">
+          <div className="mb-6 relative">
             <label
               className="block text-sm mb-2.5 font-bold uppercase"
               htmlFor="lname"

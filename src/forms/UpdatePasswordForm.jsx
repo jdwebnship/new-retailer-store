@@ -60,7 +60,7 @@ const UpdatePasswordForm = () => {
         >
           {({ isSubmitting }) => (
             <Form>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="oldpass"
@@ -80,7 +80,7 @@ const UpdatePasswordForm = () => {
                   className="text-red-500 text-sm absolute"
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="newpass"
@@ -100,7 +100,7 @@ const UpdatePasswordForm = () => {
                   className="text-red-500 text-sm absolute"
                 />
               </div>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="conpass"

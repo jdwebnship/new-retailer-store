@@ -195,7 +195,7 @@ function SignUp() {
             </div>
 
             {/* Terms */}
-            <div className="flex items-start gap-2">
+            <div className="flex items-start gap-2 relative">
               <input
                 id="terms"
                 name="terms"
@@ -212,10 +212,12 @@ function SignUp() {
                 By creating an account you agree with our Terms of Service,
                 Privacy Policy,
               </label>
+              {formik.touched.terms && formik.errors.terms && (
+                <p className="text-red-500 text-sm absolute -bottom-[1.25rem]">
+                  {formik.errors.terms}
+                </p>
+              )}
             </div>
-            {formik.touched.terms && formik.errors.terms && (
-              <p className="text-red-500 text-sm">{formik.errors.terms}</p>
-            )}
 
             {/* Submit */}
             <button

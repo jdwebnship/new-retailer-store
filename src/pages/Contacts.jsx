@@ -17,12 +17,12 @@ import Twitter from "../assets/twitter.svg";
 
 // Validation schema
 const validationSchema = Yup.object({
-  firstname: Yup.string().required("First name is required"),
-  lastname: Yup.string().required("Last name is required"),
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
-  phone_number: Yup.string()
+  phone: Yup.string()
     .matches(/^[0-9]{10}$/, "Phone number must be 10 digits")
     .required("Phone number is required"),
   subject: Yup.string().required("Subject is required"),
@@ -219,24 +219,25 @@ function Contacts() {
             </div>
             <form onSubmit={formik.handleSubmit}>
               <div className="mb-6 flex flex-col sm:flex-row">
-                <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
+                <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3 relative">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
                     htmlFor="firstName"
                   >
-                    First Name *
+                    First Name <span className="text-red-500">*</span>
                   </label>
                   <input
                     id="firstName"
                     name="firstName"
                     type="text"
-                    className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] ${
-                      formik.touched.firstName && formik.errors.firstName
-                        ? "border-red-500"
-                        : ""
-                    }`}
+                    className="w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]"
                     placeholder="Enter your First name"
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      formik.setFieldValue(
+                        "firstName",
+                        e.target.value.trimStart()
+                      );
+                    }}
                     onBlur={formik.handleBlur}
                     value={formik.values.firstName}
                   />
@@ -246,36 +247,41 @@ function Contacts() {
                     </p>
                   )}
                 </div>
-                <div className="w-full sm:w-1/2 sm:pl-3">
+                <div className="w-full sm:w-1/2 sm:pl-3 relative">
                   <label
                     className="block text-sm mb-2.5 font-bold uppercase"
-                    htmlFor="lastname"
+                    htmlFor="lastName"
                   >
-                    Last Name *
+                    Last Name <span className="text-red-500">*</span>
                   </label>
                   <input
-                    id="lastname"
-                    name="lastname"
+                    id="lastName"
+                    name="lastName"
                     type="text"
                     className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
                     placeholder="Enter your Last name"
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      formik.setFieldValue(
+                        "lastName",
+                        e.target.value.trimStart()
+                      );
+                    }}
                     onBlur={formik.handleBlur}
-                    value={formik.values.lastname}
+                    value={formik.values.lastName}
                   />
-                  {formik.touched.lastname && formik.errors.lastname && (
+                  {formik.touched.lastName && formik.errors.lastName && (
                     <p className="text-red-500 text-sm absolute">
-                      {formik.errors.lastname}
+                      {formik.errors.lastName}
                     </p>
                   )}
                 </div>
               </div>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="email"
                 >
-                  Email *
+                  Email <span className="text-red-500">*</span>
                 </label>
                 <input
                   id="email"
@@ -286,6 +292,11 @@ function Contacts() {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
+                  onKeyDown={(e) => {
+                    if (e.key === " ") {
+                      e.preventDefault();
+                    }
+                  }}
                 />
                 {formik.touched.email && formik.errors.email && (
                   <p className="text-red-500 text-sm absolute">
@@ -293,41 +304,45 @@ function Contacts() {
                   </p>
                 )}
               </div>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="phone_number"
+                  htmlFor="phone"
                 >
-                  Phone Number *
+                  Phone Number <span className="text-red-500">*</span>
                 </label>
                 <input
-                  id="phone_number"
-                  name="phone_number"
+                  id="phone"
+                  name="phone"
                   type="tel"
                   className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
                   placeholder="Enter your 10-digit phone number"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue("phone", e.target.value.trimStart());
+                  }}
                   onBlur={formik.handleBlur}
-                  value={formik.values.phone_number}
+                  value={formik.values.phone}
                 />
-                {formik.touched.phone_number && formik.errors.phone_number && (
+                {formik.touched.phone && formik.errors.phone && (
                   <p className="text-red-500 text-sm absolute">
-                    {formik.errors.phone_number}
+                    {formik.errors.phone}
                   </p>
                 )}
               </div>
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="subject"
                 >
-                  Subject *
+                  Subject <span className="text-red-500">*</span>
                 </label>
                 <select
                   id="subject"
                   name="subject"
                   className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA]`}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue("subject", e.target.value.trimStart());
+                  }}
                   onBlur={formik.handleBlur}
                   value={formik.values.subject}
                 >
@@ -345,20 +360,25 @@ function Contacts() {
                 )}
               </div>
 
-              <div className="mb-6">
+              <div className="mb-6 relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="message"
                 >
-                  Message *
+                  Message <span className="text-red-500">*</span>
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   rows="4"
-                  className={`w-full border rounded-lg p-[0.82rem] border-[#AAAAAA]`}
+                  className={`w-full border rounded-lg p-[0.82rem] border-[#AAAAAA] focus:outline-none`}
                   placeholder="Enter your message"
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue(
+                      "phone",
+                      e.target.value.trimStart()
+                    );
+                  }}
                   onBlur={formik.handleBlur}
                   value={formik.values.message}
                 ></textarea>
@@ -370,7 +390,7 @@ function Contacts() {
               </div>
 
               <div className="mb-6">
-                <label className="flex">
+                <label className="flex items-center">
                   <input
                     type="checkbox"
                     name="subscribe"
