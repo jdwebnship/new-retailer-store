@@ -43,7 +43,7 @@ const Terms = () => {
   return (
     <>
       <CommonHeader title="Terms & Conditions" />
-      <div className="px-5 mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
+      <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]  mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
         <div className="container mx-auto">
           <div className="rounded-lg">
             <p className="mb-5 lg:mb-8 text-left text-base lg:text-xl">

@@ -48,7 +48,7 @@ const PrivacyPolicy = () => {
   return (
     <>
       <CommonHeader title="Privacy Policy" />
-      <div className="px-5 mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
+      <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]  mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
         <div className="container mx-auto">
           <div className="rounded-lg">
             {/* <h1 className="text-3xl font-bold mb-6 text-center">

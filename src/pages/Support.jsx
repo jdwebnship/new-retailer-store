@@ -10,7 +10,7 @@ const Support = () => {
   return (
     <>
       <CommonHeader title="Support Center" />
-      <div className="px-5 mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
+      <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]  mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
         <div className="container mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-6">
@@ -82,8 +82,9 @@ const Support = () => {
               {
                 icon: <Phone className="w-6 h-6" />,
                 title: "Phone Support – Speak to our team",
-                description: `Mon-Fri, ${storeInfo?.storeInfo?.storeTime || "11:00 AM - 8:00 PM"
-                  }`,
+                description: `Mon-Fri, ${
+                  storeInfo?.storeInfo?.storeTime || "11:00 AM - 8:00 PM"
+                }`,
               },
             ].map((option, index) => (
               <div
@@ -132,14 +133,17 @@ const Support = () => {
                 <p className="text-gray-700 mb-6">
                   Email us at{" "}
                   <a
-                    href={`mailto:${storeInfo?.storeinfo?.retailer?.email || "storename123@gmail.com"}`}
+                    href={`mailto:${
+                      storeInfo?.storeinfo?.retailer?.email ||
+                      "storename123@gmail.com"
+                    }`}
                     className="text-blue-600 hover:underline"
                   >
-                    {storeInfo?.storeinfo?.retailer?.email || "storename123@gmail.com"}
+                    {storeInfo?.storeinfo?.retailer?.email ||
+                      "storename123@gmail.com"}
                   </a>
                   . Please include a brief description of your issue.
                 </p>
-
 
                 <h3 className="text-xl font-semibold text-gray-800 mb-3">
                   Additional Help
