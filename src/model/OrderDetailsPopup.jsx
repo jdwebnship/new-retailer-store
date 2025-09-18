@@ -1,65 +1,64 @@
-import React, { useState, useEffect } from "react"; // Add useState and useEffect
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { closeOrderPopup } from "../redux/slices/orderPopupSlice";
 import close from "../assets/images/close.png";
 import copy_icon from "../assets/images/copy_icon.png";
-import { toTitleCase } from "../utils/common";
+import { formatStatus } from "../utils/common";
 import { useTheme } from "../contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
+import CancelOrder from "./CancelOrder";
 
-const OrderDetailsPopup = () => {
+const OrderDetailsPopup = ({ orderDetail }) => {
   const { theme, bottomFooterTextColor } = useTheme();
+  const [isOpen, setIsOpen] = useState(false);
+  const [openCancelModel, setOpenCancelModel] = useState(false);
   const orderPopup = useSelector((state) => state.orderPopup);
+  const { orders } = useSelector((state) => state.customerOrders);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const status = toTitleCase(orderPopup?.order?.status);
+  const status = formatStatus(orderDetail?.status);
+  const shippingAddress = orders?.customerData?.[0] || {};
+  const isPopupOpen = !!orderPopup?.order;
 
-  // NEW: Track open state for animation (derive from Redux; adjust if your slice has an explicit isOpen)
-  const [isOpen, setIsOpen] = useState(false);
-  const isPopupOpen = !!orderPopup?.order; // Assuming popup is "open" if order exists; customize as needed
-
-  // NEW: Effect to handle enter/exit animation timing
   useEffect(() => {
     if (isPopupOpen) {
-      // Delay setting isOpen to true for enter animation (allows initial render off-screen)
       const timer = setTimeout(() => setIsOpen(true), 10);
       return () => clearTimeout(timer);
     } else {
-      // Exit animation: Slide out first, then close after transition
       setIsOpen(false);
-      const timer = setTimeout(() => dispatch(closeOrderPopup()), 300); // Match transition duration
+      const timer = setTimeout(() => dispatch(closeOrderPopup()), 300);
       return () => clearTimeout(timer);
     }
   }, [isPopupOpen, dispatch]);
 
-  // NEW: Handle overlay click to close (with animation)
   const handleOverlayClick = () => {
     setIsOpen(false);
     setTimeout(() => dispatch(closeOrderPopup()), 300);
   };
 
-  // Early return if not open (prevents rendering during exit)
   if (!isPopupOpen) return null;
 
-  const { orders } = useSelector((state) => state.customerOrders);
+  const displayCancelButton = () => {
+    const allowedStatuses = [
+      "order has been placed",
+      "order is confirmed",
+      "order has been dispatched from retailer",
+      "order is processed by wholesaler",
+      "order is ready for pickup",
+    ];
+    return allowedStatuses.includes(orderDetail?.status);
+  }
 
-  /* The above code is a snippet of JavaScript React code that represents a popup component displaying
-  order details. Here is a breakdown of what the code is doing: */
-  const shippingAddress = orders?.customerData?.[0] || {};
   return (
     <>
-      {/* Overlay with fade transition for extra smoothness */}
       <div
-        className={`overlay w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-99 transition-opacity duration-300 ${
-          isOpen ? "opacity-100" : "opacity-0"
-        }`} // NEW: Fade in/out
-        onClick={handleOverlayClick} // UPDATED: Use animated close handler
+        className={`overlay w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-99 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0"
+          }`}
+        onClick={handleOverlayClick}
       ></div>
-      {/* Main popup with slide animation */}
       <div
-        className={`fixed top-0 right-0 z-100 w-full max-w-[50rem] transition-transform duration-300 ease-in-out ${
-          isOpen ? "" : "translate-x-full" // NEW: Slide from right (hidden when !isOpen)
-        }`}
+        className={`fixed top-0 right-0 z-100 w-full max-w-[50rem] transition-transform duration-300 ease-in-out ${isOpen ? "" : "translate-x-full" // NEW: Slide from right (hidden when !isOpen)
+          }`}
       >
         <div
           className="relative border border-white/20 w-full max-w-[50rem] h-dvh overflow-y-auto sm:p-7.5 p-4 mx-auto"
@@ -84,11 +83,10 @@ const OrderDetailsPopup = () => {
                 className="cursor-pointer w-4 h-4 mt-1.5"
                 src={close}
                 alt=""
-                onClick={handleOverlayClick} // UPDATED: Use animated close handler
+                onClick={handleOverlayClick}
               />
             </div>
           </div>
-          {/* Example: show more order details from orderPopup.order */}
           <div
             className="relative flex sm:flex-row flex-col sm:items-center justify-between gap-4 p-6  rounded-[0.625rem]"
             style={{
@@ -171,19 +169,37 @@ const OrderDetailsPopup = () => {
             </div>
           </div>
 
-          <div className="relative pt-6 mt-6 border-t ">
+          <div className="pt-6 mt-6 border-t flex flex-col sm:flex-row gap-4">
             <button
-              className="w-full btn py-4 px-6 rounded-2xl"
+              className="flex-1 btn py-4 px-6 rounded-2xl"
               onClick={(e) => {
                 e.preventDefault();
-                handleOverlayClick();
+                handleClose();
                 navigate(`/products/${orderPopup?.order?.product_slug}`);
               }}
             >
-              <span className="text-lg">BUY IT AGAIN</span>
+              <span className="text-lg">Buy It Again</span>
             </button>
+            {displayCancelButton() && (
+              <button
+                className="flex-1 btn py-4 px-6 rounded-2xl bg-red-600 text-white hover:bg-red-700"
+                onClick={() => {
+                  setOpenCancelModel(true);
+                }}
+              >
+                <span className="text-lg">Cancel Order</span>
+              </button>
+            )}
           </div>
         </div>
+        <CancelOrder
+          open={openCancelModel}
+          onClose={() => {
+            setOpenCancelModel(false);
+            dispatch(closeOrderPopup());
+          }}
+          orderId={orderPopup?.order?.order_id}
+        />
       </div>
     </>
   );

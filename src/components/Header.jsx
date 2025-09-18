@@ -580,7 +580,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
         />
       )}
 
-      {orderPopup?.open && <OrderDetailsPopup />}
+      {orderPopup?.open && <OrderDetailsPopup orderDetail={orderPopup?.order}/>}
     </div>
   );
 }

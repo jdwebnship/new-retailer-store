@@ -103,11 +103,3 @@ export const isInWishlist = (product_id, wishlistData) => {
       item.product_id == product_id || item.retailer_product_id == product_id
   );
 };
-
-export function toTitleCase(str) {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
