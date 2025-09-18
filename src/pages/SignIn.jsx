@@ -20,7 +20,7 @@ function SignIn() {
   const [isOtpLogin, setIsOtpLogin] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOtp] = useState("");
+  const [otp, setOtp] = useState(["", "", "", ""]);
   const [timer, setTimer] = useState(30);
 
   const formik = useFormik({
@@ -39,6 +39,41 @@ function SignIn() {
       }
     },
   });
+
+  const handleOtpChange = (e, index) => {
+    const value = e.target.value.replace(/\D/g, ""); // Only digits
+    if (value.length === 1) {
+      const newOtp = [...otp];
+      newOtp[index] = value;
+      setOtp(newOtp);
+      // Move focus to next input if not last
+      if (index < 3) {
+        document.getElementById(`otp-input-${index + 1}`).focus();
+      }
+    } else if (value.length === 0) {
+      // Allow clearing the field and move focus to previous
+      const newOtp = [...otp];
+      newOtp[index] = "";
+      setOtp(newOtp);
+      if (index > 0) {
+        document.getElementById(`otp-input-${index - 1}`).focus();
+      }
+    } else if (value.length > 1) {
+      // If user pastes more than one digit, ignore (paste is handled separately)
+      return;
+    }
+  };
+
+  const handleOtpPaste = (e) => {
+    e.preventDefault();
+    const paste = e.clipboardData.getData("text").replace(/\D/g, "");
+    if (paste.length === 4) {
+      setOtp(paste.split(""));
+      setTimeout(() => {
+        document.getElementById("otp-input-3").focus();
+      }, 0);
+    }
+  };
 
   const handleContinue = async () => {
     const cleanNumber = phoneNumber.replace(/\D/g, "");
@@ -73,19 +108,20 @@ function SignIn() {
     } catch (error) {
       console.error("Failed to resend OTP:", error);
     }
+    setOtp(["", "", "", ""]);
     setTimer(30);
   };
 
   useEffect(() => {
     let interval;
-    if (timer > 0) {
+    if (isOtpSent && timer > 0) {
       interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
     }
     return () => clearInterval(interval);
-  }, [timer]);
+  }, [isOtpSent, timer]);
 
   const handleConfirm = async () => {
-    const otpValue = otp;
+    const otpValue = otp.join("");
     if (otpValue.length === 4) {
       try {
         const cleanNumber = phoneNumber.replace(/\D/g, "");
@@ -99,8 +135,6 @@ function SignIn() {
         if (res?.success) {
           navigate("/");
         }
-
-        // setIsModalOpen(false);
       } catch (error) {
         console.error("OTP verification failed:", error);
       }
@@ -255,19 +289,21 @@ function SignIn() {
                 {isOtpSent ? (
                   <div className="flex flex-col justify-between h-full">
                     <div>
-                      <div className=" mb-2">
-                        <input
-                          type="text"
-                          value={otp}
-                          onChange={(e) => {
-                            const value = e.target.value.replace(/\D/g, "");
-                            if (value.length <= 4) setOtp(value);
-                          }}
-                          // onChange={(e) => handleOtpChange(e, index)}
-                          // onKeyDown={(e) => handleOtpKeyDown(e, index)}
-                          className="w-full border border-[#AAAAAA] rounded-lg px-1 xs:px-2 sm:px-4 py-2 sm:py-[0.82rem] outline-none text-base"
-                          inputMode="numeric"
-                        />
+                      <div className="grid grid-cols-4 gap-1 xs:gap-2 sm:gap-4 mb-2">
+                        {otp.map((digit, index) => (
+                          <input
+                            key={index}
+                            id={`otp-input-${index}`}
+                            type="text"
+                            value={digit}
+                            onChange={(e) => handleOtpChange(e, index)}
+                            // onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                            onPaste={handleOtpPaste}
+                            className="w-full border border-[#AAAAAA] rounded-lg px-1 xs:px-2 sm:px-4 py-2 sm:py-[0.82rem] text-center outline-none text-base"
+                            inputMode="numeric"
+                            aria-label={`OTP digit ${index + 1}`}
+                          />
+                        ))}
                       </div>
                       <div className="flex justify-between items-center gap-1 sm:gap-0">
                         <button
