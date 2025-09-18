@@ -63,7 +63,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
     if (!ref.current) return;
     gsap.to(ref.current, {
       y: offsetY,
-      duration: 0.6,
+      // duration: 0.6,
       ease: "power3.out",
       overwrite: true,
     });
@@ -83,9 +83,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
     <div>
       <header
         ref={ref}
-        className={`fixed left-0 right-0 z-40 ${
-          hasShadow ? "shadow-[0_8px_24px_rgba(0,0,0,0.08)]" : "shadow-none"
-        }`}
+        className="fixed left-0 right-0 z-40"
         style={{
           top: 0,
           willChange: "transform, box-shadow",
@@ -383,7 +381,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
                   isSticky
                     ? "sm:w-[4rem] sm:h-[4rem] w-14 h-14"
                     : "sm:w-[5rem] sm:h-[5rem] w-16 h-16"
-                } transition-[width,height] duration-300 ease-out`}
+                } transition-all duration-300 ease-out`}
               />
             ) : (
               <h1

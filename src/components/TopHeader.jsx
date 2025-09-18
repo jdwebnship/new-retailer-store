@@ -28,7 +28,7 @@ function TopHeader({ visible = true, onHeightChange }) {
     if (!ref.current) return;
     gsap.to(ref.current, {
       yPercent: visible ? 0 : -100,
-      duration: 0.6,
+      // duration: 0.6,
       ease: "power3.out",
       overwrite: true,
     });
