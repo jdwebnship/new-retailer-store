@@ -46,21 +46,16 @@ function SignIn() {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      // Move focus to next input if not last
       if (index < 3) {
         document.getElementById(`otp-input-${index + 1}`).focus();
       }
     } else if (value.length === 0) {
-      // Allow clearing the field and move focus to previous
       const newOtp = [...otp];
       newOtp[index] = "";
       setOtp(newOtp);
       if (index > 0) {
         document.getElementById(`otp-input-${index - 1}`).focus();
       }
-    } else if (value.length > 1) {
-      // If user pastes more than one digit, ignore (paste is handled separately)
-      return;
     }
   };
 
@@ -78,18 +73,13 @@ function SignIn() {
   const handleContinue = async () => {
     const cleanNumber = phoneNumber.replace(/\D/g, "");
     if (cleanNumber.length === 10) {
-      // Use the cleaned 10-digit number
       const mobile = cleanNumber;
-
       try {
         const res = await dispatch(sendLoginOTP(mobile)).unwrap();
-        console.log("dkfjhdsjkfhdsf", res);
         if (res?.success) {
           setIsOtpSent(true);
+          setTimer(30); // Start timer
         }
-
-        // setStep("otp");
-        setTimer(30);
       } catch (error) {
         console.error("Failed to send OTP:", error);
       }
@@ -97,19 +87,36 @@ function SignIn() {
   };
 
   const handleResend = async () => {
-    if (timer > 0) return;
-
+    if (timer > 0) return; // Prevent resend if timer is active
     const cleanNumber = phoneNumber.replace(/\D/g, "");
-    const mobile = cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
-
+    const mobile = cleanNumber.length === 10 ? cleanNumber : "";
     try {
-      await dispatch(sendLoginOTP(mobile)).unwrap();
-      setTimer(30); // Reset timer on successful resend
+      const res = await dispatch(sendLoginOTP(mobile)).unwrap();
+      if (res?.success) {
+        setOtp(["", "", "", ""]); // Clear OTP inputs
+        setTimer(30); // Reset timer
+      }
     } catch (error) {
       console.error("Failed to resend OTP:", error);
     }
-    setOtp(["", "", "", ""]);
-    setTimer(30);
+  };
+
+  const handleConfirm = async () => {
+    const otpValue = otp.join("");
+    if (otpValue.length === 4) {
+      try {
+        const cleanNumber = phoneNumber.replace(/\D/g, "");
+        const mobile = cleanNumber.length === 10 ? cleanNumber : "";
+        const res = await dispatch(
+          verifyLoginOTP({ mobile, otp: otpValue })
+        ).unwrap();
+        if (res?.success) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("OTP verification failed:", error);
+      }
+    }
   };
 
   useEffect(() => {
@@ -120,27 +127,6 @@ function SignIn() {
     return () => clearInterval(interval);
   }, [isOtpSent, timer]);
 
-  const handleConfirm = async () => {
-    const otpValue = otp.join("");
-    if (otpValue.length === 4) {
-      try {
-        const cleanNumber = phoneNumber.replace(/\D/g, "");
-        const mobile =
-          cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
-
-        const res = await dispatch(
-          verifyLoginOTP({ mobile, otp: otpValue })
-        ).unwrap();
-
-        if (res?.success) {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("OTP verification failed:", error);
-      }
-    }
-  };
-
   return (
     <div>
       <CommonHeader />
@@ -148,6 +134,7 @@ function SignIn() {
         <div className="max-w-[37.5rem] mx-auto text-left">
           {!isOtpLogin ? (
             <form className="space-y-6" onSubmit={formik.handleSubmit}>
+              {/* Email/Password Form (unchanged) */}
               <div className="form-group relative">
                 <label
                   className="block text-sm mb-2.5 font-bold uppercase"
@@ -271,8 +258,11 @@ function SignIn() {
                     id="phone-number"
                     type="tel"
                     value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none form-control"
+                    onChange={(e) => {
+                      const numericValue = e.target.value.replace(/\D/g, "");
+                      setPhoneNumber(numericValue.trimStart());
+                    }}
+                    className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none pr-12"
                     placeholder="Enter your phone number"
                     aria-describedby="phone-error"
                   />
@@ -281,12 +271,12 @@ function SignIn() {
                       id="phone-error"
                       className="mt-1 text-xs xs:text-sm sm:text-sm text-red-500"
                     >
-                      Please enter a valid phone number
+                      Please enter a valid 10-digit phone number
                     </p>
                   )}
                 </div>
 
-                {isOtpSent ? (
+                {isOtpSent && (
                   <div className="flex flex-col justify-between h-full">
                     <div>
                       <div className="grid grid-cols-4 gap-1 xs:gap-2 sm:gap-4 mb-2">
@@ -297,10 +287,10 @@ function SignIn() {
                             type="text"
                             value={digit}
                             onChange={(e) => handleOtpChange(e, index)}
-                            // onKeyDown={(e) => handleOtpKeyDown(e, index)}
                             onPaste={handleOtpPaste}
                             className="w-full border border-[#AAAAAA] rounded-lg px-1 xs:px-2 sm:px-4 py-2 sm:py-[0.82rem] text-center outline-none text-base"
                             inputMode="numeric"
+                            maxLength="1"
                             aria-label={`OTP digit ${index + 1}`}
                           />
                         ))}
@@ -313,7 +303,12 @@ function SignIn() {
                           } text-xs xs:text-sm sm:text-sm`}
                           disabled={timer > 0}
                         >
-                          <span className="block w-full text-left">
+                          <span
+                            className="block w-full text-left"
+                            style={{
+                              cursor: timer > 0 ? "not-allowed" : "pointer",
+                            }}
+                          >
                             RESEND CODE
                           </span>
                         </button>
@@ -329,12 +324,15 @@ function SignIn() {
                         onClick={handleConfirm}
                         className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed text-base xs:text-lg"
                         // disabled={otp.join("").length !== 4}
+                        disabled={otp.join("").length !== 4}
                       >
                         Confirm
                       </button>
                     </div>
                   </div>
-                ) : (
+                )}
+
+                {!isOtpSent && (
                   <button
                     onClick={handleContinue}
                     className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed text-base xs:text-lg"
@@ -357,7 +355,13 @@ function SignIn() {
                 </Link>
               ) : (
                 <Link
-                  onClick={() => setIsOtpLogin(false)}
+                  onClick={() => {
+                    setIsOtpLogin(false);
+                    setIsOtpSent(false);
+                    setPhoneNumber("");
+                    setOtp(["", "", "", ""]);
+                    setTimer(30);
+                  }}
                   className="underline hover:text-[#007BFF] site-link transition-all duration-300"
                 >
                   Login with password
