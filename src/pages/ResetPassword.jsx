@@ -125,7 +125,7 @@ function ResetPassword() {
 
             <button
               type="submit"
-              className="w-full btn rounded-[0.625rem] cursor-pointer py-4 uppercase"
+              className="w-full btn rounded-[0.625rem] cursor-pointer py-3 uppercase text-lg"
             >
               Update password
             </button>
