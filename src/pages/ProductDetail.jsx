@@ -19,7 +19,7 @@ import useVariantQuery from "../hooks/useVariantQuery";
 import { toast } from "react-toastify";
 import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
 import useCartQuantity from "../hooks/useCartQuantity";
-import LoadingButton from "../components/CustomButton";
+import LoadingButton from "../components/LoadingButton";
 
 function ProductDetail() {
   const { slug } = useParams();
@@ -40,14 +40,14 @@ function ProductDetail() {
   const product = productDetails?.product;
   const wishlistData = wishlist?.data?.wishlist;
   const productImg = React.useMemo(
-    () => (product?.product_images ? [product.product_images.split(",")] : []),
+    () => (product?.product_images ? product.product_images.split(",") : []),
     [product?.product_images]
   );
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 
-  const [setThumbHeight] = useState("515px"); // Initial fallback
-  const [setMainHeight] = useState("400px"); // Initial fallback
+  const [thumbHeight, setThumbHeight] = useState("515px"); // Initial fallback
+  const [mainHeight, setMainHeight] = useState("400px"); // Initial fallback
   const mainContainerRef = useRef(null);
   const thumbContainerRef = useRef(null);
 

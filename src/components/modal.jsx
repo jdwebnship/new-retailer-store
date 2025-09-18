@@ -10,9 +10,6 @@ import modalImg from "../assets/images/modal.jpg";
 import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { closeCheckoutModal } from "../redux/slices/uiSlice";
-import { fetchCart, clearCart } from "../redux/slices/cartSlice";
-import axiosInstance from "../utils/axiosInstance";
-import { toast } from "react-toastify";
 import { syncGuestCartItems } from "../utils/helper";
 
 const ModalComponent = ({
@@ -28,7 +25,6 @@ const ModalComponent = ({
   // useEffect(() => {
   //           dispatch(fetchCart());
   //       }, []);
-
 
   const [step, setStep] = useState("phone"); // "phone" or "otp"
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -115,7 +111,7 @@ const ModalComponent = ({
             setShowSignUpModal(false);
             const token = res?.data?.token;
             if (token && cartItems.length > 0) {
-              syncGuestCartItems(token,cartItems,dispatch);
+              syncGuestCartItems(token, cartItems, dispatch);
               navigate("/checkout");
             }
           }
@@ -130,8 +126,6 @@ const ModalComponent = ({
       }
     }
   };
-
-
 
   // Handle resend code
   const handleResend = async () => {
