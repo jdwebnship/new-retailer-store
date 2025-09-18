@@ -260,7 +260,7 @@ function SignIn() {
                     Login with OTP
                   </p>
                 </div>
-                <div className="mb-2 xs:mb-3 sm:mb-4">
+                <div className="mb-2 xs:mb-3 sm:mb-6">
                   <label
                     htmlFor="phone-number"
                     className="block text-xs xs:text-sm font-bold mb-2"
@@ -305,7 +305,7 @@ function SignIn() {
                           />
                         ))}
                       </div>
-                      <div className="flex justify-between items-center gap-1 sm:gap-0">
+                      <div className="flex justify-between items-center gap-1 sm:gap-0 mb-3">
                         <button
                           onClick={handleResend}
                           className={`w-full xs:w-auto text-gray-900 underline opacity-20 hover:opacity-100 cursor-pointer ${
@@ -327,7 +327,7 @@ function SignIn() {
                     <div className="flex flex-col gap-2 xs:gap-3 sm:gap-[0.9879rem] mt-2">
                       <button
                         onClick={handleConfirm}
-                        className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
+                        className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed text-base xs:text-lg"
                         // disabled={otp.join("").length !== 4}
                       >
                         Confirm
@@ -337,7 +337,7 @@ function SignIn() {
                 ) : (
                   <button
                     onClick={handleContinue}
-                    className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
+                    className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed text-base xs:text-lg"
                     disabled={!phoneNumber || !/^\d{10}$/.test(phoneNumber)}
                   >
                     Send OTP
