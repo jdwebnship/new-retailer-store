@@ -195,6 +195,12 @@ export const sendLoginOTP = createAsyncThunk(
           `${response?.data?.message} - ${response?.data?.data?.otp}`
         );
         return response.data;
+      } else {
+        toast.error(
+          response?.data?.message ||
+            response?.data?.errors ||
+            "Something went wrong"
+        );
       }
 
       if (response?.data?.message?.includes("not registered")) {
@@ -212,6 +218,11 @@ export const sendLoginOTP = createAsyncThunk(
       });
     } catch (error) {
       console.error("sendOTP error:", error);
+      const errorMessage =
+        error.response?.data?.errors ||
+        error.response?.data?.message ||
+        "Failed to send OTP";
+      toast.error(errorMessage);
       return rejectWithValue({
         userNotRegistered: false,
         message: error.response?.data?.message || error.message,
