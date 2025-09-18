@@ -2,8 +2,8 @@ import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../redux/slices/authSlice";
-import { useState } from "react";
+import { login, sendLoginOTP, verifyLoginOTP } from "../redux/slices/authSlice";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { LoginSchema } from "../utils/validationSchema";
 
@@ -17,6 +17,11 @@ function SignIn() {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const { loading } = useSelector((state) => state.auth);
+  const [isOtpLogin, setIsOtpLogin] = useState(false);
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [otp, setOtp] = useState("");
+  const [timer, setTimer] = useState(30);
 
   const formik = useFormik({
     initialValues,
@@ -35,116 +40,295 @@ function SignIn() {
     },
   });
 
+  const handleContinue = async () => {
+    const cleanNumber = phoneNumber.replace(/\D/g, "");
+    if (cleanNumber.length === 10) {
+      // Use the cleaned 10-digit number
+      const mobile = cleanNumber;
+
+      try {
+        const res = await dispatch(sendLoginOTP(mobile)).unwrap();
+        console.log("dkfjhdsjkfhdsf", res);
+        if (res?.success) {
+          setIsOtpSent(true);
+        }
+
+        // setStep("otp");
+        setTimer(30);
+      } catch (error) {
+        console.error("Failed to send OTP:", error);
+      }
+    }
+  };
+
+  const handleResend = async () => {
+    if (timer > 0) return;
+
+    const cleanNumber = phoneNumber.replace(/\D/g, "");
+    const mobile = cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
+
+    try {
+      await dispatch(sendLoginOTP(mobile)).unwrap();
+      setTimer(30); // Reset timer on successful resend
+    } catch (error) {
+      console.error("Failed to resend OTP:", error);
+    }
+    setTimer(30);
+  };
+
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const handleConfirm = async () => {
+    const otpValue = otp;
+    if (otpValue.length === 4) {
+      try {
+        const cleanNumber = phoneNumber.replace(/\D/g, "");
+        const mobile =
+          cleanNumber.length === 10 ? `${cleanNumber}` : cleanNumber;
+
+        const res = await dispatch(
+          verifyLoginOTP({ mobile, otp: otpValue })
+        ).unwrap();
+
+        if (res?.success) {
+          navigate("/");
+        }
+
+        // setIsModalOpen(false);
+      } catch (error) {
+        console.error("OTP verification failed:", error);
+      }
+    }
+  };
+
   return (
     <div>
       <CommonHeader />
       <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] lg:py-[6.25rem] md:py-[5rem] py-[3.5rem]">
         <div className="max-w-[37.5rem] mx-auto text-left">
-          <form className="space-y-6" onSubmit={formik.handleSubmit}>
-            <div className="form-group relative">
-              <label
-                className="block text-sm mb-2.5 font-bold uppercase"
-                htmlFor="email"
-              >
-                Email Address
-              </label>
-              <input
-                id="email"
-                type="email"
-                className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none form-control"
-                placeholder="Enter your email address"
-                value={formik.values.email}
-                onChange={formik.handleChange}
-                onKeyDown={(e) => {
-                  if (e.key === " ") {
-                    e.preventDefault();
-                  }
-                }}
-                onBlur={formik.handleBlur}
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <p className="text-red-500 text-sm text-left absolute">
-                  {formik.errors.email}
-                </p>
-              ) : null}
-            </div>
-            <div className="relative">
-              <label className="block text-sm mb-2.5 font-bold uppercase">
-                Password
-              </label>
-              <div className="relative">
+          {!isOtpLogin ? (
+            <form className="space-y-6" onSubmit={formik.handleSubmit}>
+              <div className="form-group relative">
+                <label
+                  className="block text-sm mb-2.5 font-bold uppercase"
+                  htmlFor="email"
+                >
+                  Email Address
+                </label>
                 <input
-                  id="password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none pr-12"
-                  placeholder="Enter your password"
-                  value={formik.values.password}
+                  id="email"
+                  type="email"
+                  className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none form-control"
+                  placeholder="Enter your email address"
+                  value={formik.values.email}
                   onChange={formik.handleChange}
+                  onKeyDown={(e) => {
+                    if (e.key === " ") {
+                      e.preventDefault();
+                    }
+                  }}
                   onBlur={formik.handleBlur}
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  className="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer"
-                >
-                  {showPassword ? (
-                    <Eye className="h-5 w-5" />
-                  ) : (
-                    <EyeOff className="h-5 w-5" />
-                  )}
-                </button>
+                {formik.touched.email && formik.errors.email ? (
+                  <p className="text-red-500 text-sm text-left absolute">
+                    {formik.errors.email}
+                  </p>
+                ) : null}
               </div>
-              {formik.touched.password && formik.errors.password && (
-                <p className="text-red-500 text-sm absolute">
-                  {formik.errors.password}
-                </p>
-              )}
-            </div>
-            <div className="mt-6 text-right">
-              <Link
-                to={"/forgot-password"}
-                className="text-sm underline text-[#111111] hover:text-[#007BFF] site-link uppercase transition-all duration-300"
-              >
-                Forgot your Password?
-              </Link>
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className={`w-full btn text-white py-3.5 px-6 rounded-[0.625rem] font-medium text-base hover:bg-opacity-90 transition-all duration-300 flex justify-center items-center cursor-pointer ${
-                loading ? "opacity-70 cursor-not-allowed" : ""
-              }`}
-            >
-              {loading ? (
-                <>
-                  <svg
-                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
+              <div className="relative">
+                <label className="block text-sm mb-2.5 font-bold uppercase">
+                  Password
+                </label>
+                <div className="relative">
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none pr-12"
+                    placeholder="Enter your password"
+                    value={formik.values.password}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-3 flex items-center text-gray-500 cursor-pointer"
                   >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Signing In...
-                </>
+                    {showPassword ? (
+                      <Eye className="h-5 w-5" />
+                    ) : (
+                      <EyeOff className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+                {formik.touched.password && formik.errors.password && (
+                  <p className="text-red-500 text-sm absolute">
+                    {formik.errors.password}
+                  </p>
+                )}
+              </div>
+              <div className="mt-6 text-right">
+                <Link
+                  to={"/forgot-password"}
+                  className="text-sm underline text-[#111111] hover:text-[#007BFF] site-link uppercase transition-all duration-300"
+                >
+                  Forgot your Password?
+                </Link>
+              </div>
+              <button
+                type="submit"
+                disabled={loading}
+                className={`w-full btn text-white py-3.5 px-6 rounded-[0.625rem] font-medium text-base hover:bg-opacity-90 transition-all duration-300 flex justify-center items-center cursor-pointer ${
+                  loading ? "opacity-70 cursor-not-allowed" : ""
+                }`}
+              >
+                {loading ? (
+                  <>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                    Signing In...
+                  </>
+                ) : (
+                  "Sign In"
+                )}
+              </button>
+            </form>
+          ) : (
+            <div>
+              <div className="space-y-3 xs:space-y-4 sm:space-y-6 w-full">
+                <div>
+                  <p className="mb-1 text-base xs:text-lg md:text-xl lg:text-2xl font-bold">
+                    Login with OTP
+                  </p>
+                </div>
+                <div className="mb-2 xs:mb-3 sm:mb-4">
+                  <label
+                    htmlFor="phone-number"
+                    className="block text-xs xs:text-sm font-bold mb-2"
+                  >
+                    PHONE NUMBER
+                  </label>
+                  <input
+                    id="phone-number"
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="w-full border border-[#AAAAAA] rounded-lg px-2 xs:px-3 sm:px-4 py-2 sm:py-[0.82rem] outline-none text-sm xs:text-base"
+                    placeholder="Enter your phone number"
+                    aria-describedby="phone-error"
+                  />
+                  {phoneNumber && !/^\d{10}$/.test(phoneNumber) && (
+                    <p
+                      id="phone-error"
+                      className="mt-1 text-xs xs:text-sm sm:text-sm text-red-500"
+                    >
+                      Please enter a valid phone number
+                    </p>
+                  )}
+                </div>
+
+                {isOtpSent ? (
+                  <div className="flex flex-col justify-between h-full">
+                    <div>
+                      <div className=" mb-2">
+                        <input
+                          type="text"
+                          value={otp}
+                          onChange={(e) => {
+                            const value = e.target.value.replace(/\D/g, "");
+                            if (value.length <= 4) setOtp(value);
+                          }}
+                          // onChange={(e) => handleOtpChange(e, index)}
+                          // onKeyDown={(e) => handleOtpKeyDown(e, index)}
+                          className="w-full border border-[#AAAAAA] rounded-lg px-1 xs:px-2 sm:px-4 py-2 sm:py-[0.82rem] outline-none text-base"
+                          inputMode="numeric"
+                        />
+                      </div>
+                      <div className="flex justify-between items-center gap-1 sm:gap-0">
+                        <button
+                          onClick={handleResend}
+                          className={`w-full xs:w-auto text-gray-900 underline opacity-20 hover:opacity-100 cursor-pointer ${
+                            timer > 0 ? "cursor-not-allowed" : ""
+                          } text-xs xs:text-sm sm:text-sm`}
+                          disabled={timer > 0}
+                        >
+                          <span className="block w-full text-left">
+                            RESEND CODE
+                          </span>
+                        </button>
+                        {timer > 0 && (
+                          <span className="block w-full xs:w-auto text-right text-xs xs:text-sm sm:text-sm">
+                            ({timer}s)
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-2 xs:gap-3 sm:gap-[0.9879rem] mt-2">
+                      <button
+                        onClick={handleConfirm}
+                        className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
+                        // disabled={otp.join("").length !== 4}
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <button
+                    onClick={handleContinue}
+                    className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
+                    disabled={!phoneNumber || !/^\d{10}$/.test(phoneNumber)}
+                  >
+                    Send OTP
+                  </button>
+                )}
+              </div>
+            </div>
+          )}
+          <div className="mt-6 text-center">
+            <p className="text-sm uppercase">
+              {!isOtpLogin ? (
+                <Link
+                  onClick={() => setIsOtpLogin(true)}
+                  className="underline hover:text-[#007BFF] site-link transition-all duration-300"
+                >
+                  Login with OTP instead
+                </Link>
               ) : (
-                "Sign In"
+                <Link
+                  onClick={() => setIsOtpLogin(false)}
+                  className="underline hover:text-[#007BFF] site-link transition-all duration-300"
+                >
+                  Login with password
+                </Link>
               )}
-            </button>
-          </form>
+            </p>
+          </div>
           <div className="mt-6 text-center">
             <p className="text-sm uppercase">
               Don't have an account?{" "}

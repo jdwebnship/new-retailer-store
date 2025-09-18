@@ -9,6 +9,7 @@ const initialState = {
   isAuthenticated: false,
   verificationLoading: false,
   sent: false,
+  loginSent: false,
   verified: false,
   verificationError: null,
 };
@@ -148,9 +149,51 @@ export const sendOTP = createAsyncThunk(
         user_token: import.meta.env.VITE_API_KEY,
         mobile,
       });
-      
+
       if (response?.data?.success) {
-        toast.success(`${response?.data?.message} - ${response?.data?.data?.otp}` || "OTP sent successfully");
+        toast.success(
+          `${response?.data?.message} - ${response?.data?.data?.otp}`
+        );
+        return response.data;
+      }
+
+      if (response?.data?.message?.includes("not registered")) {
+        return rejectWithValue({
+          userNotRegistered: true,
+          message: response.data.message,
+          mobile,
+        });
+      }
+
+      return rejectWithValue({
+        userNotRegistered: false,
+        message: response?.data?.message || "Failed to send OTP",
+        mobile,
+      });
+    } catch (error) {
+      console.error("sendOTP error:", error);
+      return rejectWithValue({
+        userNotRegistered: false,
+        message: error.response?.data?.message || error.message,
+        mobile,
+      });
+    }
+  }
+);
+
+export const sendLoginOTP = createAsyncThunk(
+  "auth/sendLoginOTP",
+  async (mobile, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/login/otp", {
+        user_token: import.meta.env.VITE_API_KEY,
+        mobile,
+      });
+
+      if (response?.data?.success) {
+        toast.success(
+          `${response?.data?.message} - ${response?.data?.data?.otp}`
+        );
         return response.data;
       }
 
@@ -183,6 +226,26 @@ export const verifyOTP = createAsyncThunk(
   async ({ mobile, otp }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/otp/verify/checkout", {
+        mobile,
+        otp,
+      });
+      if (response?.data?.success) {
+        toast.success(response?.data?.message || "OTP verified successfully");
+      } else {
+        toast.error(response?.data?.message || "Invalid OTP");
+      }
+      return response.data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Invalid OTP");
+      return rejectWithValue(error.response?.data || "OTP verification failed");
+    }
+  }
+);
+export const verifyLoginOTP = createAsyncThunk(
+  "otp/verifyLogin",
+  async ({ mobile, otp }, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/otp/verify/login", {
         mobile,
         otp,
       });
@@ -290,6 +353,20 @@ const authSlice = createSlice({
         state.error = action.payload || "Failed to send OTP";
         state.sent = false;
       })
+      .addCase(sendLoginOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(sendLoginOTP.fulfilled, (state) => {
+        state.loading = false;
+        state.loginSent = true;
+        state.verified = false;
+      })
+      .addCase(sendLoginOTP.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload || "Failed to send OTP";
+        state.loginSent = false;
+      })
 
       .addCase(verifyOTP.pending, (state) => {
         state.verificationLoading = true;
@@ -302,6 +379,21 @@ const authSlice = createSlice({
         state.isAuthenticated = action.payload.success ? true : false;
       })
       .addCase(verifyOTP.rejected, (state, action) => {
+        state.verificationLoading = false;
+        state.verificationError = action.payload || "OTP verification failed";
+        state.verified = false;
+      })
+      .addCase(verifyLoginOTP.pending, (state) => {
+        state.verificationLoading = true;
+        state.verificationError = null;
+      })
+      .addCase(verifyLoginOTP.fulfilled, (state, action) => {
+        state.verificationLoading = false;
+        state.verified = true;
+        state.user = action.payload.data;
+        state.isAuthenticated = action.payload.success ? true : false;
+      })
+      .addCase(verifyLoginOTP.rejected, (state, action) => {
         state.verificationLoading = false;
         state.verificationError = action.payload || "OTP verification failed";
         state.verified = false;

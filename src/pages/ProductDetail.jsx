@@ -19,7 +19,7 @@ import useVariantQuery from "../hooks/useVariantQuery";
 import { toast } from "react-toastify";
 import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
 import useCartQuantity from "../hooks/useCartQuantity";
-import CustomButton from "../components/CustomButton";
+import LoadingButton from "../components/CustomButton";
 
 function ProductDetail() {
   const { slug } = useParams();
@@ -101,9 +101,9 @@ function ProductDetail() {
   const discount =
     product?.old_price && product?.final_price
       ? (
-        ((product?.old_price - product?.final_price) / product?.old_price) *
-        100
-      ).toFixed(0)
+          ((product?.old_price - product?.final_price) / product?.old_price) *
+          100
+        ).toFixed(0)
       : 0;
 
   const selectedVariant = productVariations.find(
@@ -192,9 +192,9 @@ function ProductDetail() {
         const containerWidth = thumbContainerRef.current.offsetWidth;
         const aspectRatio =
           thumbImg &&
-            thumbImg.complete &&
-            thumbImg.naturalWidth > 0 &&
-            thumbImg.naturalHeight > 0
+          thumbImg.complete &&
+          thumbImg.naturalWidth > 0 &&
+          thumbImg.naturalHeight > 0
             ? thumbImg.naturalWidth / thumbImg.naturalHeight
             : 1.5;
         const singleThumbHeight = containerWidth / aspectRatio;
@@ -313,10 +313,11 @@ function ProductDetail() {
                   {productImg.map((src, index) => (
                     <SwiperSlide key={index}>
                       <div
-                        className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${activeIndex === index
+                        className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${
+                          activeIndex === index
                             ? "grayscale-0 opacity-100"
                             : "grayscale opacity-50"
-                          }`}
+                        }`}
                       >
                         <img
                           src={src}
@@ -421,30 +422,31 @@ function ProductDetail() {
             {/* Available Sizes */}
             {(product?.variations?.length > 0 ||
               product?.productVariations?.length > 0) && (
-                <div className="mb-6">
-                  <h4 className="text-sm font-bold mb-2 uppercase">Size</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {productVariations?.map((item) => (
-                      <button
-                        key={item.id}
-                        disabled={!item?.stock}
-                        onClick={() =>
-                          handleVariantSelect(item?.product_variation)
-                        }
-                        className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${variant === item?.product_variation
-                            ? "border-black"
-                            : ""
-                          }`}
-                      >
-                        {item?.product_variation}
-                        {item?.stock <= 0 && (
-                          <span className="absolute top-0 left-0 w-full h-full bg-white/70"></span>
-                        )}
-                      </button>
-                    ))}
-                  </div>
+              <div className="mb-6">
+                <h4 className="text-sm font-bold mb-2 uppercase">Size</h4>
+                <div className="flex flex-wrap gap-2">
+                  {productVariations?.map((item) => (
+                    <button
+                      key={item.id}
+                      disabled={!item?.stock}
+                      onClick={() =>
+                        handleVariantSelect(item?.product_variation)
+                      }
+                      className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${
+                        variant === item?.product_variation
+                          ? "border-black"
+                          : ""
+                      }`}
+                    >
+                      {item?.product_variation}
+                      {item?.stock <= 0 && (
+                        <span className="absolute top-0 left-0 w-full h-full bg-white/70"></span>
+                      )}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
+            )}
             <div className="flex gap-4 mb-3.5">
               <div className="quantity-wrapper">
                 <div className="inline-flex items-center border border-gray-300 rounded-md py-2 h-full">
@@ -491,7 +493,7 @@ function ProductDetail() {
                   </button>
                 </div>
               </div>
-              <CustomButton
+              <LoadingButton
                 loading={loading}
                 onClick={() => {
                   if (!canIncrease) {
@@ -500,9 +502,8 @@ function ProductDetail() {
                     handleAddToCart();
                   }
                 }}
-              >
-                {!canIncrease ? "Go to Cart" : "Add to Cart"}
-              </CustomButton>
+                text={!canIncrease ? "Go to Cart" : "Add to Cart"}
+              />
             </div>
             <div className="text-xl mb-6 price-wrapper flex flex-wrap rounded-lg w-auto flex-auto gap-3.5">
               <button
