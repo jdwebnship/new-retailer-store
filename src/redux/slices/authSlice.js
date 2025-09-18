@@ -211,8 +211,8 @@ const authSlice = createSlice({
     },
     updateCustomer: (state, action) => {
       if (state.user && state.user.customer) {
-        state.user.customer = {
-          ...state.user.customer,
+        state.user = {
+          ...state.user,
           ...action.payload,
         };
       }

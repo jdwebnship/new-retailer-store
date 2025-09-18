@@ -13,13 +13,13 @@ import {
   performCheckout,
 } from "../redux/slices/checkoutSlice";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Checkout() {
+  const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-  const { discount, discountLoading, loading } = useSelector(
-    (state) => state.checkout
-  );
+  const { discount, discountLoading, checkoutLoading } = useSelector((state) => state.checkout);
 
   const { theme } = useTheme();
   const dispatch = useDispatch();
@@ -116,7 +116,7 @@ function Checkout() {
       state: Yup.string().required("State is required"),
     }),
     onSubmit: (values) => {
-      const productsData = updatedCartItems.map((item) => {
+      const products = updatedCartItems.map((item) => {
         const base = { quantity: item.quantity || 1 };
         return item.retailer_id
           ? {
@@ -145,16 +145,14 @@ function Checkout() {
               coupon_id: item?.discountApplied ? discount?.id : undefined,
             };
       });
-      console.log("Checkout form submitted:", productsData);
       const payload = {
         ...values,
-        productsData,
+        products,
         phone_number: values?.phone_number || userData?.phone_number,
         user_token: import.meta.env.VITE_API_KEY,
         payment_method: paymentMethod,
       };
-      console.log("payload", payload);
-      dispatch(performCheckout(payload));
+      dispatch(performCheckout({payload, navigate}));
     },
     enableReinitialize: true,
   });
@@ -617,12 +615,13 @@ function Checkout() {
                 e.preventDefault();
                 formik.handleSubmit();
               }}
-              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase ${
-                loading ? "bg-gray-400" : "bg-black hover:bg-gray-800"
-              }`}
-              disabled={loading}
+              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase ${checkoutLoading || !paymentMethod
+                ? 'bg-gray-400'
+                : 'bg-black hover:bg-gray-800'
+                }`}
+              disabled={checkoutLoading || !paymentMethod}
             >
-              {loading ? "Loading..." : "Place Order"}
+              {checkoutLoading ? "Placing Order..." : "Place Order"}
             </button>
             <div className="text-center mt-6">
               <Link

@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { clearCart } from "./cartSlice";
+import { updateCustomer } from "./authSlice";
 
 const initialState = {
   loading: false,
@@ -17,25 +19,26 @@ const initialState = {
 // Async thunk for performing checkout
 export const performCheckout = createAsyncThunk(
   'checkout/performCheckout',
-  async (payload, { dispatch, rejectWithValue }) => {
+  async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
     try {
-      const res = await axiosInstance.post("/checkout1", payload);
-      if (res?.data?.success || res?.data?.status) {
+      const response = await axiosInstance.post("/checkout1", payload);
+      console.log("Checkout response:", response);
+      if (response?.data?.success || response?.data?.status) {
         dispatch(discountSuccess(null));
-        // dispatch(authSuccess(res?.data?.data));
-        toast.success(res?.data?.message);
+        dispatch(updateCustomer(response?.data?.data));
+        toast.success(response?.data?.message);
         dispatch(clearCart());
         // clearAllItems();
         // localStorage.setItem("successful-order", JSON.stringify(res?.data?.data));
-        navigate("/successful-order");
-        return res.data;
+        navigate("/my-account");
+        return response.data;
       } else {
-        if (Array.isArray(res?.data?.message) && res?.data?.message?.length) {
-          res.data.message.forEach((err) => toast.error(err));
+        if (Array.isArray(response?.data?.message) && response?.data?.message?.length) {
+          response.data.message.forEach((err) => toast.error(err));
         } else {
-          toast.error(res?.data?.message || "Checkout failed");
+          toast.error(response?.data?.message || "Checkout failed");
         }
-        return rejectWithValue(res?.data || { message: "Checkout failed" });
+        return rejectWithValue(response?.data || { message: "Checkout failed" });
       }
     } catch (error) {
       console.error("Checkout error:", error);
