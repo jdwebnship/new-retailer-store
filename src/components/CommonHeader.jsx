@@ -47,20 +47,6 @@ function CommonHeader({ className = "", ...props }) {
         </div>
       ),
     },
-    // "/about": {
-    //   breadcrumb: true,
-    //   title: "About Us",
-    //   content: (
-    //     <div className="flex items-center justify-between w-full px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
-    //       <h1 className="text-2xl font-bold">About Page Header</h1>
-    //       <nav className="flex gap-4">
-    //         <Link to="/" className="">
-    //           Home
-    //         </Link>
-    //       </nav>
-    //     </div>
-    //   ),
-    // },
     "/shop": {
       title: "Shop",
       breadcrumb: true,
@@ -91,15 +77,19 @@ function CommonHeader({ className = "", ...props }) {
     },
     "/signin": {
       title: "Sign In",
+      breadcrumb: true,
     },
     "/signup": {
       title: "Sign Up",
+      breadcrumb: true,
     },
     "/forgot-password": {
       title: "Forgot Password",
+      breadcrumb: true,
     },
     "/reset-password": {
       title: "Reset Password",
+      breadcrumb: true,
     },
     [`/products/${slug}`]: {
       title: "Women's Watch",
