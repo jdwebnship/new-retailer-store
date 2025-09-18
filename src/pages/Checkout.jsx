@@ -5,44 +5,148 @@ import { useTheme } from "../contexts/ThemeContext";
 import watch from "../assets/watch.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { applyDiscount, clearDiscount, performCheckout } from "../redux/slices/checkoutSlice";
+import { Trash2 } from "lucide-react";
 
 function Checkout() {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
+  const { discount, discountLoading, loading } = useSelector((state) => state.checkout);
 
   const { theme } = useTheme();
   const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState("");
   const userData = user?.customer || {};
 
-  // Fetch cart items when component mounts
+  const discountValue = discount && parseFloat(discount.discount);
+  const discountProductIds = discount?.product_id || [];
+
+  const updatedCartItems = cartItems.map((item) => {
+    const itemId = item.product_id || item.retailer_product_id;
+
+    if (discount && discountProductIds.includes(itemId)) {
+      return {
+        ...item,
+        discountedPrice: (parseFloat(item.final_price) - discountValue),
+        discountApplied: true,
+      };
+    }
+
+    return {
+      ...item,
+      discountedPrice: item.final_price,
+      discountApplied: false,
+    };
+  });
+
+  const couponForm = useFormik({
+    initialValues: { coupon_code: "" },
+    onSubmit: (values, { setFieldError }) => {
+      dispatch(applyDiscount({
+        payload: {
+          coupon_code: values?.coupon_code.trim(),
+          phone_number: userData.phone_number
+        },
+        setFieldError
+      }));
+    },
+  });
+
   useEffect(() => {
     if (user?.isAuthenticated) {
       dispatch(fetchCart());
     }
   }, [dispatch, user?.isAuthenticated]);
 
-  const { subtotal, total, itemCount } = useMemo(() => {
-    if (!cartItems?.length) {
-      return { subtotal: 0, total: 0, itemCount: 0 };
-    }
+  const subtotal = updatedCartItems?.reduce(
+    (acc, item) => acc + item.final_price * item.quantity,
+    0
+  );
+  const total = subtotal;
+  const discTotal = Number(discount?.discount)
+    ? total - (Number(discount?.discount) * discount?.product_id?.length)
+    : total;
 
-    const sub = cartItems.reduce((sum, item) => {
-      return (
-        sum +
-        parseFloat(item.final_price || item.price || 0) * (item.quantity || 1)
-      );
-    }, 0);
+  const priceDetails = [
+    { label: "Subtotal", value: subtotal },
+    {
+      label: "Discount",
+      value: Number(discount?.discount)
+        ? Number(discount?.discount) * discount?.product_id?.length
+        : 0,
+      display: discount ? true : false,
+    },
+    { label: "Shipping", value: 0, isFree: true },
+  ];
 
-    return {
-      subtotal: sub,
-      total: sub, // You can add tax or shipping here if needed
-      itemCount: cartItems.reduce(
-        (count, item) => count + (item.quantity || 1),
-        0
-      ),
-    };
-  }, [cartItems]);
+  const formik = useFormik({
+    initialValues: {
+      phone_number: userData.phone_number || "",
+      email: userData.email || "",
+      firstname: userData.firstname || "",
+      lastname: userData.lastname || "",
+      address: userData.address || "",
+      pincode: userData.pincode || "",
+      alt_phone_number: userData.alt_phone_number || "",
+      city: userData.city || "",
+      state: userData.state || "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      firstname: Yup.string().required("First name is required"),
+      lastname: Yup.string().required("Last name is required"),
+      address: Yup.string().required("Address is required"),
+      pincode: Yup.string()
+        .matches(/^[0-9]{6}$/, "Must be a valid 6-digit pincode")
+        .required("Pincode is required"),
+      alt_phone_number: Yup.string().matches(
+        /^[0-9]{10}$/,
+        "Must be a valid 10-digit number"
+      ).required("Alt Phone number is required"),
+      city: Yup.string().required("City is required"),
+      state: Yup.string().required("State is required"),
+    }),
+    onSubmit: (values) => {
+      const productsData = updatedCartItems.map((item) => {
+        const base = { quantity: item.quantity || 1 };
+        return item.retailer_id
+          ? {
+            ...base,
+            retailer_id: item.retailer_id,
+            retailer_product_id:
+              item?.product_id || item?.retailer_product_id,
+            final_amount: item?.discountApplied ? item?.discountedPrice : item?.final_price,
+            product_variation:
+              item?.selected_variant?.product_variation || null,
+            quantity: item?.quantity || null,
+            coupon_id: item?.discountApplied ? discount?.id : undefined,
+          }
+          : {
+            ...base,
+            wholesaler_id: item.wholesaler_id,
+            product_id: item?.id || item?.product_id,
+            final_amount: item?.discountApplied ? item?.discountedPrice : item?.final_price,
+            product_variation:
+              item?.selected_variant?.product_variation || null,
+            quantity: item?.quantity || null,
+            coupon_id: item?.discountApplied ? discount?.id : undefined,
+          };
+      });
+      console.log("Checkout form submitted:", productsData);
+      const payload = {
+        ...values,
+        productsData,
+        phone_number: values?.phone_number || userData?.phone_number,
+        user_token: import.meta.env.VITE_API_KEY,
+        payment_method: paymentMethod,
+      };
+      console.log("payload", payload);
+      dispatch(performCheckout(payload));
+    },
+    enableReinitialize: true,
+  });
 
   return (
     <div>
@@ -51,7 +155,7 @@ function Checkout() {
       <div className="w-full max-w-auto 2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.25rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-[0]">
         <div className="grid lg:grid-cols-2 gap-8 text-start w-full xl:gap-15">
           <div className="w-full ">
-            <form action="">
+            <form id="checkout-form">
               <div className="flex flex-col gap-6">
                 <div className="w-full">
                   <label
@@ -71,138 +175,164 @@ function Checkout() {
                 </div>
                 <h3 className="text-2xl font-bold">Shipping Details</h3>
                 <hr className="opacity-10" />
-                <div className="w-full">
-                  <label
-                    className="block text-sm mb-2.5 font-bold uppercase"
-                    htmlFor="email"
-                  >
+                {/* Email */}
+                <div>
+                  <label className="block text-sm mb-2.5 font-bold uppercase">
                     Email Address
                   </label>
                   <input
-                    id="email"
                     type="email"
+                    name="email"
+                    value={formik.values.email}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                    placeholder="Enter your email address"
-                    value={userData.email || ""}
-                    readOnly
                   />
+                  {formik.touched.email && formik.errors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formik.errors.email}
+                    </p>
+                  )}
                 </div>
-                <div className=" flex flex-col sm:flex-row">
+
+                {/* First & Last Name */}
+                <div className="flex flex-col sm:flex-row">
                   <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
-                    <label
-                      className="block text-sm font-bold mb-1 uppercase"
-                      htmlFor="fname"
-                    >
-                      first name
+                    <label className="block text-sm font-bold mb-1 uppercase">
+                      First Name
                     </label>
                     <input
                       type="text"
-                      id="fname"
+                      name="firstname"
+                      value={formik.values.firstname}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter your first name"
-                      value={userData.firstname || ""}
-                      readOnly
                     />
+                    {formik.touched.firstname && formik.errors.firstname && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formik.errors.firstname}
+                      </p>
+                    )}
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-3">
-                    <label
-                      className="block text-sm font-bold mb-1 uppercase"
-                      htmlFor="lname"
-                    >
+                    <label className="block text-sm font-bold mb-1 uppercase">
                       Last Name
                     </label>
                     <input
                       type="text"
-                      id="lname"
+                      name="lastname"
+                      value={formik.values.lastname}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter your last name"
-                      value={userData.lastname || ""}
-                      readOnly
                     />
+                    {formik.touched.lastname && formik.errors.lastname && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formik.errors.lastname}
+                      </p>
+                    )}
                   </div>
                 </div>
-                <div className="">
-                  <label
-                    className="block text-sm mb-2.5 font-bold uppercase"
-                    htmlFor="email"
-                  >
+
+                {/* Address */}
+                <div>
+                  <label className="block text-sm mb-2.5 font-bold uppercase">
                     Address
                   </label>
                   <input
-                    id="address"
                     type="text"
+                    name="address"
+                    value={formik.values.address}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                    placeholder="Enter your address"
-                    value={userData.address || ""}
-                    // readOnly={!userData.address}
                   />
+                  {formik.touched.address && formik.errors.address && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {formik.errors.address}
+                    </p>
+                  )}
                 </div>
-                <div className=" flex flex-col sm:flex-row">
+
+                {/* Zip & Alt Phone */}
+                <div className="flex flex-col sm:flex-row">
                   <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
-                    <label
-                      className="block text-sm font-bold mb-1 uppercase"
-                      htmlFor="fname"
-                    >
+                    <label className="block text-sm font-bold mb-1 uppercase">
                       Zip Code
                     </label>
                     <input
                       type="text"
-                      id="zipcode"
+                      name="pincode"
+                      value={formik.values.pincode}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter your zipcode"
-                      value={userData.pincode || ""}
-                      // readOnly={!userData.pincode}
                     />
+                    {formik.touched.pincode && formik.errors.pincode && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formik.errors.pincode}
+                      </p>
+                    )}
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-3">
-                    <label
-                      className="block text-sm font-bold mb-1 uppercase"
-                      htmlFor="lname"
-                    >
-                      Phone Number
+                    <label className="block text-sm font-bold mb-1 uppercase">
+                      Alternate Phone
                     </label>
                     <input
                       type="text"
-                      id="altphone"
+                      name="alt_phone_number"
+                      value={formik.values.alt_phone_number}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter alternate phone number"
-                      value={userData.alt_phone_number || ""}
-                      // readOnly={!userData.alt_phone_number}
                     />
+                    {formik.touched.alt_phone_number &&
+                      formik.errors.alt_phone_number && (
+                        <p className="text-red-500 text-sm mt-1">
+                          {formik.errors.alt_phone_number}
+                        </p>
+                      )}
                   </div>
                 </div>
-                <div className=" flex flex-col sm:flex-row">
+
+                {/* City & State */}
+                <div className="flex flex-col sm:flex-row">
                   <div className="w-full sm:w-1/2 mb-6 md:mb-0 sm:pr-3">
-                    <label
-                      className="block text-sm font-bold mb-1 uppercase"
-                      htmlFor="city"
-                    >
+                    <label className="block text-sm font-bold mb-1 uppercase">
                       City
                     </label>
                     <input
                       type="text"
-                      id="city"
+                      name="city"
+                      value={formik.values.city}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter your city"
-                      value={userData.city || ""}
-                      // readOnly={!userData.city}
                     />
+                    {formik.touched.city && formik.errors.city && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formik.errors.city}
+                      </p>
+                    )}
                   </div>
                   <div className="w-full sm:w-1/2 sm:pl-3">
-                    <label
-                      className="block text-sm font-bold mb-1 uppercase"
-                      htmlFor="state"
-                    >
+                    <label className="block text-sm font-bold mb-1 uppercase">
                       State
                     </label>
                     <input
                       type="text"
-                      id="state"
+                      name="state"
+                      value={formik.values.state}
+                      onChange={formik.handleChange}
+                      onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                      placeholder="Enter your state"
-                      value={userData.state || ""}
-                      // readOnly={!userData.state}
                     />
+                    {formik.touched.state && formik.errors.state && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {formik.errors.state}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -222,7 +352,7 @@ function Checkout() {
                   Edit Cart
                 </Link>
               </div>
-              {cartItems?.map((item) => {
+              {updatedCartItems?.map((item) => {
                 const firstImage = item.product_images?.split(",")[0] || watch;
                 return (
                   <div key={item.cart_id} className="bottom-card">
@@ -242,20 +372,29 @@ function Checkout() {
                           <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
                             {item.product_name}
                           </h3>
-                          <div className="flex mt-[0.5rem] items-center gap-4">
-                            {item.selected_variant && (
-                              <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
-                                Size:{" "}
-                                <strong className="font-bold text-[#111111] ml-2">
-                                  {item.selected_variant.product_variation}
-                                </strong>
-                              </span>
+                          <div className="flex items-center gap-2 text-xs text-[#5C5F6A] mt-1">
+                            <span>
+                              {item?.discountApplied ? (
+                                <>
+                                  <span style={{ fontWeight: "bold", color: "green" }}>
+                                    Price: ₹{(item?.final_price * item?.quantity) - discount?.discount}
+                                  </span>{" "}
+                                  <span style={{ textDecoration: "line-through", color: "gray" }}>
+                                    ₹{item?.final_price * item?.quantity}
+                                  </span>
+                                </>
+                              ) : (
+                                <span>Price: ₹{item?.final_price * item?.quantity}</span>
+                              )}
+                            </span>
+                            {item?.selected_variant && (
+                              <>
+                                <span>—</span>
+                                <span>
+                                  Size: {item.selected_variant.product_variation}
+                                </span>
+                              </>
                             )}
-                            <div className="flex items-center gap-2">
-                              <span className="leading-none text-sm sm:text-base font-bold text-[#111111]">
-                                ₹{item.final_price?.toLocaleString("en-IN")}
-                              </span>
-                            </div>
                           </div>
                         </div>
                       </div>
@@ -267,15 +406,66 @@ function Checkout() {
                 );
               })}
             </div>
-            <div className="relative flex w-full border-2 border-blue-[#111111] rounded-[0.625rem] overflow-hidden my-6">
-              <input
-                type="text"
-                placeholder="Coupon Code"
-                className="w-full px-4 py-4 text-gray-700 placeholder-gray-[#808080] bg-transparent border-none outline-none"
-              />
-              <button className="px-8 lg:px-14 py-2 bg-black text-white hover:bg-gray-800 transition-colors">
-                Apply
-              </button>
+
+            {/* Discount */}
+            <div className="relative w-full my-6">
+              {discount ? (
+                <div className="flex items-center gap-3 mt-3 p-3 border border-green-600 rounded-lg bg-green-50 shadow-sm">
+                  <span className="inline-block px-3 py-1 rounded-md border border-green-600 bg-white text-sm font-medium text-green-700">
+                    {discount?.code}
+                  </span>
+                  <span className="text-green-700 text-sm font-medium">
+                    Coupon Applied!
+                  </span>
+                  <button
+                    onClick={() => {
+                      couponForm.resetForm();
+                      dispatch(clearDiscount())
+                    }}
+                    className="ml-auto text-red-500 hover:text-red-700 text-sm font-medium"
+                  >
+                    <Trash2 size={18} strokeWidth={2} />
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={couponForm.handleSubmit} className="flex flex-col sm:flex-row gap-4">
+                  <div className="relative flex-1">
+                    <input
+                      type="text"
+                      id="coupon_code"
+                      name="coupon_code"
+                      placeholder="Coupon Code"
+                      className={`w-full px-4 py-4 text-gray-700 placeholder-gray-500 bg-transparent border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-black 
+                      ${couponForm.touched.coupon_code && couponForm.errors.coupon_code
+                          ? 'border-red-500'
+                          : discount ? 'border-green-500' : 'border-gray-300'
+                        }`}
+                      value={couponForm.values.coupon_code}
+                      onChange={couponForm.handleChange}
+                      onBlur={couponForm.handleBlur}
+                      disabled={!!discount || discountLoading}
+                    />
+                    {couponForm.touched.coupon_code && couponForm.errors.coupon_code && (
+                      <p className="mt-1 text-sm text-red-600">
+                        {couponForm.errors.coupon_code}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      type="submit"
+                      disabled={couponForm.values.coupon_code === ""}
+                      className={`px-6 py-4 text-white rounded-lg transition-colors 
+                        ${couponForm.values.coupon_code === ""
+                          ? 'bg-gray-400'
+                          : 'bg-black hover:bg-gray-800'
+                        }`}
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </form>
+              )}
             </div>
 
             {/* Payment Method */}
@@ -283,11 +473,10 @@ function Checkout() {
               <h3 className="text-2xl font-bold mb-4">Payment Method</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
-                    paymentMethod === "cod"
-                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                      : "border-[#AAAAAA] hover:border-black/60"
-                  }`}
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "cod"
+                    ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                    : "border-[#AAAAAA] hover:border-black/60"
+                    }`}
                 >
                   <input
                     type="radio"
@@ -297,16 +486,14 @@ function Checkout() {
                     onChange={() => setPaymentMethod("cod")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
-                      paymentMethod === "cod"
-                        ? "border-black"
-                        : "border-[#AAAAAA]"
-                    }`}
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "cod"
+                      ? "border-black"
+                      : "border-[#AAAAAA]"
+                      }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${
-                        paymentMethod === "cod" ? "bg-black" : "bg-transparent"
-                      }`}
+                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "cod" ? "bg-black" : "bg-transparent"
+                        }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -317,11 +504,10 @@ function Checkout() {
                 </label>
 
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
-                    paymentMethod === "prepaid"
-                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                      : "border-[#AAAAAA] hover:border-black/60"
-                  }`}
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "prepaid"
+                    ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                    : "border-[#AAAAAA] hover:border-black/60"
+                    }`}
                 >
                   <input
                     type="radio"
@@ -331,18 +517,16 @@ function Checkout() {
                     onChange={() => setPaymentMethod("prepaid")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
-                      paymentMethod === "prepaid"
-                        ? "border-black"
-                        : "border-[#AAAAAA]"
-                    }`}
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "prepaid"
+                      ? "border-black"
+                      : "border-[#AAAAAA]"
+                      }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${
-                        paymentMethod === "prepaid"
-                          ? "bg-black"
-                          : "bg-transparent"
-                      }`}
+                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "prepaid"
+                        ? "bg-black"
+                        : "bg-transparent"
+                        }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -352,32 +536,47 @@ function Checkout() {
               </div>
             </div>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
-                <span className="sm:text-lg font-medium">Subtotal</span>
-                <span className="sm:text-lg font-medium">
-                  ₹
-                  {subtotal.toLocaleString("en-IN", {
-                    maximumFractionDigits: 2,
-                  })}
-                </span>
-              </div>
+              {priceDetails
+                .filter((item) => item.display !== false)
+                .map((item, index) => (
+                  <div key={index} className="flex justify-between py-2">
+                    <span className="sm:text-lg font-medium text-gray-700">
+                      {item.label}
+                    </span>
+                    <span
+                      className={`sm:text-lg font-medium ${item.label.toLowerCase() === "discount"
+                        ? "text-green-600"
+                        : "text-gray-900"
+                        }`}
+                    >
+                      {item.isFree
+                        ? "Free"
+                        : `${item.label.toLowerCase() === "discount" ? "-" : ""}₹${item.value?.toFixed(2)}`}
+                    </span>
+                  </div>
+                ))}
 
-              <div className="flex justify-between">
-                <span className="sm:text-lg font-medium">Shipping</span>
-                <span className="sm:text-lg font-medium">Free</span>
-              </div>
               <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
                 <span className="md:text-2xl text-lg font-medium">
-                  ₹{total.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
+                  ₹{discTotal?.toFixed(2)}
                 </span>
               </div>
             </div>
             <button
-              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] py-4 uppercase disabled:opacity-60"
-              disabled={!paymentMethod}
+              type="submit"
+              form="checkout-form"
+              onClick={(e) => {
+                e.preventDefault();
+                formik.handleSubmit();
+              }}
+              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase ${loading
+                ? 'bg-gray-400'
+                : 'bg-black hover:bg-gray-800'
+                }`}
+              disabled={loading}
             >
-              Place Order
+              {loading ? "Loading..." : "Place Order"}
             </button>
             <div className="text-center mt-6">
               <Link

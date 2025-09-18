@@ -148,15 +148,13 @@ export const sendOTP = createAsyncThunk(
         user_token: import.meta.env.VITE_API_KEY,
         mobile,
       });
-
+      
       if (response?.data?.success) {
-        toast.success(response?.data?.message || "OTP sent successfully");
-        return response.data; // ✅ return success data
+        toast.success(`${response?.data?.message} - ${response?.data?.data?.otp}` || "OTP sent successfully");
+        return response.data;
       }
 
-      // Handle specific "not registered" case
       if (response?.data?.message?.includes("not registered")) {
-        // toast.error(response?.data?.message);
         return rejectWithValue({
           userNotRegistered: true,
           message: response.data.message,
@@ -164,7 +162,6 @@ export const sendOTP = createAsyncThunk(
         });
       }
 
-      // Generic failure case
       return rejectWithValue({
         userNotRegistered: false,
         message: response?.data?.message || "Failed to send OTP",

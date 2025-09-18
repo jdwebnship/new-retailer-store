@@ -14,6 +14,7 @@ import orderPopupSlice from "../redux/slices/orderPopupSlice";
 import contactSlice from "./slices/contactSlice";
 import cartSlice from "./slices/cartSlice";
 import uiSlice from "./slices/uiSlice";
+import checkoutSlice from "./slices/checkoutSlice";
 // import wishlistReducer from "./slices/wishlistSlice";
 // import storeReducer from "./slices/storeSlice";
 // import checkoutReducer from "./slices/checkoutSlice";
@@ -36,6 +37,7 @@ const appReducer = combineReducers({
   contact: contactSlice,
   cart: cartSlice,
   ui: uiSlice,
+  checkout: checkoutSlice,
   // orders: ordersReducer,
   // store: storeReducer,
   // checkout: checkoutReducer,
