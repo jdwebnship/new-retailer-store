@@ -23,7 +23,6 @@ export const registerUser = createAsyncThunk(
         toast.success(response?.data?.message);
         navigate("/signin");
       } else {
-        console.log("hgfhgfhgfhgfh", response);
         toast.error(
           response?.data?.errors ||
             response?.data?.message ||
@@ -149,8 +148,6 @@ export const sendOTP = createAsyncThunk(
         user_token: import.meta.env.VITE_API_KEY,
         mobile,
       });
-
-      console.log("response", response);
 
       if (response?.data?.success) {
         toast.success(response?.data?.message || "OTP sent successfully");

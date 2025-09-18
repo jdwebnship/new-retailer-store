@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { toast } from "react-toastify";
 import {
   postShippingAddress,
   getShippingAddress,
@@ -71,7 +70,7 @@ const UpdateAddressForm = () => {
           onSubmit={handleSubmit}
           enableReinitialize={true}
         >
-          {({ isSubmitting, setFieldValue, values, errors, touched }) => (
+          {({ isSubmitting, setFieldValue, values }) => (
             <Form>
               <div className="mb-6 relative">
                 <label

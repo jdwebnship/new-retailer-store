@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import watch from "../assets/watch.png";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,13 +10,10 @@ function Checkout() {
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
 
-  const navigate = useNavigate();
   const { theme } = useTheme();
   const dispatch = useDispatch();
   const [paymentMethod, setPaymentMethod] = useState("");
   const userData = user?.customer || {};
-
-  console.log("userData", cartItems);
 
   // Fetch cart items when component mounts
   useEffect(() => {
@@ -250,7 +247,7 @@ function Checkout() {
                               <span className="leading-none inline-block font-bold text-sm sm:text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
                                 Size:{" "}
                                 <strong className="font-bold text-[#111111] ml-2">
-                                {item.selected_variant.product_variation}
+                                  {item.selected_variant.product_variation}
                                 </strong>
                               </span>
                             )}

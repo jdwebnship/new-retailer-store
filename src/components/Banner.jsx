@@ -12,27 +12,27 @@ function SingleImage({ data }) {
 
   return (
     <div className="hero-overlay relative">
-      {imageUrl &&
+      {imageUrl && (
         <img
           src={imageUrl}
           alt={data?.title || "Hero Image"}
           className="w-full h-full object-cover"
         />
-      }
+      )}
       <div className="w-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-1 text-center">
-        {data?.title &&
+        {data?.title && (
           <p className="uppercase text-white mb-[8px]">
             {data?.title || "Wardrobe Refresh"}
           </p>
-        }
-        {data?.content &&
+        )}
+        {data?.content && (
           <div
             className="text-[2rem] lg:text-[52px] xl:text-[62px] uppercase text-white mb-[8px] font-bold"
             dangerouslySetInnerHTML={{
               __html: data?.content || "<p>New styles are here</p>",
             }}
           />
-        }
+        )}
         <p className="text-white text-2xl lg:text-[22px] mb-6">
           Shine with our latest must-haves
         </p>
@@ -69,7 +69,7 @@ function Video({ data }) {
 
   return (
     <div className="hero-overlay relative">
-      {videoUrl &&
+      {videoUrl && (
         <video
           src={videoUrl}
           autoPlay
@@ -77,7 +77,7 @@ function Video({ data }) {
           muted
           className="w-full h-full object-cover"
         />
-      }
+      )}
       <div className="w-full absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] z-1 text-center">
         <p className="uppercase text-white mb-[8px]">
           {data?.title || "Wardrobe Refresh"}
@@ -144,9 +144,3 @@ export default function Banner() {
 
   return <SingleImage data={null} />;
 }
-
-//   console.log("homeSections", homeSections);
-//   if (theme.bannerType === "image") return <SingleImage />;
-//   if (theme.bannerType === "video") return <Video />;
-//   return <Slider data={homeSections} />;
-// }

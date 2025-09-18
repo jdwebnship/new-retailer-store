@@ -6,13 +6,11 @@ import { postNewArrivals } from "../redux/slices/newArrivalsSlice";
 import { Link } from "react-router-dom";
 
 function ProductSection() {
-  const { theme, buttonTextColor } = useTheme();
+  const { buttonTextColor } = useTheme();
 
   const dispatch = useDispatch();
 
-  const { newArrivals, loading, error } = useSelector(
-    (state) => state.newArrivals
-  );
+  const { newArrivals } = useSelector((state) => state.newArrivals);
 
   useEffect(() => {
     getData();

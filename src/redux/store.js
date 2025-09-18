@@ -58,11 +58,9 @@ const rootReducer = (state, action) => {
 
 // --- load persisted state
 const persistedState = loadState();
-console.log('Initial persistedState:', persistedState);
 
 // Don't persist UI state
 if (persistedState?.ui) {
-  console.log('Clearing persisted UI state');
   delete persistedState.ui;
 }
 
