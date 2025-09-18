@@ -272,7 +272,7 @@ function SignIn() {
                     type="tel"
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    className="w-full border border-[#AAAAAA] rounded-lg px-2 xs:px-3 sm:px-4 py-2 sm:py-[0.82rem] outline-none text-sm xs:text-base"
+                    className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none form-control"
                     placeholder="Enter your phone number"
                     aria-describedby="phone-error"
                   />
