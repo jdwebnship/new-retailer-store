@@ -58,7 +58,7 @@ function SignIn() {
                 className="block text-sm mb-2.5 font-bold uppercase"
                 htmlFor="email"
               >
-                Email
+                Email Address
               </label>
               <input
                 id="email"
@@ -75,7 +75,7 @@ function SignIn() {
                 </p>
               ) : null}
             </div>
-            <div>
+            <div className="relative">
               <label className="block text-sm mb-2.5 font-bold uppercase">
                 Password
               </label>
@@ -111,14 +111,14 @@ function SignIn() {
             <div className="mt-6 text-right">
               <Link
                 to={"/forgot-password"}
-                className="text-sm underline hover:text-[#007BFF] site-link uppercase transition-all duration-300"
+                className="text-sm underline text-[#111111] hover:text-[#007BFF] site-link uppercase transition-all duration-300"
               >
-                Forgot Password?
+                Forgot your Password?
               </Link>
             </div>
             <button
               type="submit"
-              className="w-full btn rounded-[0.625rem] cursor-pointer py-4 uppercase"
+              className="w-full btn rounded-[0.625rem] cursor-pointer py-3 uppercase text-lg"
             >
               Sign in
             </button>

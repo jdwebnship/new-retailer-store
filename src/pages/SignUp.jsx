@@ -69,7 +69,7 @@ function SignUp() {
         <div className="max-w-[37.5rem] mx-auto text-left">
           <form className="space-y-6" onSubmit={formik.handleSubmit}>
             {/* First & Last Name */}
-            <div className="sm:mb-0 mb-6 flex flex-col sm:flex-row space-x-4">
+            <div className="sm:mb-0 mb-6 flex flex-col sm:flex-row space-x-6">
               <div className="sm:w-1/2 w-full mb-6 relative">
                 <label className="block text-sm mb-2.5 font-bold uppercase">
                   First name
@@ -207,7 +207,7 @@ function SignUp() {
               />
               <label
                 htmlFor="terms"
-                className="text-sm font-medium select-none"
+                className="text-sm font-medium select-none text-[#111111]"
               >
                 By creating an account you agree with our Terms of Service,
                 Privacy Policy,
@@ -220,15 +220,15 @@ function SignUp() {
             {/* Submit */}
             <button
               type="submit"
-              className="w-full btn rounded-[0.625rem] cursor-pointer py-4 uppercase"
+              className="w-full btn rounded-[0.625rem] cursor-pointer py-3 uppercase text-lg"
             >
               Sign up
             </button>
           </form>
 
           {/* Link */}
-          <div className="mt-4 text-center">
-            <p className="text-sm uppercase">
+          <div className="mt-6 text-center">
+            <p className="text-sm uppercase text-[#111111]">
               Already have an account?{" "}
               <Link
                 to={"/signin"}
