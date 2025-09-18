@@ -52,9 +52,10 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const total = (showTopHeader ? topHeaderHeight : 0) + headerHeight;
+    const total = topHeaderHeight + headerHeight; // always full height
     setContentPaddingTop(total);
-  }, [showTopHeader, topHeaderHeight, headerHeight]);
+  }, []); // empty deps = run only on mount
+
   useLayoutEffect(() => {
     // Verify elements exist
     const wrapper = document.querySelector("#smooth-wrapper");
@@ -83,12 +84,17 @@ function App() {
     <div>
       <></>
       <ScrollToTop containerId="main" />
-      <TopHeader visible={showTopHeader} onHeightChange={setTopHeaderHeight} />
-      <Header
-        offsetY={showTopHeader ? topHeaderHeight : 0}
-        onHeightChange={setHeaderHeight}
-        hasShadow={hasShadow}
-      />
+      <div>
+        <TopHeader
+          visible={showTopHeader}
+          onHeightChange={setTopHeaderHeight}
+        />
+        <Header
+          offsetY={showTopHeader ? topHeaderHeight : 0}
+          onHeightChange={setHeaderHeight}
+          hasShadow={hasShadow}
+        />
+      </div>
       <div>
         <div className="App">
           <main
