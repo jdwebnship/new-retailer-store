@@ -8,6 +8,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger"; // Import ScrollTrigger
 import ScrollSmoother from "./gsap-bonus/ScrollSmoother"; // Local file import
 import AppRoutes from "./Routes/routes";
 import "./App.css";
+import ScrollToTop from "./components/ScrollToTop";
 
 // Register plugins once at the module level
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
@@ -81,6 +82,7 @@ function App() {
   return (
     <div>
       <></>
+      <ScrollToTop containerId="main" />
       <TopHeader visible={showTopHeader} onHeightChange={setTopHeaderHeight} />
       <Header
         offsetY={showTopHeader ? topHeaderHeight : 0}
