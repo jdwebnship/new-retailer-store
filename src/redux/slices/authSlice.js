@@ -1,4 +1,3 @@
-// src/redux/slices/authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
@@ -14,26 +13,40 @@ const initialState = {
   verificationError: null,
 };
 
-// Register
 export const registerUser = createAsyncThunk(
   "auth/register",
   async ({ data, navigate }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/customer/register", data);
-      if (response?.data?.success || response?.status) {
+
+      if (response?.data?.success) {
         toast.success(response?.data?.message);
         navigate("/signin");
+      } else {
+        console.log("hgfhgfhgfhgfh", response);
+        toast.error(
+          response?.data?.errors ||
+            response?.data?.message ||
+            "Something went wrong"
+        );
       }
+
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Login failed");
+      const errorMessage =
+        error.response?.data?.errors ||
+        error.response?.data?.message ||
+        "Registration failed";
+      toast.error(errorMessage);
+
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
 export const registerGuestUser = createAsyncThunk(
   "auth/register-guest",
-  async ({ data, navigate }, { rejectWithValue }) => {
+  async ({ data }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post(
         "/customer/update-user-details",
@@ -41,7 +54,6 @@ export const registerGuestUser = createAsyncThunk(
       );
       if (response?.data?.success || response?.status) {
         toast.success(response?.data?.message);
-    
       }
       return response.data;
     } catch (error) {
@@ -50,7 +62,6 @@ export const registerGuestUser = createAsyncThunk(
   }
 );
 
-// Login with email
 export const login = createAsyncThunk(
   "auth/login",
   async ({ credentials, navigate }, { rejectWithValue }) => {
@@ -72,7 +83,6 @@ export const login = createAsyncThunk(
   }
 );
 
-// logout
 export const logoutUser = createAsyncThunk(
   "auth/logout",
   async ({ navigate }, { rejectWithValue, dispatch }) => {
@@ -93,17 +103,15 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
-// forgot password
-export const forgotpassword = createAsyncThunk(
-  "auth/forgotpassword",
-  async ({ email, navigate }, { rejectWithValue }) => {
+export const forgotPassword = createAsyncThunk(
+  "auth/forgotPassword",
+  async ({ email }, { rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/customer/forgot-password", {
         email,
       });
       if (response?.data?.success || response?.status) {
         toast.success(response?.data?.message);
-        navigate("/signin");
       }
       return response.data;
     } catch (error) {
@@ -112,8 +120,7 @@ export const forgotpassword = createAsyncThunk(
   }
 );
 
-// reset password
-export const resetpasswordwithtoken = createAsyncThunk(
+export const resetPasswordWithToken = createAsyncThunk(
   "auth/resetpassword",
   async ({ data, navigate }, { rejectWithValue }) => {
     try {
@@ -177,7 +184,6 @@ export const sendOTP = createAsyncThunk(
   }
 );
 
-// Async thunk for verifying OTP
 export const verifyOTP = createAsyncThunk(
   "otp/verify",
   async ({ mobile, otp }, { rejectWithValue }) => {
@@ -227,7 +233,6 @@ const authSlice = createSlice({
   extraReducers: (builder) => {
     builder
 
-      // Register
       .addCase(registerUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -262,7 +267,6 @@ const authSlice = createSlice({
         state.isAuthenticated = false;
       })
 
-      // login
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -293,7 +297,6 @@ const authSlice = createSlice({
         state.sent = false;
       })
 
-      // Verify OTP Reducers
       .addCase(verifyOTP.pending, (state) => {
         state.verificationLoading = true;
         state.verificationError = null;
@@ -310,7 +313,6 @@ const authSlice = createSlice({
         state.verified = false;
       })
 
-      // logout
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
       })

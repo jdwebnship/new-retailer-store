@@ -3,11 +3,10 @@ import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../redux/slices/authSlice";
+import { SignupSchema } from "../utils/validationSchema";
 
-// Initial values
 const initialValues = {
   firstName: "",
   lastName: "",
@@ -17,34 +16,15 @@ const initialValues = {
   terms: false,
 };
 
-// Validation schema
-const validationSchema = Yup.object({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-      "Password must contain at least one uppercase, one lowercase, one number, and one special character"
-    ),
-  mobile: Yup.string()
-    .matches(/^[0-9]{10}$/, "Enter a valid 10-digit mobile number")
-    .required("Mobile number is required"),
-  terms: Yup.boolean().oneOf([true], " Please accept the terms & conditions"),
-});
-
 function SignUp() {
-  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+  const { loading } = useSelector((state) => state.auth);
 
   const formik = useFormik({
     initialValues,
-    validationSchema,
+    validationSchema: SignupSchema,
     onSubmit: (values) => {
       const payload = {
         user_token: import.meta.env.VITE_API_KEY,
@@ -68,7 +48,6 @@ function SignUp() {
       <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] lg:py-[6.25rem] md:py-[5rem] py-[3.5rem]">
         <div className="max-w-[37.5rem] mx-auto text-left">
           <form className="space-y-6" onSubmit={formik.handleSubmit}>
-            {/* First & Last Name */}
             <div className="sm:mb-0 mb-6 flex flex-col sm:flex-row space-x-6">
               <div className="sm:w-1/2 w-full mb-6 relative">
                 <label className="block text-sm mb-2.5 font-bold uppercase">
@@ -81,7 +60,12 @@ function SignUp() {
                   className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none"
                   placeholder="Enter your first name"
                   value={formik.values.firstName}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue(
+                      "firstName",
+                      e.target.value.trimStart()
+                    );
+                  }}
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.firstName && formik.errors.firstName && (
@@ -101,7 +85,12 @@ function SignUp() {
                   className="w-full border border-[#AAAAAA] rounded-md px-4 py-[0.82rem] focus:outline-none"
                   placeholder="Enter your last name"
                   value={formik.values.lastName}
-                  onChange={formik.handleChange}
+                  onChange={(e) => {
+                    formik.setFieldValue(
+                      "lastName",
+                      e.target.value.trimStart()
+                    );
+                  }}
                   onBlur={formik.handleBlur}
                 />
                 {formik.touched.lastName && formik.errors.lastName && (
@@ -112,10 +101,9 @@ function SignUp() {
               </div>
             </div>
 
-            {/* Email */}
             <div className="relative">
               <label className="block text-sm mb-2.5 font-bold uppercase">
-                Email
+                Email Address
               </label>
               <input
                 id="email"
@@ -126,6 +114,11 @@ function SignUp() {
                 value={formik.values.email}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
+                onKeyDown={(e) => {
+                  if (e.key === " ") {
+                    e.preventDefault();
+                  }
+                }}
               />
               {formik.touched.email && formik.errors.email && (
                 <p className="text-red-500 text-sm absolute">
@@ -134,7 +127,6 @@ function SignUp() {
               )}
             </div>
 
-            {/* Password */}
             <div className="relative">
               <label className="block text-sm mb-2.5 font-bold uppercase">
                 Password
@@ -169,7 +161,6 @@ function SignUp() {
               )}
             </div>
 
-            {/* Mobile */}
             <div className="relative">
               <label className="block text-sm mb-2.5 font-bold uppercase">
                 Mobile Number
@@ -184,7 +175,10 @@ function SignUp() {
                 placeholder="Enter your Mobile Number"
                 autoComplete="tel"
                 value={formik.values.mobile}
-                onChange={formik.handleChange}
+                onChange={(e) => {
+                  const numericValue = e.target.value.replace(/\D/g, "");
+                  formik.setFieldValue("mobile", numericValue.trimStart());
+                }}
                 onBlur={formik.handleBlur}
               />
               {formik.touched.mobile && formik.errors.mobile && (
@@ -209,8 +203,19 @@ function SignUp() {
                 htmlFor="terms"
                 className="text-sm font-medium select-none text-[#111111]"
               >
-                By creating an account you agree with our Terms of Service,
-                Privacy Policy,
+                By creating an account you agree with our{" "}
+                <Link
+                  className="hover:!text-[#007BFF] transition-all duration-300"
+                  to="/terms-use"
+                >
+                  Terms of Service,
+                </Link>
+                <Link
+                  className="hover:!text-[#007BFF] transition-all duration-300"
+                  to="/privacy-policy"
+                >
+                  Privacy Policy.
+                </Link>
               </label>
               {formik.touched.terms && formik.errors.terms && (
                 <p className="text-red-500 text-sm absolute -bottom-[1.25rem]">
@@ -219,16 +224,43 @@ function SignUp() {
               )}
             </div>
 
-            {/* Submit */}
             <button
               type="submit"
-              className="w-full btn rounded-[0.625rem] cursor-pointer py-3 uppercase text-lg"
+              disabled={loading}
+              className={`w-full btn text-white py-3.5 px-6 rounded-[0.625rem] font-medium text-base hover:bg-opacity-90 transition-all duration-300 flex justify-center items-center cursor-pointer ${
+                loading ? "opacity-70 cursor-not-allowed" : ""
+              }`}
             >
-              Sign up
+              {loading ? (
+                <>
+                  <svg
+                    className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    ></circle>
+                    <path
+                      className="opacity-75"
+                      fill="currentColor"
+                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                    ></path>
+                  </svg>
+                  Sign up...
+                </>
+              ) : (
+                "Sign up"
+              )}
             </button>
           </form>
 
-          {/* Link */}
           <div className="mt-6 text-center">
             <p className="text-sm uppercase text-[#111111]">
               Already have an account?{" "}
