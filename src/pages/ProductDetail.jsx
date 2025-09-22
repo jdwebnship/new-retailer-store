@@ -488,7 +488,7 @@ function ProductDetail() {
               <div className="item-stock-status mb-6">
                 <p className="text-2xl flex items-center">
                   <span className="indicator rounded-lg inline-block h-[0.625rem] w-[0.625rem] bg-[#25D366] mr-2"></span>
-                  {product.quantity > 0 ? "Item in stock" : "Out of stock"}
+                  {product?.quantity > 0 ? "Item in stock" : "Out of stock"}
                 </p>
               </div>
               {/* Available Sizes */}
@@ -624,7 +624,7 @@ function ProductDetail() {
                   Wishlist
                 </button>
               </div>
-              {product.description && (
+              {product?.description && (
                 <div className="description-wrapper">
                   <h4 className="text-sm font-bold mb-2 uppercase">
                     Description
