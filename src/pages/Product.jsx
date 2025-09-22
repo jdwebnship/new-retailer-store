@@ -361,7 +361,7 @@ function Product() {
     <div className="">
       <CommonHeader />
       <div className="mx-auto py-[3.125rem] lg:py-[100px] min-h-screen flex flex-col">
-        <div className="grid grid-cols-1 lg:grid-cols-12 px-4 sm:px-6 lg:px-10 xl:px-[3.6875rem]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
           <div className="lg:col-span-2 lg:sticky lg:self-start lg:top-[100px] text-left">
             <div className={`${hasActiveFilters ? "lg:col-span-2" : "hidden"}`}>
               <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem]">
