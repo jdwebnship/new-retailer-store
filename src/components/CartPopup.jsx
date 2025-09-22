@@ -64,7 +64,7 @@ const CartPopup = ({ items = [], onClose }) => {
           </div>
 
           {/* Cart Items */}
-          <div className="flex flex-col gap-6">
+          <div className="flex flex-col gap-6 mb-6">
             {items.map((item) => (
               <CartItem
                 key={`${item.id}-${item?.selected_variant?.id || "na"}`}
