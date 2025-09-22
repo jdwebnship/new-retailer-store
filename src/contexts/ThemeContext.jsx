@@ -29,31 +29,40 @@ export function ThemeProvider({ children, theme = {} }) {
 
   // Get store info from Redux store
   const storeInfo = useSelector(
-    (state) => state.storeInfo?.storeInfo?.storeinfo || {}
+    (state) => state.storeInfo?.storeInfo?.storeinfo ?? null
   );
 
   // Update theme when store info changes
   useEffect(() => {
     if (storeInfo) {
-      setCurrentTheme((prevTheme) => ({
-        ...prevTheme,
-        fontFamily: storeInfo.fontFamily || prevTheme.fontFamily,
-        backgroundColor: storeInfo.backgroundColor || prevTheme.backgroundColor,
-        buttonBackgroundColor:
-          storeInfo.buttonBackgroundColor || prevTheme.buttonBackgroundColor,
-        topHeaderBackgroundColor:
-          storeInfo.topHeaderBackgroundColor ||
-          prevTheme.topHeaderBackgroundColor,
-        headerBackgroundColor:
-          storeInfo.headerBackgroundColor || prevTheme.headerBackgroundColor,
-        footerBackgroundColor:
-          storeInfo.footerBackgroundColor || prevTheme.footerBackgroundColor,
-        bottomFooterBackgroundColor:
-          storeInfo.bottomFooterBackgroundColor ||
-          prevTheme.bottomFooterBackgroundColor,
-        bannerType: storeInfo.bannerType || prevTheme.bannerType,
-        categoryLayout: storeInfo.categoryLayout || prevTheme.categoryLayout,
-      }));
+      setCurrentTheme((prevTheme) => {
+        const updatedTheme = {
+          ...prevTheme,
+          fontFamily: storeInfo.fontFamily || prevTheme.fontFamily,
+          backgroundColor:
+            storeInfo.backgroundColor || prevTheme.backgroundColor,
+          buttonBackgroundColor:
+            storeInfo.buttonBackgroundColor || prevTheme.buttonBackgroundColor,
+          topHeaderBackgroundColor:
+            storeInfo.topHeaderBackgroundColor ||
+            prevTheme.topHeaderBackgroundColor,
+          headerBackgroundColor:
+            storeInfo.headerBackgroundColor || prevTheme.headerBackgroundColor,
+          footerBackgroundColor:
+            storeInfo.footerBackgroundColor || prevTheme.footerBackgroundColor,
+          bottomFooterBackgroundColor:
+            storeInfo.bottomFooterBackgroundColor ||
+            prevTheme.bottomFooterBackgroundColor,
+          bannerType: storeInfo.bannerType || prevTheme.bannerType,
+          categoryLayout: storeInfo.categoryLayout || prevTheme.categoryLayout,
+        };
+
+        // prevent unnecessary state updates
+        if (JSON.stringify(updatedTheme) === JSON.stringify(prevTheme)) {
+          return prevTheme;
+        }
+        return updatedTheme;
+      });
     }
   }, [storeInfo]);
 

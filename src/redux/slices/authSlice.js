@@ -110,8 +110,10 @@ export const forgotPassword = createAsyncThunk(
       const response = await axiosInstance.post("/customer/forgot-password", {
         email,
       });
-      if (response?.data?.success || response?.status) {
+      if (response?.data?.success) {
         toast.success(response?.data?.message);
+      } else {
+        toast.error(response?.data?.message);
       }
       return response.data;
     } catch (error) {
@@ -410,6 +412,25 @@ const authSlice = createSlice({
         state.verified = false;
       })
 
+      .addCase(forgotPassword.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(forgotPassword.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(forgotPassword.rejected, (state) => {
+        state.loading = false;
+      })
+
+      .addCase(resetPasswordWithToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(resetPasswordWithToken.fulfilled, (state) => {
+        state.loading = false;
+      })
+      .addCase(resetPasswordWithToken.rejected, (state) => {
+        state.loading = false;
+      })
       .addCase(logoutUser.pending, (state) => {
         state.loading = true;
       })
