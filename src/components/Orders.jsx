@@ -55,10 +55,14 @@ const Orders = () => {
                     }}
                   >
                     <div className="flex flex-wrap sm:gap-[1.5rem] gap-[1rem] justify-between">
-                      <div className="flex flex-wrap sm:gap-[1.5rem] gap-[1rem]">
+                      <div className="flex flex-wrap sm:gap-[2rem] gap-[1rem]">
                         <div>
                           <span className="text-sm uppercase">Order Date:</span>
-                          <p className="text-sm font-bold">{val?.order_date}</p>
+                          <p>
+                            <span className="text-sm font-bold">
+                              {val?.order_date}
+                            </span>
+                          </p>
                         </div>
                         <div>
                           <span className="text-sm uppercase">Total:</span>
@@ -74,7 +78,7 @@ const Orders = () => {
 
                       <div>
                         <span className="text-sm uppercase">Order Id:</span>
-                        <p className="text-sm font-bold">#{val?.order_id}</p>
+                        <p className="text-sm font-bold">{val?.order_number}</p>
                       </div>
                     </div>
                   </div>
