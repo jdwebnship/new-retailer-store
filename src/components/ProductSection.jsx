@@ -3,6 +3,7 @@ import CardComponent from "./CardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { postNewArrivals } from "../redux/slices/newArrivalsSlice";
 import ButtonLink from "./ButtonLink";
+import Loader from "./Loader";
 
 function ProductSection() {
   const dispatch = useDispatch();
@@ -22,9 +23,7 @@ function ProductSection() {
       </h2>
       <section className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
         {loading ? (
-          <div className="flex items-center justify-center p-4">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-          </div>
+          <Loader />
         ) : products.length > 0 ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-[1.5rem] xl:gap-y-[4.375rem]">

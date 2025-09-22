@@ -11,7 +11,7 @@ export const postNewArrivals = createAsyncThunk(
   "newArrivals/postNewArrivals",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.post("/new-arrivals");
+      const response = await axiosInstance.get("/new-arrivals");
       return response.data.data;
     } catch (error) {
       return rejectWithValue(
