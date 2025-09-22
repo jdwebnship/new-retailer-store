@@ -15,6 +15,7 @@ const Orders = () => {
   const dispatch = useDispatch();
   const { theme, bottomFooterTextColor } = useTheme();
   const { orders, loading } = useSelector((state) => state.customerOrders);
+  console.log("orderdsadasd", orders);
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchCustomerOrders());
@@ -82,7 +83,17 @@ const Orders = () => {
                   <div className="bottom-card p-[0.938rem]">
                     <div className="flex flex-wrap gap-[0.938rem]">
                       <div className="w-[5rem] h-[5rem] rounded-[0.625rem] overflow-hidden">
-                        <img src={watch} alt="" />
+                        {val?.image ? (
+                          <img
+                            src={val.image}
+                            alt={val?.product_name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="flex items-center justify-center w-full h-full bg-gray-200 text-gray-500 text-sm">
+                            No Image
+                          </div>
+                        )}
                       </div>
                       <div>
                         <h6 className="sm:text-lg font-bold">
