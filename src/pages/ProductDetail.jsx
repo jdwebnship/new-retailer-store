@@ -336,11 +336,6 @@ function ProductDetail() {
                                     src={src}
                                     alt="product"
                                     className="absolute top-0 left-0 object-contain w-full h-full block"
-                                    onError={(e) => {
-                                      e.target.src =
-                                        "/path/to/placeholder-image.jpg"; // Fallback image
-                                      e.target.alt = "Image not available";
-                                    }}
                                   />
                                 ) : (
                                   <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
@@ -442,10 +437,6 @@ function ProductDetail() {
                               src={src}
                               alt="product"
                               className="absolute top-0 left-0 object-contain w-full h-full block transition-transform duration-3000 group-hover:scale-110"
-                              onError={(e) => {
-                                e.target.src = "/path/to/placeholder-image.jpg"; // Fallback image
-                                e.target.alt = "Image not available";
-                              }}
                             />
                           ) : (
                             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
@@ -473,19 +464,18 @@ function ProductDetail() {
             {/* Details Column */}
             <div className="w-full lg:max-w-[calc((((100vw-5rem)+2rem)/12)*5-2rem)] xl:max-w-[calc((((100vw-7.5rem)+3.125rem)/12)*5-3.125rem)] 2xl:max-w-[calc((((100vw-7.5rem)+6.25rem)/12)*5-6.25rem)] text-left px-3.5">
               <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5">
-                {product.name}
+                {product?.name}
               </h3>
               <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-lg p-4 w-auto flex-auto">
                 <span className="mr-3 text-[1.5rem] font-bold">
-                  ₹{product.final_price}
+                  ₹{product?.final_price}
                 </span>
-                {product.old_price > 0 && (
-                  <span className="mr-3 line-through text-[1rem] text-[#808080]">
-                    ₹{product.old_price}
-                  </span>
-                )}
-                {discount > 0 && (
+                {product?.old_price > 0 && (
                   <>
+                    <span className="mr-3 line-through text-[1rem] text-[#808080]">
+                      ₹{product?.old_price}
+                    </span>
+
                     <span className="mr-1 text-[0.875rem] discount bg-[#111111] px-[0.375rem] text-[#FFFFFF] rounded-sm">
                       {discount}%
                     </span>
