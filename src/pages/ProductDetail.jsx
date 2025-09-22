@@ -465,12 +465,12 @@ function ProductDetail() {
                 {product?.name}
               </h3>
               <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-lg p-4 w-auto flex-auto">
-                <span className="mr-3 text-[1.5rem] font-bold">
+                <span className="text-[1.5rem] font-bold">
                   ₹{product?.final_price}
                 </span>
                 {product?.old_price > 0 && (
                   <>
-                    <span className="mr-3 line-through text-[1rem] text-[#808080]">
+                    <span className="mx-3 line-through text-[1rem] text-[#808080]">
                       ₹{product?.old_price}
                     </span>
 

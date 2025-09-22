@@ -40,16 +40,18 @@ export default function OrderList({ item }) {
         <img
           src={getProductImage(item)}
           alt={item.product_name}
-          className="lg:w-[6.25rem] lg:h-[6.25rem] w-20 h-20 object-cover rounded-[1.125rem]"
+          className="lg:w-[6.25rem] lg:h-[6.25rem] w-20 h-20 object-cover rounded-[1.125rem] flex-shrink-0"
         />
         <div>
-          <div className="sm:text-lg text-base font-bold mb-2.5 text-[#111111]">
+          <div className="sm:text-lg text-base font-bold mb-2.5 text-[#111111] line-clamp-2">
             {item.product_name}
           </div>
           <div className="flex mb-2">
             <span className="leading-none inline-block font-bold text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
               Size:
-              <strong className="font-bold text-[#111111] ml-2">{item?.selected_variant?.product_variation}</strong>
+              <strong className="font-bold text-[#111111] ml-2">
+                {item?.selected_variant?.product_variation}
+              </strong>
             </span>
             <div className="flex items-center gap-2">
               <span className="leading-none text-base font-bold text-[#111111]">
@@ -67,7 +69,7 @@ export default function OrderList({ item }) {
       </div>
 
       {/* Quantity Selector */}
-      <div className="flex items-center gap-8 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
+      <div className="flex items-center gap-7.5 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
         <button
           onClick={decrease}
           className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer flex justify-center"
@@ -76,7 +78,7 @@ export default function OrderList({ item }) {
         >
           <img src={minus} alt="" />
         </button>
-        <span className="text-base font-normal text-[#111111] select-none">
+        <span className="text-base font-normal text-[#111111] select-none ">
           {quantity}
         </span>
         <button
