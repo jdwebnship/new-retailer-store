@@ -2,6 +2,11 @@ import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { useTheme } from "../contexts/ThemeContext";
 import { useSelector } from "react-redux";
+import Mail from "./Mail";
+import Call from "./Call";
+import Facebook from "./Facebook";
+import Twitter from "./Twitter";
+import Instagram from "./instagram";
 
 function TopHeader({ visible = true, onHeightChange }) {
   const { theme, topHeaderTextColor } = useTheme();
@@ -47,12 +52,68 @@ function TopHeader({ visible = true, onHeightChange }) {
         backfaceVisibility: "hidden",
       }}
     >
-      <div className="w-[100%] px-4 sm:px-6 md:px-10 lg:px-[4.6875rem] mx-auto">
-        <div className="flex items-center justify-center mx-auto text-center">
+      <div className="w-[100%] px-2 sm:px-6 lg:px-10 xl:px-[4.6875rem] mx-auto">
+        <div className="flex items-center justify-between mx-auto text-center">
+          <div className="flex text-base gap-2 sm:gap-4 customer-care">
+            <a
+              href="#"
+              className="flex  gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+            >
+              <span className="icon">
+                <Mail />{" "}
+              </span>
+              <span className="hidden lg:block">
+                {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
+              </span>
+            </a>
+            <a
+              href="#"
+              className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+            >
+              <span className="icon">
+                <Call />
+              </span>
+              <span className="hidden lg:block">
+                {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
+              </span>
+            </a>
+          </div>
           <span className="font-medium text-[0.75] sm:text-[0.875rem] md:text-[1rem]">
             {storeInfo?.storeinfo?.offer_text ||
               "All over India Delivery Available."}
           </span>
+          <div className="flex text-base gap-2 sm:gap-4 social-login">
+            <a
+              href="#"
+              to={storeInfo?.storeinfo?.facebook || "#"}
+              className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+            >
+              <span className="icon">
+                <Facebook />
+              </span>
+              <span className="hidden lg:block">Facebook</span>
+            </a>
+            <a
+              href="#"
+              to={storeInfo?.storeinfo?.instagram_url || "#"}
+              className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+            >
+              <span className="icon">
+                <Instagram />
+              </span>
+              <span className="hidden lg:block">Instagram</span>
+            </a>
+            <a
+              href="#"
+              to={storeInfo?.storeinfo?.twitter_url || "#"}
+              className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
+            >
+              <span className="icon">
+                <Twitter />
+              </span>
+              <span className="hidden lg:block">Twitter</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
