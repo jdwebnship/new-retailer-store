@@ -19,7 +19,9 @@ function Checkout() {
   const navigate = useNavigate();
   const { cartItems } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.auth);
-  const { discount, discountLoading, checkoutLoading } = useSelector((state) => state.checkout);
+  const { discount, discountLoading, checkoutLoading } = useSelector(
+    (state) => state.checkout
+  );
 
   const { theme } = useTheme();
   const dispatch = useDispatch();
@@ -120,30 +122,30 @@ function Checkout() {
         const base = { quantity: item.quantity || 1 };
         return item.retailer_id
           ? {
-            ...base,
-            retailer_id: item.retailer_id,
-            retailer_product_id:
-              item?.product_id || item?.retailer_product_id,
-            final_amount: item?.discountApplied
-              ? item?.discountedPrice
-              : item?.final_price,
-            product_variation:
-              item?.selected_variant?.product_variation || null,
-            quantity: item?.quantity || null,
-            coupon_id: item?.discountApplied ? discount?.id : undefined,
-          }
+              ...base,
+              retailer_id: item.retailer_id,
+              retailer_product_id:
+                item?.product_id || item?.retailer_product_id,
+              final_amount: item?.discountApplied
+                ? item?.discountedPrice
+                : item?.final_price,
+              product_variation:
+                item?.selected_variant?.product_variation || null,
+              quantity: item?.quantity || null,
+              coupon_id: item?.discountApplied ? discount?.id : undefined,
+            }
           : {
-            ...base,
-            wholesaler_id: item.wholesaler_id,
-            product_id: item?.id || item?.product_id,
-            final_amount: item?.discountApplied
-              ? item?.discountedPrice
-              : item?.final_price,
-            product_variation:
-              item?.selected_variant?.product_variation || null,
-            quantity: item?.quantity || null,
-            coupon_id: item?.discountApplied ? discount?.id : undefined,
-          };
+              ...base,
+              wholesaler_id: item.wholesaler_id,
+              product_id: item?.id || item?.product_id,
+              final_amount: item?.discountApplied
+                ? item?.discountedPrice
+                : item?.final_price,
+              product_variation:
+                item?.selected_variant?.product_variation || null,
+              quantity: item?.quantity || null,
+              coupon_id: item?.discountApplied ? discount?.id : undefined,
+            };
       });
       const payload = {
         ...values,
@@ -463,13 +465,14 @@ function Checkout() {
                       name="coupon_code"
                       placeholder="Coupon Code"
                       className={`w-full px-4 py-4 text-gray-700 placeholder-gray-500 bg-transparent focus:outline-none 
-                      ${couponForm.touched.coupon_code &&
-                          couponForm.errors.coupon_code
+                      ${
+                        couponForm.touched.coupon_code &&
+                        couponForm.errors.coupon_code
                           ? "border-red-500"
                           : discount
-                            ? "border-green-500"
-                            : "border-none"
-                        }`}
+                          ? "border-green-500"
+                          : "border-none"
+                      }`}
                       value={couponForm.values.coupon_code}
                       onChange={couponForm.handleChange}
                       onBlur={couponForm.handleBlur}
@@ -487,9 +490,10 @@ function Checkout() {
                       type="submit"
                       disabled={couponForm.values.coupon_code === ""}
                       className={`btn sm:px-[3rem] px-[0.9rem] py-[0.9rem] rounded-r-sm lg:text-lg focus:outline-none  
-                        ${couponForm.values.coupon_code === ""
-                          ? "bg-gray-400"
-                          : "bg-black hover:bg-gray-800"
+                        ${
+                          couponForm.values.coupon_code === ""
+                            ? "bg-gray-400"
+                            : "bg-black hover:bg-gray-800"
                         }`}
                     >
                       Apply
@@ -504,10 +508,11 @@ function Checkout() {
               <h3 className="text-2xl font-bold mb-4">Payment Method</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "cod"
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "cod"
                       ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       : "border-[#AAAAAA] hover:border-black/60"
-                    }`}
+                  }`}
                 >
                   <input
                     type="radio"
@@ -517,14 +522,16 @@ function Checkout() {
                     onChange={() => setPaymentMethod("cod")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "cod"
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "cod"
                         ? "border-black"
                         : "border-[#AAAAAA]"
-                      }`}
+                    }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "cod" ? "bg-black" : "bg-transparent"
-                        }`}
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "cod" ? "bg-black" : "bg-transparent"
+                      }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -535,10 +542,11 @@ function Checkout() {
                 </label>
 
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "prepaid"
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "prepaid"
                       ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       : "border-[#AAAAAA] hover:border-black/60"
-                    }`}
+                  }`}
                 >
                   <input
                     type="radio"
@@ -548,16 +556,18 @@ function Checkout() {
                     onChange={() => setPaymentMethod("prepaid")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "prepaid"
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "prepaid"
                         ? "border-black"
                         : "border-[#AAAAAA]"
-                      }`}
+                    }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "prepaid"
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "prepaid"
                           ? "bg-black"
                           : "bg-transparent"
-                        }`}
+                      }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -575,15 +585,17 @@ function Checkout() {
                       {item.label}
                     </span>
                     <span
-                      className={`sm:text-lg font-medium ${item.label.toLowerCase() === "discount"
+                      className={`sm:text-lg font-medium ${
+                        item.label.toLowerCase() === "discount"
                           ? "text-green-600"
                           : "text-gray-900"
-                        }`}
+                      }`}
                     >
                       {item.isFree
                         ? "Free"
-                        : `${item.label.toLowerCase() === "discount" ? "-" : ""
-                        }₹${item.value?.toFixed(2)}`}
+                        : `${
+                            item.label.toLowerCase() === "discount" ? "-" : ""
+                          }₹${item.value?.toFixed(2)}`}
                     </span>
                   </div>
                 ))}
@@ -602,10 +614,9 @@ function Checkout() {
                 e.preventDefault();
                 formik.handleSubmit();
               }}
-              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase ${checkoutLoading || !paymentMethod
-                ? 'bg-gray-400'
-                : 'bg-black hover:bg-gray-800'
-                }`}
+              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase cursor-pointer ${
+                checkoutLoading || !paymentMethod ? "bg-gray-400" : "btn"
+              }`}
               disabled={checkoutLoading || !paymentMethod}
             >
               {checkoutLoading ? "Placing Order..." : "Place Order"}
