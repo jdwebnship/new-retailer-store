@@ -92,7 +92,7 @@ const AccountDetails = () => {
           <div className="flex gap-4">
             <button
               type="submit"
-              className="inline-flex gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center bg-blue-500 text-white hover:bg-blue-600"
+              className="inline-flex gap-2 btn px-[1.5rem] py-[0.875rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center bg-blue-500 text-white hover:bg-blue-600"
               disabled={loading}
             >
               {loading ? "Saving..." : "Save"}

@@ -59,7 +59,7 @@ function Cart() {
   return (
     <div>
       <CommonHeader />
-      <div className="max-w-[80rem] mx-auto lg:py-[6.25rem] md:py-[5rem] py-[3.5rem] text-left">
+      <div className="max-w-[80rem] mx-auto lg:py-[6.25rem] md:py-[5rem] py-[3.5rem] text-left px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-0">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 px-4">
           <div className="lg:col-span-2 space-y-7.5">
             <h1 className="text-2xl font-bold mb-6 pb-5 border-b border-[#11111126] text-left">

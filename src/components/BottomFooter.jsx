@@ -14,7 +14,7 @@ function BottomFooter({}) {
         fontFamily: theme?.fontFamily || "system-ui, -apple-system, sans-serif",
       }}
     >
-      <form class="mx-auto flex flex-col items-center justify-center gap-4">
+      <form className="mx-auto flex flex-col items-center justify-center gap-4">
         <h2 className="text-[2rem] lg:text-[2.625rem] font-bold">
           Join Our Newsletter
         </h2>

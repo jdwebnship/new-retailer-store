@@ -33,7 +33,7 @@ const Orders = () => {
         <h3 className="text-2xl font-bold">Orders</h3>
       </div>
       <hr className="opacity-10" />
-  
+
       {loading ? (
         <div className="flex items-center justify-center h-[20rem] p-6">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
@@ -47,7 +47,7 @@ const Orders = () => {
                 key={val?.order_id}
                 className="flex flex-col mt-[1.5rem] text-start"
               >
-                <div className="rounded-2xl border border-[#AAAAAA] overflow-auto">
+                <div className="rounded-lg border border-[#AAAAAA]/15 overflow-auto">
                   <div
                     className="top-card  p-[0.938rem]"
                     style={{
@@ -72,7 +72,7 @@ const Orders = () => {
                           <p className="text-sm font-bold">{status}</p>
                         </div>
                       </div>
-  
+
                       <div>
                         <span className="text-sm uppercase">Order Id:</span>
                         <p className="text-sm font-bold">#{val?.order_id}</p>
@@ -81,7 +81,7 @@ const Orders = () => {
                   </div>
                   <div className="bottom-card p-[0.938rem]">
                     <div className="flex flex-wrap gap-[0.938rem]">
-                      <div className="w-[5rem] h-[5rem] rounded-2xl overflow-hidden">
+                      <div className="w-[5rem] h-[5rem] rounded-[0.625rem] overflow-hidden">
                         <img src={watch} alt="" />
                       </div>
                       <div>
@@ -94,7 +94,7 @@ const Orders = () => {
                               e.preventDefault();
                               navigate(`/products/${val.product_slug}`);
                             }}
-                            className="inline-flex text-sm gap-2 btn px-[1.5rem] py-[0.5rem] rounded-lg font-medium focus:outline-none items-center"
+                            className="inline-flex text-sm gap-2 btn px-[0.9375rem] py-[0.5rem] rounded-lg font-medium focus:outline-none items-center"
                           >
                             Buy it Again
                           </Link>
@@ -103,7 +103,7 @@ const Orders = () => {
                               e.preventDefault();
                               handleViewOrderDetails(val);
                             }}
-                            className="underline"
+                            className="underline uppercase"
                           >
                             View order details
                           </Link>

@@ -77,17 +77,17 @@ function Contacts() {
     <div>
       <CommonHeader />
       <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0] text-left">
-        <div className="flex flex-col lg:flex-row gap-[1.5rem] xl:gap-y-[4.375rem]">
-          <div className="space-y-6 lg:w-2/6">
-            <div class="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
-              <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
+        <div className="grid flex-col lg:flex-row gap-[1.5rem] xl:gap-y-[4.375rem]">
+          <div className="space-y-6 lg:w-2/6 ">
+            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
+              <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                 Contact Information
               </h3>
               <a
                 className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 href=""
               >
-                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                   <img
                     className="w-[1.125rem] h-[1.125rem]"
                     src={Mail}
@@ -100,7 +100,7 @@ function Contacts() {
                 className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 href=""
               >
-                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0 ">
+                <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0 ">
                   <img
                     className="w-[1.125rem] h-[1.125rem]"
                     src={Call}
@@ -113,15 +113,15 @@ function Contacts() {
                 className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 href=""
               >
-                <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                   <img className="w-[1.125rem] h-[1.125rem]" src={Map} alt="" />
                 </span>
                 <span>123 Business Street, City, Country – ZIP</span>
               </a>
             </div>
 
-            <div class="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
-              <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
+            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
+              <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                 Business Hours
               </h3>
               <div className="flex flex-col gap-2 text-base">
@@ -131,17 +131,17 @@ function Contacts() {
               </div>
             </div>
 
-            <div class="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4">
-              <div class="w-full">
-                <h3 class="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
+            <div className="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4">
+              <div className="w-full">
+                <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                   Follow Our Journey
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                   <a
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                     href=""
                   >
-                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                    <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
                         src={Facebook}
@@ -154,7 +154,7 @@ function Contacts() {
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                     href=""
                   >
-                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                    <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
                         src={Instagram}
@@ -167,7 +167,7 @@ function Contacts() {
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                     href="#"
                   >
-                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                    <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
                         src={Twitter}
@@ -180,7 +180,7 @@ function Contacts() {
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                     href=""
                   >
-                    <span class="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
+                    <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
                         className="w-[1.125rem] h-[1.125rem]"
                         src={Twitter}

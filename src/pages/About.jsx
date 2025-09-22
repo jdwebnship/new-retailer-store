@@ -14,8 +14,8 @@ function About() {
   return (
     <div>
       <CommonHeader />
-      <div className="max-w-[80rem] mx-auto lg:py-[6.25rem] md:py-[5rem] py-[3.5rem]">
-        <div className="px-4">
+      <div className="xl:max-w-[80rem] mx-auto lg:py-[6.25rem] md:py-[5rem] py-[3.5rem]  px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-0">
+        <div className="">
           <div className="space-y-5 text-left w-full">
             <div
               className="prose max-w-none"
