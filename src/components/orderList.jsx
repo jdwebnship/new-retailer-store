@@ -5,6 +5,7 @@ import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
 import minus from "../assets/minus.svg";
 import plus from "../assets/plus.svg";
+import { Link } from "react-router-dom";
 
 export default function OrderList({ item }) {
   const dispatch = useDispatch();
@@ -37,23 +38,39 @@ export default function OrderList({ item }) {
     >
       {/* Product Image + Info */}
       <div className="flex gap-[0.938rem] flex-1 max-w-[25.938rem]">
-        <img
-          src={getProductImage(item)}
-          alt={item.product_name}
-          className="lg:w-[6.25rem] lg:h-[6.25rem] w-20 h-20 object-cover rounded-[1.125rem]"
-        />
+        <Link to={item?.slug ? `/products/${item.slug}` : "#"}>
+          <img
+            src={getProductImage(item)}
+            alt={item?.product_name || "No product name"}
+            className="lg:w-[6.25rem] lg:h-[6.25rem] w-20 h-20 object-cover rounded-[1.125rem]"
+          />
+        </Link>
         <div>
-          <div className="sm:text-lg text-base font-bold mb-2.5 text-[#111111]">
-            {item.product_name}
-          </div>
+          <Link to={item?.slug ? `/products/${item.slug}` : "#"}>
+            <div
+              className="sm:text-lg text-base font-bold mb-2.5 text-[#111111] 
+                 transition-colors duration-300 hover:text-[#007BFF] cursor-pointer"
+            >
+              {item?.product_name || "Unnamed Product"}
+            </div>
+          </Link>
           <div className="flex mb-2">
-            <span className="leading-none inline-block font-bold text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
-              Size:
-              <strong className="font-bold text-[#111111] ml-2">{item?.selected_variant?.product_variation}</strong>
-            </span>
+            {item?.selected_variant?.product_variation && (
+              <span className="leading-none inline-block font-bold text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
+                Size:
+                <strong className="font-bold text-[#111111] ml-2">
+                  {item?.selected_variant?.product_variation}
+                </strong>
+              </span>
+            )}
             <div className="flex items-center gap-2">
               <span className="leading-none text-base font-bold text-[#111111]">
-                ₹{item.final_price?.toLocaleString("en-IN")}
+                ₹
+                {item?.final_price
+                  ? Number(item.final_price).toLocaleString("en-IN", {
+                      maximumFractionDigits: 0,
+                    })
+                  : 0}
               </span>
             </div>
           </div>
@@ -93,9 +110,11 @@ export default function OrderList({ item }) {
       <div className="md:ml-[0] ml-[6rem]">
         <p className="text-lg font-bold">
           ₹
-          {(item.final_price * item.quantity).toLocaleString("en-IN", {
-            maximumFractionDigits: 2,
-          })}
+          {item?.final_price && item?.quantity
+            ? (item.final_price * item.quantity).toLocaleString("en-IN", {
+                maximumFractionDigits: 0,
+              })
+            : 0}
         </p>
       </div>
     </div>

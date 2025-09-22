@@ -47,7 +47,6 @@ function ProductDetail() {
     [product?.product_images]
   );
 
-  console.log("fkjdhsfjkhsdjkfhdsf", productImg);
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 

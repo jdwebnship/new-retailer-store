@@ -53,6 +53,7 @@ export const addToCart = createAsyncThunk(
           retailer_id: item?.retailer_id,
           wholesaler_id: item?.wholesaler_id,
           id: item?.id || item?.product_id,
+          slug: item?.slug,
           selected_variant: item?.selectedVariant
             ? {
                 id: item.selectedVariant.id,
