@@ -55,11 +55,11 @@ export const addToCart = createAsyncThunk(
           id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-                id: item.selectedVariant.id,
-                product_variation: item.selectedVariant.product_variation,
-                final_price: item.selectedVariant.final_price,
-                stock: item.selectedVariant.stock,
-              }
+              id: item.selectedVariant.id,
+              product_variation: item.selectedVariant.product_variation,
+              final_price: item.selectedVariant.final_price,
+              stock: item.selectedVariant.stock,
+            }
             : null,
         };
 
@@ -102,11 +102,11 @@ export const addToCart = createAsyncThunk(
           product_id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-                id: item.selectedVariant.id,
-                product_variation: item.selectedVariant.product_variation,
-                final_price: item.selectedVariant.final_price,
-                stock: item.selectedVariant.stock,
-              }
+              id: item.selectedVariant.id,
+              product_variation: item.selectedVariant.product_variation,
+              final_price: item.selectedVariant.final_price,
+              stock: item.selectedVariant.stock,
+            }
             : null,
         };
         dispatch(addToCartUser(cartItem));
@@ -154,7 +154,7 @@ export const updateCartItem = createAsyncThunk(
           data
         );
         if (response?.data?.success) {
-          dispatch(fetchCart());
+          // dispatch(fetchCart());
           const apiResult = response?.data?.data?.results;
           const productObj =
             Array.isArray(apiResult) && Array.isArray(apiResult[0])
@@ -163,7 +163,7 @@ export const updateCartItem = createAsyncThunk(
 
           dispatch(
             updateQuantityUser({
-              // ...item,
+              ...item,
               id: productObj.product_id,
               quantity: productObj.quantity,
             })
@@ -172,7 +172,7 @@ export const updateCartItem = createAsyncThunk(
         } else {
           const msg =
             Array.isArray(response?.data?.message) &&
-            response?.data?.message?.length
+              response?.data?.message?.length
               ? response.data.message.join(", ")
               : response?.data?.message || "Failed to update cart";
 
@@ -255,7 +255,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-              action.payload.selected_variant?.product_variation)
+            action.payload.selected_variant?.product_variation)
         );
       });
       if (existingItem) {
@@ -275,7 +275,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-              action.payload.selected_variant?.product_variation)
+            action.payload.selected_variant?.product_variation)
         );
       });
 
@@ -333,18 +333,39 @@ const cartSlice = createSlice({
         return itemId === payloadId && sameVariant;
       });
 
+      // if (itemIndex > -1) {
+      //   if (quantity <= 0) {
+      //     // Remove if 0
+      //     state.cartItems.splice(itemIndex, 1);
+      //   } else {
+      //     // Replace with new quantity
+      //     state.cartItems[itemIndex].quantity = quantity;
+      //   }
+      // } else if (quantity > 0) {
+      //   // New item
+      //   state.cartItems.push({ ...action.payload });
+      // }
+
       if (itemIndex > -1) {
-        if (quantity <= 0) {
-          // Remove if 0
-          state.cartItems.splice(itemIndex, 1);
-        } else {
-          // Replace with new quantity
-          state.cartItems[itemIndex].quantity = quantity;
-        }
+        // Always clamp to at least 1
+        state.cartItems[itemIndex].quantity = Math.max(quantity, 1);
       } else if (quantity > 0) {
-        // New item
-        state.cartItems.push({ ...action.payload });
+        state.cartItems.push({
+          ...action.payload,
+          quantity: Math.max(quantity, 1),
+        });
       }
+
+
+      // if (itemIndex > -1) {
+      //   if (quantity > 1) {
+      //     state.cartItems[itemIndex].quantity = quantity;
+      //   } else {
+      //     state.cartItems[itemIndex].quantity = 1;
+      //   }
+      // } else if (quantity > 0) {
+      //   state.cartItems.push({ ...action.payload, quantity: Math.max(quantity, 1) });
+      // }
     },
 
     updateQuantityGuest: (state, action) => {

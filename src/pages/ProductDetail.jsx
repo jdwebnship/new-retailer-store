@@ -38,7 +38,6 @@ function ProductDetail() {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { cartItems, addLoading } = useSelector((state) => state.cart);
 
-  console.log("dsfjhjksdhfjksdhf", addLoading);
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
   const product = productDetails?.product;
   const wishlistData = wishlist?.data?.wishlist;
@@ -47,7 +46,6 @@ function ProductDetail() {
     [product?.product_images]
   );
 
-  console.log("fkjdhsfjkhsdjkfhdsf", productImg);
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 
