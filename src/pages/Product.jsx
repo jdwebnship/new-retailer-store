@@ -14,6 +14,7 @@ function Product() {
   const { product, loading: ProductLoading } = useSelector(
     (state) => state.products
   );
+  const [isFilterLoading, setIsFilterLoading] = useState(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
 
@@ -90,12 +91,15 @@ function Product() {
   }, [filters.categories, categories]);
 
   const debouncedFetchProducts = useCallback(
-    debounce((params, dispatch, search) => {
+    debounce((params, dispatch, search, onComplete) => {
       if (search) {
         // Don't fetch if we're already showing search results
+        onComplete?.();
         return;
       }
-      dispatch(fetchProducts(params));
+      dispatch(fetchProducts(params))
+        .then(() => onComplete?.())
+        .catch(() => onComplete?.());
     }, 300),
     [dispatch]
   );
@@ -105,6 +109,9 @@ function Product() {
     if (searchQuery) {
       return;
     }
+    
+    // Set loading state when filters change
+    setIsFilterLoading(true);
 
     // Use the same page value from URL to ensure consistency
     const pageFromUrl = searchParams.get("page") || "1";
@@ -175,7 +182,12 @@ function Product() {
     }
 
     setSearchParams(params, { replace: true });
-    debouncedFetchProducts(requestParams, dispatch, searchQuery);
+    debouncedFetchProducts(
+      requestParams, 
+      dispatch, 
+      searchQuery,
+      () => setIsFilterLoading(false)
+    );
   }, [
     searchParams,
     subcategoryIds,
@@ -656,7 +668,7 @@ function Product() {
                     )}
               </span>
             </div>
-            {ProductLoading ? (
+            {ProductLoading || isFilterLoading ? (
               <div className="flex items-center justify-center p-4 h-screen">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
               </div>

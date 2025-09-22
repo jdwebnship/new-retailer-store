@@ -3,7 +3,7 @@ import CommonHeader from "../components/CommonHeader";
 function NotFound() {
   return (
     <div>
-      <CommonHeader />
+      {/* <CommonHeader /> */}
       <div className="2xl:max-w-[35rem] mx-auto py-10 md:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0] text-center">
         <span className="bg-gray-100 rounded-full p-5 shadow-inner mx-auto inline-block ">
           <svg
