@@ -146,6 +146,7 @@ export const updateCartItem = createAsyncThunk(
           retailer_id: item.retailer_id,
           wholesaler_id: item?.wholesaler_id ?? null,
           quantity: qty,
+          id: item?.selected_variant?.id,
           product_id: item?.retailer_product_id || item?.product_id,
         };
         const response = await axiosInstance.post(
@@ -162,7 +163,7 @@ export const updateCartItem = createAsyncThunk(
 
           dispatch(
             updateQuantityUser({
-              ...item,
+              // ...item,
               id: productObj.product_id,
               quantity: productObj.quantity,
             })
