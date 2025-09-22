@@ -46,7 +46,7 @@ const CartPopup = ({ items = [], onClose }) => {
           {/* Header */}
           <div className="flex justify-between items-center border-b border-[#11111126] pb-5 mb-6">
             <h2 className="text-2xl font-bold">Cart({items.length})</h2>
-            <button onClick={onClose}>
+            <button className="cursor-pointer" onClick={onClose}>
               <svg
                 className="w-5 h-5"
                 fill="none"
@@ -75,7 +75,7 @@ const CartPopup = ({ items = [], onClose }) => {
         </div>
 
         {/* Footer */}
-        <div className="mt-6 flex flex-col gap-3 border-t border-[#11111126] pt-6">
+        <div className="flex flex-col gap-6 border-t border-[#11111126]">
           {/* <button
             className="btn py-4 rounded-md cursor-pointer"
             onClick={() => {
@@ -164,7 +164,9 @@ const CartItem = ({ item }) => {
       />
       <div className="flex-1 flex flex-col justify-between gap-2">
         <div className="flex justify-between">
-          <p className="text-base font-bold">{item.product_name}</p>
+          <p className="text-base font-bold line-clamp-1">
+            {item.product_name}
+          </p>
           <p className="text-base font-bold">₹{item.final_price * quantity}</p>
         </div>
         {item?.selected_variant?.product_variation && (
@@ -178,23 +180,47 @@ const CartItem = ({ item }) => {
           </div>
         )}
         <div className="flex items-center justify-between gap-3">
-          <div className="flex items-center border border-[#AAAAAA] rounded-lg w-fit">
+          <div className="flex items-center border border-[#AAAAAA] rounded-lg w-fit px-2 py-1">
             <button
-              className="px-2.5 py-1 cursor-pointer"
+              className="cursor-pointer"
               style={{ minWidth: "1.2rem" }}
               onClick={decrease}
               disabled={!canDecrease}
             >
-              -
+              <svg
+                class="w-[1rem] h-[1rem]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M18 12H6"
+                ></path>
+              </svg>
             </button>
-            <span className="px-3">{quantity}</span>
+            <span className="px-2.5">{quantity}</span>
             <button
-              className="px-2.5 py-1 cursor-pointer disabled:cursor-not-allowed"
+              className="cursor-pointer disabled:cursor-not-allowed"
               style={{ minWidth: "1.2rem" }}
               onClick={increase}
               disabled={!canIncrease}
             >
-              +
+              <svg
+                class="w-[1rem] h-[1rem]"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                ></path>
+              </svg>
             </button>
           </div>
           <button

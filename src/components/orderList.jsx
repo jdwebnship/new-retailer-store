@@ -84,7 +84,7 @@ export default function OrderList({ item }) {
       </div>
 
       {/* Quantity Selector */}
-      <div className="flex items-center gap-8 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
+      <div className="flex items-center gap-7.5 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
         <button
           onClick={decrease}
           className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer flex justify-center"
@@ -93,7 +93,7 @@ export default function OrderList({ item }) {
         >
           <img src={minus} alt="" />
         </button>
-        <span className="text-base font-normal text-[#111111] select-none">
+        <span className="text-base font-normal text-[#111111] select-none ">
           {quantity}
         </span>
         <button
