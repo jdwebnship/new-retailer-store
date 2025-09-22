@@ -47,6 +47,6 @@ export default function useCartQuantity({
     canIncrease:
       quantity <= Math.min(availableStock - cartQuantity, maxLimit) &&
       quantity <= availableStock,
-    canDecrease: quantity > 1,
+    canDecrease: quantity > 0,
   };
 }

@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import empty from "../assets/images/empty-state.svg";
-import watch from "../assets/watch.png";
 import {
   clearOrders,
   fetchCustomerOrders,
@@ -15,7 +14,6 @@ const Orders = () => {
   const dispatch = useDispatch();
   const { theme, bottomFooterTextColor } = useTheme();
   const { orders, loading } = useSelector((state) => state.customerOrders);
-  console.log("orderdsadasd", orders);
   const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchCustomerOrders());
