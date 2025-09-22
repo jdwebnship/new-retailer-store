@@ -75,7 +75,7 @@ function Cart() {
               <div className="text-center p-6 border rounded-md">
                 <p className="mb-4">Your cart is empty.</p>
                 <Link
-                  className="inline-block bg-black text-white px-6 py-2 rounded-md hover:bg-gray-800 transition-colors"
+                  className="inline-flex text-sm sm:text-lg gap-2 btn px-16 py-4 rounded-lg w-max mx-auto focus:outline-none items-center"
                   to="/shop"
                 >
                   Continue shopping
