@@ -483,6 +483,11 @@ textarea {
     fill: #007BFF;
 }
 
+@media (max-width:640px){
+  .top-header .icon svg{
+      width: 16px;
+  }
+}
 
 .marquee-span span.dots{
   background: #111111;
