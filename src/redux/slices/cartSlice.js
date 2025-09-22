@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 const initialState = {
   cartItems: [],
   loading: false,
+  addLoading: false,
   error: null,
   isCartOpen: false,
 };
@@ -400,24 +401,28 @@ const cartSlice = createSlice({
       state.cartItems = action.payload || [];
     });
     builder.addCase(fetchCart.rejected, (state, action) => {
-      state.loading = false;
+      state.addLoading = false;
       state.error = action.payload;
     });
 
     builder.addCase(addToCart.pending, (state) => {
-      state.loading = true;
+      state.addLoading = true;
       state.error = null;
     });
-    builder.addCase(addToCart.fulfilled, (state, action) => {
-      state.loading = false;
+    builder.addCase(addToCart.fulfilled, (state) => {
+      state.addLoading = false;
       // state.cartItems = action.payload || [];
     });
     builder.addCase(addToCart.rejected, (state, action) => {
-      state.loading = false;
+      state.addLoading = false;
       state.error = action.payload;
     });
 
     // Update Cart Item
+    builder.addCase(updateCartItem.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
     builder.addCase(updateCartItem.fulfilled, (state, action) => {
       const item = state.cartItems.find(
         (item) => item.id === action.payload.itemId
@@ -426,10 +431,6 @@ const cartSlice = createSlice({
         item.quantity = action.payload.quantity;
       }
       state.loading = false;
-    });
-    builder.addCase(updateCartItem.pending, (state) => {
-      state.loading = true;
-      state.error = null;
     });
     builder.addCase(updateCartItem.rejected, (state, action) => {
       state.loading = false;
