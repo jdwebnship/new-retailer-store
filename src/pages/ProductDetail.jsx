@@ -48,11 +48,18 @@ function ProductDetail() {
     [product?.product_images]
   );
 
+  const productVideo = product?.product_video;
+  const galleryItems = React.useMemo(() => {
+    const items = [...(productImg || [])];
+    if (productVideo) items.push(productVideo);
+    return items;
+  }, [productImg, productVideo]);
+
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 
-  const [thumbHeight, setThumbHeight] = useState("515px"); // Initial fallback
-  const [mainHeight, setMainHeight] = useState("400px"); // Initial fallback
+  const [thumbHeight, setThumbHeight] = useState("515px");
+  const [mainHeight, setMainHeight] = useState("400px");
   const mainContainerRef = useRef(null);
   const thumbContainerRef = useRef(null);
 
@@ -106,9 +113,9 @@ function ProductDetail() {
   const discount =
     product?.old_price && product?.final_price
       ? (
-          ((product?.old_price - product?.final_price) / product?.old_price) *
-          100
-        ).toFixed(0)
+        ((product?.old_price - product?.final_price) / product?.old_price) *
+        100
+      ).toFixed(0)
       : 0;
 
   const selectedVariant = productVariations.find(
@@ -197,9 +204,9 @@ function ProductDetail() {
         const containerWidth = thumbContainerRef.current.offsetWidth;
         const aspectRatio =
           thumbImg &&
-          thumbImg.complete &&
-          thumbImg.naturalWidth > 0 &&
-          thumbImg.naturalHeight > 0
+            thumbImg.complete &&
+            thumbImg.naturalWidth > 0 &&
+            thumbImg.naturalHeight > 0
             ? thumbImg.naturalWidth / thumbImg.naturalHeight
             : 1.5;
         const singleThumbHeight = containerWidth / aspectRatio;
@@ -290,8 +297,6 @@ function ProductDetail() {
                     slidesPerView={3}
                     spaceBetween={15}
                     freeMode={true}
-                    // watchSlidesProgress={true}
-                    // updateOnWindowResize={true}
                     breakpoints={{
                       0: {
                         direction: "horizontal",
@@ -307,10 +312,6 @@ function ProductDetail() {
                       },
                     }}
                     modules={[Navigation, Thumbs]}
-                    // navigation={{
-                    //   nextEl: ".slider__next",
-                    //   prevEl: ".slider__prev",
-                    // }}
                     navigation={{
                       nextEl: ".thumb__next",
                       prevEl: ".thumb__prev",
@@ -319,43 +320,40 @@ function ProductDetail() {
                     ref={thumbContainerRef}
                   >
                     {
-                      productImg.length > 0
-                        ? productImg.map((src, index) => (
-                            <SwiperSlide key={index}>
-                              <div
-                                className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${
-                                  activeIndex === index
-                                    ? "grayscale-0 opacity-100"
-                                    : "grayscale opacity-50"
+                      galleryItems.length > 0
+                        ? galleryItems.map((item, index) => (
+                          <SwiperSlide key={index}>
+                            <div
+                              className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${activeIndex === index
+                                  ? "grayscale-0 opacity-100"
+                                  : "grayscale opacity-50"
                                 }`}
-                              >
-                                {src ? (
+                            >
+                              {item && (item.endsWith('.mp4')) ? (
+                                <video
+                                  src={item}
+                                  controls
+                                  className="absolute top-0 left-0 object-contain w-full h-full block"
+                                />
+                              ) : item ? (
+                                <img
+                                  src={item}
+                                  alt={product?.name}
+                                  className="absolute top-0 left-0 object-contain w-full h-full block"
+                                />
+                              ) : (
+                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
                                   <img
-                                    src={src}
-                                    alt={product?.name}
-                                    className="absolute top-0 left-0 object-contain w-full h-full block"
+                                    src={placeholderImage}
+                                    alt="No image"
+                                    className="w-1/2 h-1/2 object-contain"
                                   />
-                                ) : (
-                                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                                    {/* <span>No Image Available</span> */}
-                                    <img
-                                      src={placeholderImage}
-                                      alt="No image"
-                                      className="w-1/2 h-1/2 object-contain"
-                                    />
-                                  </div>
-                                )}
-                              </div>
-                            </SwiperSlide>
-                          ))
+                                </div>
+                              )}
+                            </div>
+                          </SwiperSlide>
+                        ))
                         : ""
-                      // <SwiperSlide>
-                      //   <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] flex items-center justify-center text-gray-500">
-                      //     <span>No Images Available</span>
-                      //     {/* Optionally, add a default image or icon */}
-                      //     {/* <img src="/path/to/placeholder-image.jpg" alt="No image" className="w-1/2 h-1/2 object-contain" /> */}
-                      //   </div>
-                      // </SwiperSlide>
                     }
                   </Swiper>
                   <div className="slider__next cursor-pointer text-center text-sm h-auto w-8 md:h-12 md:w-auto flex items-center justify-center select-none focus:outline-none">
@@ -429,19 +427,31 @@ function ProductDetail() {
                   className="w-full md:max-w-full flex-1"
                   ref={mainContainerRef}
                 >
-                  {productImg.length > 0 ? (
-                    productImg.map((src, index) => (
+                  {galleryItems.length > 0 ? (
+                    galleryItems.map((item, index) => (
                       <SwiperSlide key={index}>
                         <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2]">
-                          {src ? (
+                          {item && (item.endsWith('.mp4')) ? (
+                            <video
+                              src={item}
+                              controls={false}
+                              className="absolute top-0 left-0 object-contain w-full h-full block"
+                              onClick={(e) => (e.currentTarget.controls = true)}
+                              onPlay={(e) => {
+                                // Hide controls after 2s, so swipe works again
+                                // setTimeout(() => {
+                                  e.currentTarget.controls = false;
+                                // }, 2000);
+                              }}
+                            />
+                          ) : item ? (
                             <img
-                              src={src}
+                              src={item}
                               alt={product?.name}
                               className="absolute top-0 left-0 object-contain w-full h-full block transition-transform duration-3000 group-hover:scale-110"
                             />
                           ) : (
                             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                              {/* <span>No Image Available</span> */}
                               <img
                                 src={placeholderImage}
                                 alt="No image"
@@ -500,33 +510,30 @@ function ProductDetail() {
               {/* Available Sizes */}
               {(product?.variations?.length > 0 ||
                 product?.productVariations?.length > 0) && (
-                <div className="mb-6">
-                  <h4 className="text-sm font-bold mb-[0.9375rem] uppercase">
-                    Size
-                  </h4>
-                  <div className="flex flex-wrap gap-[0.9375rem]">
-                    {productVariations?.map((item) => (
-                      <button
-                        key={item.id}
-                        disabled={!item?.stock}
-                        onClick={() =>
-                          handleVariantSelect(item?.product_variation)
-                        }
-                        className={`px-5 py disabled:opacity-50 relative overflow-hidden py-3 text-[#111111] cursor-pointer text-[16px] font-medium border border-[#AAAAAA] rounded-[0.625rem] ${
-                          variant === item?.product_variation
-                            ? "!border-[#111111]"
-                            : ""
-                        }`}
-                      >
-                        {item?.product_variation}
-                        {item?.stock <= 0 && (
-                          <span className="absolute top-0 left-0 w-full h-full bg-white/70"></span>
-                        )}
-                      </button>
-                    ))}
+                  <div className="mb-6">
+                    <h4 className="text-sm font-bold mb-2 uppercase">Size</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {productVariations?.map((item) => (
+                        <button
+                          key={item.id}
+                          disabled={!item?.stock}
+                          onClick={() =>
+                            handleVariantSelect(item?.product_variation)
+                          }
+                          className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${variant === item?.product_variation
+                              ? "border-black"
+                              : ""
+                            }`}
+                        >
+                          {item?.product_variation}
+                          {item?.stock <= 0 && (
+                            <span className="absolute top-0 left-0 w-full h-full bg-white/70"></span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
               <div className="flex gap-4 mb-3.5">
                 <div className="quantity-wrapper">
                   <div className="inline-flex items-center border border-gray-300 rounded-md py-2 h-full">

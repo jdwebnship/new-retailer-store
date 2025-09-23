@@ -83,7 +83,7 @@ const Orders = () => {
                       <div className="w-[5rem] h-[5rem] rounded-[0.625rem] overflow-hidden">
                         {val?.image ? (
                           <img
-                            src={val.image}
+                            src={val.image[0]}
                             alt={val?.product_name}
                             className="w-full h-full object-cover"
                           />

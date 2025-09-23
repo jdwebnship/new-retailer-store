@@ -80,17 +80,18 @@ export const addToCart = createAsyncThunk(
           "/customer/add-to-cart",
           data
         );
-        const apiResult = response.data.data?.results;
-        const productObj =
-          Array.isArray(apiResult) && Array.isArray(apiResult[0])
-            ? apiResult[0][0]
-            : apiResult[0];
+        if (response?.data?.success) {
+          const apiResult = response.data.data?.results;
+          const productObj =
+            Array.isArray(apiResult) && Array.isArray(apiResult[0])
+              ? apiResult[0][0]
+              : apiResult[0];
 
-        const cartItem = {
-          id: productObj.product_id || item?.selectedVariant?.id,
-          quantity: productObj.quantity,
-          product_stock: productObj.product_stock,
-          product_name: item?.name || item?.product_name,
+          const cartItem = {
+            id: productObj.product_id || item?.selectedVariant?.id,
+            quantity: productObj.quantity,
+            product_stock: productObj.product_stock,
+            product_name: item?.name || item?.product_name,
           product_images: item?.product_images,
           status: productObj.status,
           message: productObj.message,
@@ -113,6 +114,9 @@ export const addToCart = createAsyncThunk(
         dispatch(addToCartUser(cartItem));
         dispatch(openCartPopup());
         toast.success(response.data.message || "Item added to cart.");
+        }else{
+          toast.error(response.data.message || "Failed to add item to cart");
+        }
       }
     } catch (error) {
       const message =
