@@ -79,7 +79,6 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-  console.log("object");
 
   return (
     <div>

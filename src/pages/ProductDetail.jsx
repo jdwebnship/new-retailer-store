@@ -638,15 +638,8 @@ function ProductDetail() {
                     Product Summary
                   </h4>
                   <p className="mb-4 text-[#111111] text-lg">
-                    {product?.description}
+                    dangerouslySetInnerHTML={{ __html: product?.description }}
                   </p>
-                  {/* <p className="mb-4 text-[#111111] text-lg">
-                    Elevate your everyday style with our Men's Black T-Shirts,
-                    the ultimate wardrobe essential for modern men. Crafted with
-                    meticulous attention to detail and designed for comfort,
-                    these versatile black tees are a must-have addition to your
-                    collection.
-                  </p> */}
                 </div>
               )}
             </div>
