@@ -1,15 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { useTheme } from "../contexts/ThemeContext";
-import CardComponent from "../components/CardComponent";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { logoutUser } from "../redux/slices/authSlice";
 import UpdatePasswordForm from "../forms/UpdatePasswordForm";
 import UpdateAddressForm from "../forms/UpdateAddressForm";
 import AccountDetails from "../forms/AccountDetails";
 import Orders from "../components/Orders";
-import { fetchWishList } from "../redux/slices/WishListSlice";
 import Wishlist from "../components/wishList";
 
 const renderContent = (selected) => {
@@ -45,10 +42,9 @@ const MyAccount = () => {
   const [selected, setSelected] = useState("orders");
   const { theme, bottomFooterTextColor } = useTheme();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleLogout = async () => {
-    dispatch(logoutUser({ navigate }));
+    dispatch(logoutUser());
   };
 
   const menuItems = [

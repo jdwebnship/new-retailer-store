@@ -145,14 +145,14 @@ const CartItem = ({ item }) => {
       availableStock,
       cartQuantity,
       resetKey: item.id,
-      // onChange: (newQty, action) => {
-      //   if (action === "decrease" && quantity === 1) {
-      //     dispatch(removeFromCartapi(item));
-      //     return;
-      //   }
-      //   const quantityChange = action === "increase" ? 1 : -1;
-      //   dispatch(updateCartItem({ item, qty: quantityChange }));
-      // },
+      onChange: (newQty, action) => {
+        if (action === "decrease" && quantity === 1) {
+          dispatch(removeFromCartapi(item));
+          return;
+        }
+        const quantityChange = action === "increase" ? 1 : -1;
+        dispatch(updateCartItem({ item, qty: quantityChange }));
+      },
     });
 
   return (
