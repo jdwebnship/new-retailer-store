@@ -50,7 +50,7 @@ function OrderSuccess() {
               to="/my-account"
               className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
             >
-              Go to Orders
+              Continue Shopping
             </Link>
           </div>
         </div>

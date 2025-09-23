@@ -30,10 +30,10 @@ export const performCheckout = createAsyncThunk(
         dispatch(clearCart());
         // clearAllItems();
         // localStorage.setItem("successful-order", JSON.stringify(res?.data?.data));
-        navigate("/order-success");
+        navigate("/order-success", { replace: true });
         return response.data;
       } else {
-        navigate("/order-failure");
+        navigate("/order-failure", { replace: true });
         if (
           Array.isArray(response?.data?.message) &&
           response?.data?.message?.length
