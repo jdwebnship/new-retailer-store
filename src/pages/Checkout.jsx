@@ -113,7 +113,7 @@ function Checkout() {
         .required("Pincode is required"),
       alt_phone_number: Yup.string()
         .matches(/^[0-9]{10}$/, "Must be a valid 10-digit number")
-        .required("Alt Phone number is required"),
+        .notRequired(),
       city: Yup.string().required("City is required"),
       state: Yup.string().required("State is required"),
     }),

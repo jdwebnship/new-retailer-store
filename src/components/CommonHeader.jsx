@@ -137,9 +137,27 @@ function CommonHeader({ className = "", ...props }) {
             Home
           </Link>
         </li>
+
         <li aria-current="page">
-          <div className="flex items-center border-l opacity-50 font-medium ps-2">
-            <span className="text-sm">{currentPage}</span>
+          <div
+            className={`flex items-center border-l ${
+              subTitle ? "" : "opacity-50"
+            } font-medium ps-2`}
+          >
+            {subTitle ? (
+              <Link
+                to={
+                  productDetails?.product?.sub_category?.sub_category_name
+                    ? `/shop?page=1&categories=${productDetails.product.sub_category.sub_category_name}`
+                    : `/shop?page=1`
+                }
+                className="inline-flex items-center pe-1"
+              >
+                <span className="text-sm">{currentPage}</span>
+              </Link>
+            ) : (
+              <span className="text-sm">{currentPage}</span>
+            )}
           </div>
         </li>
         {subTitle && (
@@ -191,11 +209,7 @@ function CommonHeader({ className = "", ...props }) {
     ));
   return (
     <section
-      className={`z-10 relative ${
-        location.pathname === "/"
-          ? "rounded-b-none rounded-3xl"
-          : "rounded-b-none rounded-3xl"
-      } ${className}`}
+      className={`z-10 relative rounded-b-none rounded-3xl ${className}`}
       style={{
         backgroundColor: theme?.bottomFooterBackgroundColor || "#ffffff",
         color: bottomFooterTextColor || "#111111",
