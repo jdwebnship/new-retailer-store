@@ -21,6 +21,7 @@ import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
 import useCartQuantity from "../hooks/useCartQuantity";
 import LoadingButton from "../components/LoadingButton";
 import placeholderImage from "../assets/images/placeholder.png";
+import Loader from "../components/Loader";
 
 function ProductDetail() {
   const { slug } = useParams();
@@ -245,9 +246,7 @@ function ProductDetail() {
     <div className="mr-auto ml-auto">
       {productLoading ? "" : <CommonHeader />}
       {productLoading ? (
-        <div className="flex items-center justify-center p-4 h-[50vh]">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        </div>
+        <Loader />
       ) : (
         <div className="pt-[3.125rem] lg:pt-[100px]">
           <div className="flex flex-col lg:flex-row gap-8 xl:gap-12.5 2xl:gap-25 justify-center md:px-4 sm:px-6 lg:px-10 xl:px-[3.75rem]">

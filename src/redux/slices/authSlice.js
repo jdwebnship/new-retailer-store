@@ -85,16 +85,16 @@ export const login = createAsyncThunk(
 
 export const logoutUser = createAsyncThunk(
   "auth/logout",
-  async ({ navigate }, { rejectWithValue, dispatch }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosInstance.post("/customer/logout", {
         user_token: import.meta.env.VITE_API_KEY,
       });
-      if (response?.data?.success || response?.status) {
-        toast.success(response?.data?.message || "Logout successful");
+      if (response?.data?.success) {
         dispatch(logout());
         dispatch({ type: "RESET_APP" });
-        navigate("/signin");
+        window.location.href = "/signin";
+        toast.success(response?.data?.message || "Logout successful");
       }
       return response.data;
     } catch (error) {
@@ -117,7 +117,7 @@ export const forgotPassword = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Logout failed");
+      return rejectWithValue(error.response?.data?.message || "Something went wrong");
     }
   }
 );
@@ -138,7 +138,7 @@ export const resetPasswordWithToken = createAsyncThunk(
       }
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data?.message || "Logout failed");
+      return rejectWithValue(error.response?.data?.message || "Failed to reset password");
     }
   }
 );
@@ -254,6 +254,7 @@ export const verifyOTP = createAsyncThunk(
     }
   }
 );
+
 export const verifyLoginOTP = createAsyncThunk(
   "otp/verifyLogin",
   async ({ mobile, otp }, { rejectWithValue }) => {
@@ -280,10 +281,16 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
+      // Reset all auth related state
       state.user = null;
       state.loading = false;
       state.error = null;
       state.isAuthenticated = false;
+      state.verificationLoading = false;
+      state.sent = false;
+      state.loginSent = false;
+      state.verified = false;
+      state.verificationError = null;
     },
     updateCustomer: (state, action) => {
       if (state.user && state.user.customer) {
