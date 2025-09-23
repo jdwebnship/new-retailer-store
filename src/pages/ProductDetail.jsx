@@ -637,9 +637,10 @@ function ProductDetail() {
                   <h4 className="text-sm font-bold mb-4 text-[#111111] lg:text-2xl">
                     Product Summary
                   </h4>
-                  <p className="mb-4 text-[#111111] text-lg">
+                  <div
+                    className="mb-4 text-[#111111] text-lg"
                     dangerouslySetInnerHTML={{ __html: product?.description }}
-                  </p>
+                  ></div>
                 </div>
               )}
             </div>
