@@ -14,23 +14,25 @@ function OrderSuccess() {
     <div>
       <CommonHeader />
       <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] py-16 text-center">
-        <div className="mx-auto max-w-xl p-8">
-          <div className="text-3xl mb-2">
+        <div className="mx-auto max-w-xl md:p-8">
+          <div className="text-3xl mb-[0.9375rem]">
             <img className="mx-auto" src={order} alt="" />
           </div>
-          <h1 className="text-2xl font-semibold mb-[0.9375rem]">
+          <h1 className="text-2xl font-semibold mb-[0.9375rem] text-[#111111]">
             Order Placed Successfully
           </h1>
           {/* <h1 className="text-2xl font-semibold mb-[0.9375rem]">
             ⚠️ Oops! Something went wrong.
           </h1> */}
-          <div className="text-sm font-medium py-6 flex flex-wrap gap-2 justify-center">
-            <span className=" py-[0.5rem]">Your order ID : </span>
-            <div className="grid sm:grid-cols-2 grid-cols-1 gap-3 justify-center">
+          <div className="text-sm font-medium py-6 flex gap-2 justify-center text-[#111111]">
+            <span className=" py-[0.5rem] whitespace-nowrap">
+              Your order ID :{" "}
+            </span>
+            <div className="flex gap-2 flex-wrap  md:max-w-[32.875rem]">
               {orderIds.map((id, index) => (
                 <span
                   key={index}
-                  className="px-[0.9375rem] py-[0.5rem] rounded-lg"
+                  className="px-[0.9375rem] py-[0.5rem] rounded-lg col-span-6 text-sm"
                   style={{
                     backgroundColor: theme.bottomFooterBackgroundColor,
                     height: "fit-content",
@@ -42,7 +44,7 @@ function OrderSuccess() {
             </div>
           </div>
           <div
-            className="flex flex-col justify-center gap-3 p-6 rounded-2xl max-w-[26.875rem] mx-auto"
+            className="flex flex-col justify-center gap-6 p-6 rounded-2xl max-w-[26.875rem] mx-auto text-[#111111]"
             style={{
               backgroundColor: theme.bottomFooterBackgroundColor,
               height: "fit-content",
@@ -54,7 +56,7 @@ function OrderSuccess() {
             </p>
             <Link
               to="/my-account"
-              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
+              className="w-full sm:text-lg font-normal btn bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
             >
               Continue Shopping
             </Link>

@@ -29,7 +29,7 @@ const Orders = () => {
   return (
     <div className="w-full">
       <div className="flex justify-between w-full pb-[1.5rem] items-center">
-        <h3 className="text-2xl font-bold">Orders</h3>
+        <h3 className="text-2xl font-bold text-[#111111]">Orders</h3>
       </div>
       <hr className="opacity-10" />
 
@@ -78,7 +78,7 @@ const Orders = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="bottom-card p-[0.938rem]">
+                  <div className="bottom-card p-[0.938rem] !text-[#111111]">
                     <div className="flex flex-wrap gap-[0.938rem]">
                       <div className="w-[5rem] h-[5rem] rounded-[0.625rem] overflow-hidden">
                         {val?.image ? (
