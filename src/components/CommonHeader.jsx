@@ -182,7 +182,7 @@ function CommonHeader({ className = "", ...props }) {
             />
           )}
           <h1 className="text-[30px] lg:text-[2.625rem] font-bold">
-            {routeConfig.subTitle ? routeConfig.subTitle : routeConfig.title}
+            {routeConfig.subTitle ? "" : routeConfig.title}
           </h1>
         </div>
       </div>
