@@ -242,7 +242,7 @@ function ProductDetail() {
 
   return (
     <div className="mr-auto ml-auto">
-      <CommonHeader />
+      {productLoading ? "" : <CommonHeader />}
       {productLoading ? (
         <div className="flex items-center justify-center p-4 h-[50vh]">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
