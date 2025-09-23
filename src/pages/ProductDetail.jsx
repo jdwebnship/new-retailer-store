@@ -20,6 +20,7 @@ import { toast } from "react-toastify";
 import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
 import useCartQuantity from "../hooks/useCartQuantity";
 import LoadingButton from "../components/LoadingButton";
+import placeholderImage from "../assets/images/placeholder.png";
 
 function ProductDetail() {
   const { slug } = useParams();
@@ -332,14 +333,17 @@ function ProductDetail() {
                                 {src ? (
                                   <img
                                     src={src}
-                                    alt="product"
+                                    alt={product?.name}
                                     className="absolute top-0 left-0 object-contain w-full h-full block"
                                   />
                                 ) : (
                                   <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                                    <span>No Image Available</span>
-                                    {/* Optionally, add an icon or default image */}
-                                    {/* <img src="/path/to/placeholder-image.jpg" alt="No image" className="w-1/2 h-1/2 object-contain" /> */}
+                                    {/* <span>No Image Available</span> */}
+                                    <img
+                                      src={placeholderImage}
+                                      alt="No image"
+                                      className="w-1/2 h-1/2 object-contain"
+                                    />
                                   </div>
                                 )}
                               </div>
@@ -433,14 +437,17 @@ function ProductDetail() {
                           {src ? (
                             <img
                               src={src}
-                              alt="product"
+                              alt={product?.name}
                               className="absolute top-0 left-0 object-contain w-full h-full block transition-transform duration-3000 group-hover:scale-110"
                             />
                           ) : (
                             <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                              <span>No Image Available</span>
-                              {/* Optionally, add a default image or icon */}
-                              {/* <img src="/path/to/placeholder-image.jpg" alt="No image" className="w-1/2 h-1/2 object-contain" /> */}
+                              {/* <span>No Image Available</span> */}
+                              <img
+                                src={placeholderImage}
+                                alt="No image"
+                                className="w-1/2 h-1/2 object-contain"
+                              />
                             </div>
                           )}
                         </div>
@@ -449,9 +456,11 @@ function ProductDetail() {
                   ) : (
                     <SwiperSlide>
                       <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] flex items-center justify-center text-gray-500">
-                        <span>No Images Available</span>
-                        {/* Optionally, add a default image or icon */}
-                        {/* <img src="/path/to/placeholder-image.jpg" alt="No image" className="w-1/2 h-1/2 object-contain" /> */}
+                        <img
+                          src={placeholderImage}
+                          alt="No image"
+                          className="w-1/2 h-1/2 object-contain"
+                        />
                       </div>
                     </SwiperSlide>
                   )}
@@ -486,7 +495,7 @@ function ProductDetail() {
               <div className="item-stock-status mb-6">
                 <p className="text-2xl flex items-center">
                   <span className="indicator rounded-lg inline-block h-[0.625rem] w-[0.625rem] bg-[#25D366] mr-2"></span>
-                  {product?.quantity > 0 ? "Item in stock" : "Out of stock"}
+                  {product?.quantity > 0 ? "In stock" : "Out of stock"}
                 </p>
               </div>
               {/* Available Sizes */}
@@ -627,6 +636,7 @@ function ProductDetail() {
                   <h4 className="text-sm font-bold mb-2 uppercase text-[#111111]">
                     Description
                   </h4>
+
                   <p className="mb-4 text-[#111111]">{product?.description}</p>
                 </div>
               )}
