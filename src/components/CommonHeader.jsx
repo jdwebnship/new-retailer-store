@@ -1,10 +1,12 @@
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
+import { useSelector } from "react-redux";
 
 function CommonHeader({ className = "", ...props }) {
   const { theme, bottomFooterTextColor } = useTheme();
   const { slug } = useParams();
   const location = useLocation();
+  const { productDetails } = useSelector((state) => state.products);
   // Define page titles and breadcrumb configurations
   const routeConfigs = {
     "/": {
@@ -91,7 +93,10 @@ function CommonHeader({ className = "", ...props }) {
       breadcrumb: true,
     },
     [`/products/${slug}`]: {
-      title: "Women's Watch",
+      title: `${
+        productDetails.product.sub_category.sub_category_name || "Category"
+      } `,
+      subTitle: `${productDetails.product.name || "Product"}`,
       breadcrumb: true,
     },
     "/faq": {
@@ -125,7 +130,7 @@ function CommonHeader({ className = "", ...props }) {
   };
 
   // Breadcrumb component for reusability
-  const Breadcrumb = ({ currentPage }) => (
+  const Breadcrumb = ({ currentPage, subTitle }) => (
     <nav className="flex justify-center" aria-label="Breadcrumb">
       <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
         <li className="inline-flex items-center font-medium me-2">
@@ -138,6 +143,13 @@ function CommonHeader({ className = "", ...props }) {
             <span className="text-sm">{currentPage}</span>
           </div>
         </li>
+        {subTitle && (
+          <li aria-current="page">
+            <div className="flex items-center border-l opacity-50 font-medium ps-2">
+              <span className="text-sm">{subTitle}</span>
+            </div>
+          </li>
+        )}
       </ol>
     </nav>
   );
@@ -165,10 +177,13 @@ function CommonHeader({ className = "", ...props }) {
       <div className="xxl:px-[248px]">
         <div className="px-[1.875rem] lg:px-15 py-[2.5rem] lg:py-15">
           {routeConfig.breadcrumb && (
-            <Breadcrumb currentPage={routeConfig.title} />
+            <Breadcrumb
+              currentPage={routeConfig.title}
+              subTitle={routeConfig.subTitle}
+            />
           )}
           <h1 className="text-[30px] lg:text-[2.625rem] font-bold">
-            {routeConfig.title}
+            {routeConfig.subTitle ? routeConfig.subTitle : routeConfig.title}
           </h1>
         </div>
       </div>
