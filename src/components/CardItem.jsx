@@ -4,7 +4,7 @@ export function CardItem({ item }) {
   const navigate = useNavigate();
   return (
     <div
-      className="w-full relative before:content-[''] before:block before:float-left before:pt-[143%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] rounded-[1.125rem] flex flex-col flex-shrink-0 overflow-hidden cursor-pointer"
+      className="w-full relative before:content-[''] before:block before:float-left before:pt-[125%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] rounded-[1.125rem] flex flex-col flex-shrink-0 overflow-hidden cursor-pointer"
       onClick={() =>
         navigate(`/shop?categories=${encodeURIComponent(item.name)}`)
       }

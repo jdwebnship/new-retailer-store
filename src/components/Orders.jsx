@@ -46,23 +46,19 @@ const Orders = () => {
                 key={val?.order_id}
                 className="flex flex-col mt-[1.5rem] text-start"
               >
-                <div className="rounded-lg border border-[#AAAAAA]/15 overflow-auto">
+                <div className="rounded-[0.625rem] border border-[#AAAAAA]/15 overflow-auto">
                   <div
-                    className="top-card  p-[0.938rem]"
+                    className="top-card  p-[0.938rem] !text-[#111111]"
                     style={{
                       backgroundColor: theme?.bottomFooterBackgroundColor,
                       color: bottomFooterTextColor,
                     }}
                   >
-                    <div className="flex flex-wrap sm:gap-[1.5rem] gap-[1rem] justify-between">
+                    <div className="flex flex-wrap sm:gap-[1.5rem] gap-[1rem] justify-between !text-[#111111]">
                       <div className="flex flex-wrap sm:gap-[2rem] gap-[1rem]">
                         <div>
                           <span className="text-sm uppercase">Order Date:</span>
-                          <p>
-                            <span className="text-sm font-bold">
-                              {val?.order_date}
-                            </span>
-                          </p>
+                          <p className="text-sm font-bold">{val?.order_date}</p>
                         </div>
                         <div>
                           <span className="text-sm uppercase">Total:</span>
