@@ -251,7 +251,7 @@ function ProductDetail() {
         <div className="pt-[3.125rem] lg:pt-[100px]">
           <div className="flex flex-col lg:flex-row gap-8 xl:gap-12.5 2xl:gap-25 justify-center md:px-4 sm:px-6 lg:px-10 xl:px-[3.75rem]">
             {/* Image Column */}
-            <div className="w-full lg:max-w-[calc((((100vw-5rem)+2rem)/12)*7-2rem)] xl:max-w-[calc(((100vw-7.5rem)+3.125rem)/12*7-3.125rem)] 2xl:max-w-[calc(((100vw-7.5rem)+6.25rem)/12*7-6.25rem)] gap-6 flex justify-center items-start px-3.5">
+            <div className="w-full lg:max-w-[calc((((100vw-5rem)+2rem)/12)*7-2rem)] xl:max-w-[calc(((100vw-7.5rem)+3.125rem)/12*7-3.125rem)] 2xl:max-w-[calc(((100vw-7.5rem)+6.25rem)/12*7-6.25rem)] gap-6 flex justify-center items-start px-3.5 pr-0">
               <div className="w-full flex flex-col-reverse md:flex-row">
                 <div className="product__slider flex flex-row md:flex-col w-full md:w-[100px] md:mr-6 mt-6 md:mt-0">
                   <div className="slider__prev cursor-pointer text-center text-sm h-auto w-8 md:h-12 md:w-auto flex items-center justify-center select-none focus:outline-none">
@@ -429,7 +429,7 @@ function ProductDetail() {
                   {productImg.length > 0 ? (
                     productImg.map((src, index) => (
                       <SwiperSlide key={index}>
-                        <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[70%] after:content-[''] after:table after:clear-both bg-[#f2f2f2]">
+                        <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2]">
                           {src ? (
                             <img
                               src={src}
@@ -448,7 +448,7 @@ function ProductDetail() {
                     ))
                   ) : (
                     <SwiperSlide>
-                      <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[70%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] flex items-center justify-center text-gray-500">
+                      <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] flex items-center justify-center text-gray-500">
                         <span>No Images Available</span>
                         {/* Optionally, add a default image or icon */}
                         {/* <img src="/path/to/placeholder-image.jpg" alt="No image" className="w-1/2 h-1/2 object-contain" /> */}
@@ -461,11 +461,11 @@ function ProductDetail() {
 
             {/* Details Column */}
             <div className="w-full lg:max-w-[calc((((100vw-5rem)+2rem)/12)*5-2rem)] xl:max-w-[calc((((100vw-7.5rem)+3.125rem)/12)*5-3.125rem)] 2xl:max-w-[calc((((100vw-7.5rem)+6.25rem)/12)*5-6.25rem)] text-left px-3.5">
-              <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5">
+              <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5 text-[#111111]">
                 {product?.name}
               </h3>
               <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-lg p-4 w-auto flex-auto">
-                <span className="text-[1.5rem] font-bold">
+                <span className="text-[1.5rem] font-bold text-[#111111]">
                   ₹{product?.final_price}
                 </span>
                 {product?.old_price > 0 && (
@@ -539,7 +539,7 @@ function ProductDetail() {
                         />
                       </svg>
                     </button>
-                    <span className="w-12 text-center text-lg font-medium">
+                    <span className="w-12 text-center text-lg font-medium text-[#111111]">
                       {quantity}
                     </span>
                     <button
@@ -583,7 +583,7 @@ function ProductDetail() {
                     e.stopPropagation();
                     getWhatsappLink(e, product, phone_number);
                   }}
-                  className="flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
+                  className="flex-1 text-[#111111] btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
                 >
                   <span className="max-w-[1.5rem] mr-2">
                     <img
@@ -600,7 +600,7 @@ function ProductDetail() {
                     e.stopPropagation();
                     addToWishList();
                   }}
-                  className="flex-[100%] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
+                  className="flex-[100%] text-[#111111] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
                 >
                   <span className="max-w-[1.5rem] mr-2">
                     <svg
@@ -624,10 +624,10 @@ function ProductDetail() {
               </div>
               {product?.description && (
                 <div className="description-wrapper">
-                  <h4 className="text-sm font-bold mb-2 uppercase">
+                  <h4 className="text-sm font-bold mb-2 uppercase text-[#111111]">
                     Description
                   </h4>
-                  <p className="mb-4">{product?.description}</p>
+                  <p className="mb-4 text-[#111111]">{product?.description}</p>
                 </div>
               )}
             </div>
