@@ -33,6 +33,7 @@ export const performCheckout = createAsyncThunk(
         navigate("/order-success");
         return response.data;
       } else {
+        navigate("/order-failure");
         if (
           Array.isArray(response?.data?.message) &&
           response?.data?.message?.length

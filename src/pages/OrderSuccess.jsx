@@ -9,7 +9,7 @@ function OrderSuccess() {
   const { user } = useSelector((state) => state.auth);
   const { theme } = useTheme();
 
-  const orderId = user?.order_id ?? "#ORD-000000";
+  const orderIds = user?.order_id || [];
   return (
     <div>
       <CommonHeader />
@@ -24,18 +24,23 @@ function OrderSuccess() {
           {/* <h1 className="text-2xl font-semibold mb-[0.9375rem]">
             ⚠️ Oops! Something went wrong.
           </h1> */}
-          <p className="text-sm font-medium py-6">
-            Your order ID is:{" "}
-            <span
-              className="px-[0.9375rem] py-[0.5rem] rounded-lg"
-              style={{
-                backgroundColor: theme.bottomFooterBackgroundColor,
-                height: "fit-content",
-              }}
-            >
-              {orderId}
-            </span>
-          </p>
+          <div className="text-sm font-medium py-6 flex flex-wrap gap-2 justify-center">
+            <span className=" py-[0.5rem]">Your order ID : </span>
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-3 justify-center">
+              {orderIds.map((id, index) => (
+                <span
+                  key={index}
+                  className="px-[0.9375rem] py-[0.5rem] rounded-lg"
+                  style={{
+                    backgroundColor: theme.bottomFooterBackgroundColor,
+                    height: "fit-content",
+                  }}
+                >
+                  {id}
+                </span>
+              ))}
+            </div>
+          </div>
           <div
             className="flex flex-col justify-center gap-3 p-6 rounded-2xl max-w-[26.875rem] mx-auto"
             style={{
@@ -51,7 +56,7 @@ function OrderSuccess() {
               to="/my-account"
               className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
             >
-              Go to Orders
+              Continue Shopping
             </Link>
           </div>
         </div>
