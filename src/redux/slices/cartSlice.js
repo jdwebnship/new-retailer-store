@@ -56,17 +56,17 @@ export const addToCart = createAsyncThunk(
           slug: item?.slug,
           selected_variant: item?.selectedVariant
             ? {
-              id: item.selectedVariant.id,
-              product_variation: item.selectedVariant.product_variation,
-              final_price: item.selectedVariant.final_price,
-              stock: item.selectedVariant.stock,
-            }
+                id: item.selectedVariant.id,
+                product_variation: item.selectedVariant.product_variation,
+                final_price: item.selectedVariant.final_price,
+                stock: item.selectedVariant.stock,
+              }
             : null,
         };
 
         dispatch(addToCartGuest(guestCartItem));
         dispatch(openCartPopup());
-        toast.success("Item added to cart");
+        toast.success("Item added successfully in cart.");
       } else {
         // If user is logged in, call the API
         const data = {
@@ -103,11 +103,11 @@ export const addToCart = createAsyncThunk(
           product_id: item?.id || item?.product_id,
           selected_variant: item?.selectedVariant
             ? {
-              id: item.selectedVariant.id,
-              product_variation: item.selectedVariant.product_variation,
-              final_price: item.selectedVariant.final_price,
-              stock: item.selectedVariant.stock,
-            }
+                id: item.selectedVariant.id,
+                product_variation: item.selectedVariant.product_variation,
+                final_price: item.selectedVariant.final_price,
+                stock: item.selectedVariant.stock,
+              }
             : null,
         };
         dispatch(addToCartUser(cartItem));
@@ -173,7 +173,7 @@ export const updateCartItem = createAsyncThunk(
         } else {
           const msg =
             Array.isArray(response?.data?.message) &&
-              response?.data?.message?.length
+            response?.data?.message?.length
               ? response.data.message.join(", ")
               : response?.data?.message || "Failed to update cart";
 
@@ -256,7 +256,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-            action.payload.selected_variant?.product_variation)
+              action.payload.selected_variant?.product_variation)
         );
       });
       if (existingItem) {
@@ -276,7 +276,7 @@ const cartSlice = createSlice({
             itemId === action.payload.id) &&
           ((!item.selected_variant && !action.payload.selected_variant) ||
             item.selected_variant?.product_variation ===
-            action.payload.selected_variant?.product_variation)
+              action.payload.selected_variant?.product_variation)
         );
       });
 
@@ -356,7 +356,6 @@ const cartSlice = createSlice({
           quantity: Math.max(quantity, 1),
         });
       }
-
 
       // if (itemIndex > -1) {
       //   if (quantity > 1) {
