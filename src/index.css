@@ -290,7 +290,49 @@ textarea {
   right: 1.5rem;
 }
 
-/* Search Box Animation */
+/* Search Dropdown Animation */
+.search-dropdown {
+  animation: slideDownFromCenter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transform-origin: top center;
+  transform: translateX(-50%) translateY(0);
+  will-change: transform, opacity;
+}
+
+.search-dropdown-closing {
+  animation: slideUpToCenter 0.4s cubic-bezier(0.55, 0.06, 0.68, 0.19) forwards;
+}
+
+@keyframes slideDownFromCenter {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-40px) scale(0.9);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) translateY(-10px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+}
+
+@keyframes slideUpToCenter {
+  0% {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: translateX(-50%) translateY(-10px) scale(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-40px) scale(0.9);
+  }
+}
+
+/* Search Box Animation (legacy) */
 .search-box {
   animation: slideDown 0.3s ease-out;
   transform-origin: top;
@@ -332,6 +374,29 @@ textarea {
 .search-input {
   font-size: 16px;
   min-height: 48px;
+}
+
+/* Search Overlay Enhanced Styling */
+.search-overlay {
+  backdrop-filter: blur(8px);
+}
+
+.search-overlay .bg-white {
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+.search-overlay input:focus {
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+  border-color: #3b82f6;
+  transform: scale(1.02);
+  transition: all 0.2s ease;
+}
+
+.search-overlay .bg-blue-600:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 25px -5px rgba(59, 130, 246, 0.4);
 }
 
 /* Search button enhanced styling */
@@ -494,4 +559,18 @@ textarea {
   width: 10px;
   height: 10px;
   border-radius: 5px;
+}
+
+/* Hide native clear (cancel) button in search input within dropdown */
+.search-dropdown input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.search-dropdown input[type="search"]::-ms-clear {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.search-dropdown input[type="search"]::-ms-reveal {
+  display: none;
 }

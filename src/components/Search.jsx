@@ -7,9 +7,9 @@ import { fetchSearchProducts } from "../redux/slices/productSlice";
 function Search() {
   const { theme, headerTextColor } = useTheme();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const searchInputRef = useRef(null);
-  const searchContainerRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,12 +20,20 @@ function Search() {
     }
   }, [isSearchOpen]);
 
-  // Handle click outside to close search
+  // Handle escape key to close search
   useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        setIsSearchOpen(false);
+        setSearchQuery("");
+      }
+    };
+
     const handleClickOutside = (event) => {
       if (
-        searchContainerRef.current &&
-        !searchContainerRef.current.contains(event.target)
+        isSearchOpen &&
+        !event.target.closest(".search-dropdown") &&
+        !event.target.closest('button[aria-label="Search"]')
       ) {
         setIsSearchOpen(false);
         setSearchQuery("");
@@ -33,10 +41,12 @@ function Search() {
     };
 
     if (isSearchOpen) {
+      document.addEventListener("keydown", handleKeyDown);
       document.addEventListener("mousedown", handleClickOutside);
     }
 
     return () => {
+      document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isSearchOpen]);
@@ -60,24 +70,50 @@ function Search() {
     }
   };
 
-  // Handle escape key to close search
-  const handleKeyDown = (e) => {
-    if (e.key === "Escape") {
+  const performSearch = async (query) => {
+    const trimmed = (query || "").trim();
+    if (!trimmed) return;
+    try {
+      await dispatch(fetchSearchProducts({ search: trimmed })).unwrap();
+      navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
       setIsSearchOpen(false);
       setSearchQuery("");
+    } catch (error) {
+      console.error("Search failed:", error);
     }
+  };
+
+  const handleSuggestionClick = (text) => {
+    setSearchQuery(text);
+    // focus back the input so user can continue typing or press Enter
+    requestAnimationFrame(() => {
+      if (searchInputRef.current) {
+        searchInputRef.current.focus();
+        // place cursor at end
+        const value = searchInputRef.current.value;
+        searchInputRef.current.setSelectionRange(value.length, value.length);
+      }
+    });
   };
 
   // Handle search icon click
   const handleSearchClick = () => {
-    setIsSearchOpen(!isSearchOpen);
-    if (!isSearchOpen) {
+    setIsSearchOpen(true);
+    setSearchQuery("");
+  };
+
+  // Handle close search with animation
+  const handleCloseSearch = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      setIsSearchOpen(false);
+      setIsClosing(false);
       setSearchQuery("");
-    }
+    }, 400);
   };
 
   return (
-    <div className="relative h-full" ref={searchContainerRef}>
+    <div className="relative">
       {/* Search Icon Button */}
       <button
         onClick={handleSearchClick}
@@ -101,75 +137,106 @@ function Search() {
         </svg>
       </button>
 
-      {/* Search Box */}
+      {/* Search Dropdown */}
       {isSearchOpen && (
-        <div
-          className={`
-            absolute top-full z-50 search-box
-            w-[90vw] max-w-[28.125rem]
-            left-1/2 sm:left-auto sm:right-0
-             sm:translate-x-0
-          `}
-        >
+        <>
+          {/* Dropdown */}
           <div
-            className="bg-white border border-gray-200 rounded-lg shadow-xl p-4 sm:p-6"
-            style={{
-              backgroundColor: theme?.headerBackgroundColor || "#ffffff",
-              borderColor: theme?.borderColor || "#e5e7eb",
-            }}
+            className={`fixed top-full left-1/2  rounded-xl w-full max-w-[19.375rem] sm:max-w-[37.5rem] bg-white shadow-2xl z-50 search-dropdown ${
+              isClosing ? "search-dropdown-closing" : ""
+            }`}
           >
-            <form onSubmit={handleSearch} className="relative">
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  onKeyDown={handleKeyDown}
-                  placeholder="Search products..."
-                  className="search-input flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none text-base transition-all duration-200"
-                  style={{
-                    color: headerTextColor || "#111111",
-                    backgroundColor: theme?.inputBackgroundColor || "#ffffff",
-                    borderColor: theme?.borderColor || "#d1d5db",
-                  }}
-                />
-                <div className="flex flex-row gap-2 sm:gap-3 mt-2 sm:mt-0">
-                  <button
-                    type="submit"
-                    className="search-button px-6 py-3 bg-[#111111] text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 text-base font-medium disabled:opacity-50 disabled:cursor-not-allowed outline-none cursor-pointer w-full sm:w-auto"
-                    disabled={!searchQuery.trim()}
+            <form onSubmit={handleSearch}>
+              {/* Search Input Row */}
+              <div className="flex items-center px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100">
+                <div className="flex-1 relative flex items-center">
+                  <svg
+                    className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400 mr-3"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    Search
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setIsSearchOpen(false);
-                      setSearchQuery("");
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    />
+                  </svg>
+                  <input
+                    ref={searchInputRef}
+                    type="search"
+                    autoComplete="off"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        handleSearch(e);
+                      }
                     }}
-                    className="p-3 border border-[#AAAAAA] hover:bg-gray-100 rounded-lg transition-colors duration-200 cursor-pointer"
-                    aria-label="Close search"
+                    placeholder="Search for products, brands, categories..."
+                    className="w-full py-2 sm:py-3 text-base sm:text-lg border-none focus:outline-none bg-transparent"
+                    style={{
+                      color: headerTextColor || "#111111",
+                    }}
+                  />
+                </div>
+                <button
+                  onClick={handleCloseSearch}
+                  type="button"
+                  className="ml-3 p-1 sm:p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200 cursor-pointer"
+                  aria-label="Close search"
+                >
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+                {/* Hidden submit button to ensure Enter submits in all browsers */}
+                <button type="submit" className="hidden" aria-hidden="true" />
+              </div>
+
+              {/* Suggested Search Terms */}
+              <div className="px-4 py-4 sm:px-6 sm:py-6">
+                <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">
+                  Suggested Search Terms
+                </h3>
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-2 sm:gap-3">
+                  {[
+                    "T-Shirts",
+                    "Shirts",
+                    "Denims",
+                    "Men's - Watch",
+                    "Womens - Watch",
+                    "Handbags",
+                    "Mens Shoes",
+                    "Wallet",
+                    "Caps",
+                  ].map((suggestion) => (
+                    <button
+                      key={suggestion}
+                      type="button"
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="cursor-pointer text-left text-sm text-gray-600 hover:text-gray-900 rounded transition-colors duration-200"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </button>
+                      {suggestion}
+                    </button>
+                  ))}
                 </div>
               </div>
             </form>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
