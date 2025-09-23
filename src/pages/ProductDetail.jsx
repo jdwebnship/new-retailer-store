@@ -491,7 +491,7 @@ function ProductDetail() {
                   </>
                 )}
               </div>
-              <div className="item-stock-status mb-6">
+              <div className="item-stock-status mb-6  border-b border-[#111111]/15 pb-6">
                 <p className="text-2xl flex items-center">
                   <span className="indicator rounded-lg inline-block h-[0.625rem] w-[0.625rem] bg-[#25D366] mr-2"></span>
                   {product?.quantity > 0 ? "In stock" : "Out of stock"}
@@ -501,8 +501,10 @@ function ProductDetail() {
               {(product?.variations?.length > 0 ||
                 product?.productVariations?.length > 0) && (
                 <div className="mb-6">
-                  <h4 className="text-sm font-bold mb-2 uppercase">Size</h4>
-                  <div className="flex flex-wrap gap-2">
+                  <h4 className="text-sm font-bold mb-[0.9375rem] uppercase">
+                    Size
+                  </h4>
+                  <div className="flex flex-wrap gap-[0.9375rem]">
                     {productVariations?.map((item) => (
                       <button
                         key={item.id}
@@ -510,9 +512,9 @@ function ProductDetail() {
                         onClick={() =>
                           handleVariantSelect(item?.product_variation)
                         }
-                        className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${
+                        className={`px-5 py disabled:opacity-50 relative overflow-hidden py-3 text-[#111111] cursor-pointer text-[16px] font-medium border border-[#AAAAAA] rounded-[0.625rem] ${
                           variant === item?.product_variation
-                            ? "border-black"
+                            ? "!border-[#111111]"
                             : ""
                         }`}
                       >
@@ -591,7 +593,7 @@ function ProductDetail() {
                     e.stopPropagation();
                     getWhatsappLink(e, product, phone_number);
                   }}
-                  className="flex-1 text-[#111111] btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
+                  className="flex-1 !text-[#25D366] !border-[#25D366] btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm focus:outline-none flex items-center justify-center"
                 >
                   <span className="max-w-[1.5rem] mr-2">
                     <img
@@ -631,12 +633,20 @@ function ProductDetail() {
                 </button>
               </div>
               {product?.description && (
-                <div className="description-wrapper">
-                  <h4 className="text-sm font-bold mb-2 uppercase text-[#111111]">
-                    Description
+                <div className="description-wrapper border-t border-[#111111]/15 pt-6">
+                  <h4 className="text-sm font-bold mb-4 text-[#111111] lg:text-2xl">
+                    Product Summary
                   </h4>
-
-                  <p className="mb-4 text-[#111111]">{product?.description}</p>
+                  <p className="mb-4 text-[#111111] text-lg">
+                    {product?.description}
+                  </p>
+                  {/* <p className="mb-4 text-[#111111] text-lg">
+                    Elevate your everyday style with our Men's Black T-Shirts,
+                    the ultimate wardrobe essential for modern men. Crafted with
+                    meticulous attention to detail and designed for comfort,
+                    these versatile black tees are a must-have addition to your
+                    collection.
+                  </p> */}
                 </div>
               )}
             </div>

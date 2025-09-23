@@ -109,7 +109,7 @@ function Product() {
     if (searchQuery) {
       return;
     }
-    
+
     // Set loading state when filters change
     setIsFilterLoading(true);
 
@@ -182,11 +182,8 @@ function Product() {
     }
 
     setSearchParams(params, { replace: true });
-    debouncedFetchProducts(
-      requestParams, 
-      dispatch, 
-      searchQuery,
-      () => setIsFilterLoading(false)
+    debouncedFetchProducts(requestParams, dispatch, searchQuery, () =>
+      setIsFilterLoading(false)
     );
   }, [
     searchParams,
@@ -379,7 +376,7 @@ function Product() {
               <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem]">
                 <div className="flex justify-between w-full">
                   <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111]">
-                    Filter By <span>{activeFilterCount}</span>
+                    Filter By <span>({activeFilterCount})</span>
                   </h4>
                   <span
                     className="underline text-[0.875rem] cursor-pointer"

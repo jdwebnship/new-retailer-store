@@ -108,7 +108,7 @@ export default function OrderList({ item }) {
 
       {/* Total Price */}
       <div className="md:ml-[0] ml-[6rem]">
-        <p className="text-lg font-bold">
+        <p className="text-lg font-bold text-[#111111]">
           ₹
           {item?.final_price && item?.quantity
             ? (item.final_price * item.quantity).toLocaleString("en-IN", {

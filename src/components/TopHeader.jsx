@@ -78,7 +78,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               </span>
             </a>
           </div>
-          <span className="font-medium text-[0.75] sm:text-[0.875rem] md:text-[1rem]">
+          <span className="font-medium text-[0.75] sm:text-[0.875rem] md:text-[1rem] center-nav flex-1 flex items-center justify-center relative sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
             {storeInfo?.storeinfo?.offer_text ||
               "All over India Delivery Available."}
           </span>

@@ -84,7 +84,7 @@ function Cart() {
               </div>
             )}
           </div>
-          <aside className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-12">
+          <aside className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-10">
             <h2 className="md:text-2xl text-lg font-semibold mb-6">
               Order Summary
             </h2>
@@ -99,7 +99,7 @@ function Cart() {
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="sm:text-lg font-medium">Shipping Cost:</span>
+                <span className="sm:text-lg font-medium">Shipping Cost</span>
                 <span className="sm:text-lg font-medium">Free</span>
               </div>
               <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
