@@ -89,7 +89,7 @@ function Cart() {
               Order Summary
             </h2>
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between">
+              <div className="flex justify-between text-[#111111]">
                 <span className="sm:text-lg font-medium">Subtotal</span>
                 <span className="sm:text-lg font-medium">
                   ₹
@@ -131,7 +131,7 @@ function Cart() {
             )}
             <div className="text-center mt-6">
               <Link
-                className="sm:text-lg uppercase font-normal underline hover:text-[#007BFF] transition-all duration-300"
+                className="sm:text-lg uppercase font-normal underline text-[#111111] hover:text-[#007BFF] transition-all duration-300"
                 to="/shop"
               >
                 Continue Shopping

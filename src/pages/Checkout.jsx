@@ -150,7 +150,7 @@ function Checkout() {
     <div>
       <CommonHeader />
       {/* Form */}
-      <div className="w-full max-w-auto 2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.25rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-[0]">
+      <div className="w-full max-w-auto 2xl:max-w-[80rem] mx-auto py-10 lg:py-[6.25rem] px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] 2xl:px-[0.9375rem]">
         <div className="grid lg:grid-cols-2 gap-8 text-start w-full xl:gap-15">
           <div className="w-full ">
             <form id="checkout-form">
@@ -171,7 +171,9 @@ function Checkout() {
                     readOnly
                   />
                 </div>
-                <h3 className="text-2xl font-bold">Shipping Details</h3>
+                <h3 className="text-2xl font-bold text-[#111111]">
+                  Shipping Details
+                </h3>
                 <hr className="opacity-10" />
                 {/* Email */}
                 <div className="relative">
@@ -184,6 +186,7 @@ function Checkout() {
                     value={formik.values.email}
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
+                    placeholder="Enter your email address"
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                   />
                   {formik.touched.email && formik.errors.email && (
@@ -210,6 +213,7 @@ function Checkout() {
                         );
                       }}
                       onBlur={formik.handleBlur}
+                      placeholder="Enter your first name"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.firstname && formik.errors.firstname && (
@@ -233,6 +237,7 @@ function Checkout() {
                         );
                       }}
                       onBlur={formik.handleBlur}
+                      placeholder="Enter your last name"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.lastname && formik.errors.lastname && (
@@ -259,6 +264,7 @@ function Checkout() {
                       );
                     }}
                     onBlur={formik.handleBlur}
+                    placeholder="Enter your address"
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                   />
                   {formik.touched.address && formik.errors.address && (
@@ -286,6 +292,7 @@ function Checkout() {
                         );
                       }}
                       onBlur={formik.handleBlur}
+                      placeholder="Enter your zipcode"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.pincode && formik.errors.pincode && (
@@ -310,6 +317,7 @@ function Checkout() {
                         );
                       }}
                       onBlur={formik.handleBlur}
+                      placeholder="Enter your phone number"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.alt_phone_number &&
@@ -338,6 +346,7 @@ function Checkout() {
                         );
                       }}
                       onBlur={formik.handleBlur}
+                      placeholder="Enter your city"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.city && formik.errors.city && (
@@ -361,6 +370,7 @@ function Checkout() {
                         );
                       }}
                       onBlur={formik.handleBlur}
+                      placeholder="Enter your state"
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
                     {formik.touched.state && formik.errors.state && (
@@ -382,8 +392,13 @@ function Checkout() {
           >
             <div className="flex  flex-col gap-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-bold">Your Orders</h3>
-                <Link to="/cart" className="text-sm uppercase underline">
+                <h3 className="text-2xl font-bold text-[#111111]">
+                  Your Orders
+                </h3>
+                <Link
+                  to="/cart"
+                  className="text-sm uppercase underline text-[#111111]"
+                >
                   Edit Cart
                 </Link>
               </div>
@@ -404,7 +419,7 @@ function Checkout() {
                           />
                         </div>
                         <div>
-                          <h3 className="font-bold line-clamp-2 text-sm sm:text-base">
+                          <h3 className="font-bold line-clamp-2 text-sm sm:text-base text-[#111111]">
                             {item.product_name}
                           </h3>
                           <div className="flex items-center gap-2 text-[#5C5F6A] mt-1">
@@ -605,7 +620,7 @@ function Checkout() {
                 .filter((item) => item.display !== false)
                 .map((item, index) => (
                   <div key={index} className="flex justify-between">
-                    <span className="sm:text-lg font-medium text-gray-700">
+                    <span className="sm:text-lg font-medium text-[#111111]">
                       {item.label}
                     </span>
                     <span
@@ -625,8 +640,10 @@ function Checkout() {
                 ))}
 
               <div className="border-t border-[#11111126] pt-6 mt-6 flex justify-between font-medium">
-                <span className="md:text-2xl text-lg font-medium">Total</span>
-                <span className="md:text-2xl text-lg font-medium">
+                <span className="md:text-2xl text-lg font-medium text-[#111111]">
+                  Total
+                </span>
+                <span className="md:text-2xl text-lg font-medium text-[#111111]">
                   ₹{discTotal?.toFixed(2)}
                 </span>
               </div>
@@ -639,7 +656,7 @@ function Checkout() {
                 formik.handleSubmit();
               }}
               className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase cursor-pointer ${
-                checkoutLoading || !paymentMethod ? "bg-gray-400" : "btn"
+                checkoutLoading || !paymentMethod ? "bg-[#111111]/50" : "btn"
               }`}
               disabled={checkoutLoading || !paymentMethod}
             >
