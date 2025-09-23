@@ -450,12 +450,12 @@ const cartSlice = createSlice({
       state.error = null;
     });
     builder.addCase(updateCartItem.fulfilled, (state, action) => {
-      const item = state.cartItems.find(
-        (item) => item.id === action.payload.itemId
-      );
-      if (item) {
-        item.quantity = action.payload.quantity;
-      }
+      // const item = state.cartItems.find(
+      //   (item) => item.id === action.payload.itemId
+      // );
+      // if (item) {
+      //   item.quantity = action.payload.quantity;
+      // }
       state.loading = false;
     });
     builder.addCase(updateCartItem.rejected, (state, action) => {

@@ -1,26 +1,21 @@
-import { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
-import { useDispatch, useSelector } from "react-redux";
-import { postNewArrivals } from "../redux/slices/newArrivalsSlice";
+import { useSelector } from "react-redux";
 import CardComponent from "./CardComponent";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css";
-import ButtonLink from "./ButtonLink";
 
 function ProductSliderSection() {
-  const dispatch = useDispatch();
-  const { newArrivals } = useSelector((state) => state.newArrivals);
-  const newTrending = newArrivals?.products;
-
-  useEffect(() => {
-    dispatch(postNewArrivals());
-  }, [dispatch]);
+  const { productDetails, product } = useSelector((state) => state.products);
+  const similarProducts = product?.data?.products?.data;
+  const filteredProducts = similarProducts?.filter(
+    (p) => p.id !== productDetails?.product?.id
+  );
 
   return (
     <div className="py-[3.125rem] lg:py-[100px]">
-      {newTrending &&
+      {filteredProducts &&
         <>
           <p className="uppercase">Similar Products</p>
           <h2 className="text-[2rem] lg:text-[2.625rem] font-bold mb-[1.25rem] lg:mb-[3.125rem]">
@@ -54,16 +49,13 @@ function ProductSliderSection() {
               }}
               className="mySwiper"
             >
-              {newTrending &&
-                newTrending.map((product, index) => (
+              {filteredProducts &&
+                filteredProducts.map((item, index) => (
                   <SwiperSlide key={index}>
-                    <CardComponent product={product} />
+                    <CardComponent product={item} />
                   </SwiperSlide>
                 ))}
             </Swiper>
-            {/* <div className="mt-[30px] lg:mt-[3.125rem] text-center">
-          <ButtonLink to="/shop">Shop ALL New Trending</ButtonLink>
-        </div> */}
           </section>
         </>
       }

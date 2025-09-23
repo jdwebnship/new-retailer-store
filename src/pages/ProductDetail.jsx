@@ -8,7 +8,7 @@ import "swiper/css/mousewheel";
 import "swiper/css/navigation";
 import whatsapp from "../assets/whatsapp-og.svg";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchProductsDetails } from "../redux/slices/productSlice";
+import { fetchProducts, fetchProductsDetails } from "../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getWhatsappLink, isInWishlist } from "../utils/common";
 import {
@@ -89,6 +89,10 @@ function ProductDetail() {
       dispatch(fetchProductsDetails({ slug }));
     } else {
       navigate("/shop");
+    }
+
+    if (productDetails?.product?.sub_category_id) {
+      dispatch(fetchProducts({ sub_category: productDetails?.product?.sub_category_id, page: 1 }));
     }
   }, [slug, dispatch, navigate]);
 

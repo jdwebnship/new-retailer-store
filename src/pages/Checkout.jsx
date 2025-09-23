@@ -50,8 +50,6 @@ function Checkout() {
     };
   });
 
-  console.log("updatedCartItems", updatedCartItems);
-
   const couponForm = useFormik({
     initialValues: { coupon_code: "" },
     onSubmit: (values, { setFieldError }) => {
@@ -81,11 +79,10 @@ function Checkout() {
     ?.filter((item) =>
       discount?.product_id?.includes(item.retailer_product_id || item.product_id)
     )
-    .reduce((sum, item) => sum + (item.quantity || 0), 0);
-
+    // .reduce((sum, item) => sum + (item.quantity || 0), 0);
   const total = subtotal;
   const discTotal = Number(discount?.discount)
-    ? total - Number(discount?.discount) * totalProductWithSameId
+    ? total - Number(discount?.discount) * totalProductWithSameId?.length
     : total;
 
   const priceDetails = [
@@ -93,7 +90,7 @@ function Checkout() {
     {
       label: "Discount",
       value: Number(discount?.discount)
-        ? Number(discount?.discount) * totalProductWithSameId
+        ? Number(discount?.discount) * totalProductWithSameId?.length
         : 0,
       display: discount ? true : false,
     },
@@ -417,11 +414,11 @@ function Checkout() {
                     <div className="flex sm:gap-[0.82rem] justify-between">
                       <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
                         {item?.product_images ? (
-                          <div className="w-[4] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden flex-shrink-0">
+                          <div className="w-[4rem] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden shrink-0">
                             <img
                               src={getProductImage(item)}
                               alt={item.product_name}
-                              className="w-full h-full object-cover"
+                              className="w-full h-full object-cover shrink-0"
                             />
                           </div>
                         ) : (
@@ -510,7 +507,7 @@ function Checkout() {
               ) : (
                 <form
                   onSubmit={couponForm.handleSubmit}
-                  className="flex flex-col sm:flex-row border rounded-lg border-[#111111] relative"
+                  className="flex flex-row border rounded-lg border-[#111111] relative"
                 >
                   <div className="relative flex-1 ">
                     <input
