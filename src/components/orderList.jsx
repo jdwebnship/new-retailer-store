@@ -38,7 +38,7 @@ export default function OrderList({ item }) {
     >
       {/* Product Image + Info */}
       <div className="flex gap-[0.938rem] flex-1 max-w-[25.938rem]">
-        <Link to={item?.slug ? `/products/${item.slug}` : "#"}>
+        <Link to={item?.product_slug ? `/products/${item.product_slug}` : "#"}>
           <img
             src={getProductImage(item)}
             alt={item?.product_name || "No product name"}
@@ -46,7 +46,7 @@ export default function OrderList({ item }) {
           />
         </Link>
         <div>
-          <Link to={item?.slug ? `/products/${item.slug}` : "#"}>
+          <Link to={item?.product_slug ? `/products/${item.product_slug}` : "#"}>
             <div
               className="sm:text-lg text-base font-bold mb-2.5 text-[#111111] 
                  transition-colors duration-300 hover:text-[#007BFF] cursor-pointer"
