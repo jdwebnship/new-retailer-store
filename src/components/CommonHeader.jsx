@@ -93,10 +93,9 @@ function CommonHeader({ className = "", ...props }) {
       breadcrumb: true,
     },
     [`/products/${slug}`]: {
-      title: `${
-        productDetails.product.sub_category.sub_category_name || "Category"
-      } `,
-      subTitle: `${productDetails.product.name || "Product"}`,
+      title:
+        productDetails?.product?.sub_category?.sub_category_name || "Category",
+      subTitle: productDetails?.product?.name || "Product",
       breadcrumb: true,
     },
     "/faq": {
