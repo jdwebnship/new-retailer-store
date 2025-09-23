@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
@@ -6,7 +6,6 @@ import watch from "../assets/watch.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import {
   applyDiscount,
   clearDiscount,
@@ -14,6 +13,7 @@ import {
 } from "../redux/slices/checkoutSlice";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { CheckoutSchema } from "../utils/validationSchema";
 
 function Checkout() {
   const navigate = useNavigate();
@@ -103,20 +103,7 @@ function Checkout() {
       city: userData.city || "",
       state: userData.state || "",
     },
-    validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email").required("Email is required"),
-      firstname: Yup.string().required("First name is required"),
-      lastname: Yup.string().required("Last name is required"),
-      address: Yup.string().required("Address is required"),
-      pincode: Yup.string()
-        .matches(/^[0-9]{6}$/, "Must be a valid 6-digit pincode")
-        .required("Pincode is required"),
-      alt_phone_number: Yup.string()
-        .matches(/^[0-9]{10}$/, "Must be a valid 10-digit number")
-        .notRequired(),
-      city: Yup.string().required("City is required"),
-      state: Yup.string().required("State is required"),
-    }),
+    validationSchema: CheckoutSchema,
     onSubmit: (values) => {
       const products = updatedCartItems.map((item) => {
         const base = { quantity: item.quantity || 1 };
@@ -216,7 +203,12 @@ function Checkout() {
                       type="text"
                       name="firstname"
                       value={formik.values.firstname}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "firstname",
+                          e.target.value.trimStart()
+                        );
+                      }}
                       onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
@@ -234,7 +226,12 @@ function Checkout() {
                       type="text"
                       name="lastname"
                       value={formik.values.lastname}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "lastname",
+                          e.target.value.trimStart()
+                        );
+                      }}
                       onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
@@ -255,7 +252,12 @@ function Checkout() {
                     type="text"
                     name="address"
                     value={formik.values.address}
-                    onChange={formik.handleChange}
+                    onChange={(e) => {
+                      formik.setFieldValue(
+                        "address",
+                        e.target.value.trimStart()
+                      );
+                    }}
                     onBlur={formik.handleBlur}
                     className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                   />
@@ -276,7 +278,13 @@ function Checkout() {
                       type="text"
                       name="pincode"
                       value={formik.values.pincode}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        const numericValue = e.target.value.replace(/\D/g, "");
+                        formik.setFieldValue(
+                          "pincode",
+                          numericValue.trimStart()
+                        );
+                      }}
                       onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
@@ -294,7 +302,13 @@ function Checkout() {
                       type="text"
                       name="alt_phone_number"
                       value={formik.values.alt_phone_number}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        const numericValue = e.target.value.replace(/\D/g, "");
+                        formik.setFieldValue(
+                          "alt_phone_number",
+                          numericValue.trimStart()
+                        );
+                      }}
                       onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
@@ -317,7 +331,12 @@ function Checkout() {
                       type="text"
                       name="city"
                       value={formik.values.city}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "city",
+                          e.target.value.trimStart()
+                        );
+                      }}
                       onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />
@@ -335,7 +354,12 @@ function Checkout() {
                       type="text"
                       name="state"
                       value={formik.values.state}
-                      onChange={formik.handleChange}
+                      onChange={(e) => {
+                        formik.setFieldValue(
+                          "state",
+                          e.target.value.trimStart()
+                        );
+                      }}
                       onBlur={formik.handleBlur}
                       className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
                     />

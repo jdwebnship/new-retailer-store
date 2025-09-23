@@ -81,3 +81,23 @@ export const ContactSchema = Yup.object({
   message: Yup.string().required("Message is required"),
   subscribe: Yup.boolean(),
 });
+
+export const CheckoutSchema = Yup.object({
+  email: Yup.string()
+    .required("Email is required")
+    .matches(
+      /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/,
+      "Enter a valid email address"
+    ),
+  firstname: Yup.string().required("First name is required"),
+  lastname: Yup.string().required("Last name is required"),
+  address: Yup.string().required("Address is required"),
+  pincode: Yup.string()
+    .matches(/^[0-9]{6}$/, "Must be a valid 6-digit pincode")
+    .required("Pincode is required"),
+  alt_phone_number: Yup.string()
+    .matches(/^[0-9]{10}$/, "Must be a valid 10-digit number")
+    .notRequired(),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+});

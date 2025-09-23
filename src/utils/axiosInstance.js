@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 // Store cancel tokens for active requests
 const pendingRequests = new Map();
@@ -11,9 +11,10 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   (config) => {
     // Add API Key
+    config.headers["Content-Type"] = "application/json";
     const apiKey = import.meta.env.VITE_API_KEY;
     if (apiKey) {
-      config.headers['API-KEY'] = apiKey;
+      config.headers["API-KEY"] = apiKey;
     }
 
     // Add User Token (from localStorage)
@@ -48,7 +49,9 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    const requestKey = `${response.config.url}_${JSON.stringify(response.config.params)}`;
+    const requestKey = `${response.config.url}_${JSON.stringify(
+      response.config.params
+    )}`;
     pendingRequests.delete(requestKey);
     return response;
   },
@@ -56,7 +59,9 @@ axiosInstance.interceptors.response.use(
     if (axios.isCancel(error)) {
       return Promise.resolve(null); // canceled request
     }
-    const requestKey = `${error.config?.url}_${JSON.stringify(error.config?.params)}`;
+    const requestKey = `${error.config?.url}_${JSON.stringify(
+      error.config?.params
+    )}`;
     pendingRequests.delete(requestKey);
     console.error("Response Error", error);
     return Promise.reject(error);
