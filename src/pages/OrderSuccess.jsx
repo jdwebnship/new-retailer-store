@@ -1,14 +1,15 @@
 import React from "react";
 import CommonHeader from "../components/CommonHeader";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import order from "../assets/images/Illustration.svg";
 import { useTheme } from "../contexts/ThemeContext";
+import { useSelector } from "react-redux";
 
 function OrderSuccess() {
-  const location = useLocation();
-  const orderId = location.state?.orderId ?? "#ORD-000000";
-  const { theme, bottomFooterTextColor } = useTheme();
+  const { user } = useSelector((state) => state.auth);
+  const { theme } = useTheme();
 
+  const orderId = user?.order_id ?? "#ORD-000000";
   return (
     <div>
       <CommonHeader />
@@ -20,11 +21,11 @@ function OrderSuccess() {
           <h1 className="text-2xl font-semibold mb-[0.9375rem]">
             Order Placed Successfully
           </h1>
-          <h1 className="text-2xl font-semibold mb-[0.9375rem]">
+          {/* <h1 className="text-2xl font-semibold mb-[0.9375rem]">
             ⚠️ Oops! Something went wrong.
-          </h1>
+          </h1> */}
           <p className="text-sm font-medium py-6">
-            Reference ID:{" "}
+            Your order ID is:{" "}
             <span
               className="px-[0.9375rem] py-[0.5rem] rounded-lg"
               style={{

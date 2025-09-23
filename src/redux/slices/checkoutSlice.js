@@ -18,7 +18,7 @@ const initialState = {
 
 // Async thunk for performing checkout
 export const performCheckout = createAsyncThunk(
-  'checkout/performCheckout',
+  "checkout/performCheckout",
   async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/checkout1", payload);
@@ -30,26 +30,37 @@ export const performCheckout = createAsyncThunk(
         dispatch(clearCart());
         // clearAllItems();
         // localStorage.setItem("successful-order", JSON.stringify(res?.data?.data));
-        navigate("/my-account");
+        navigate("/order-success");
         return response.data;
       } else {
-        if (Array.isArray(response?.data?.message) && response?.data?.message?.length) {
+        if (
+          Array.isArray(response?.data?.message) &&
+          response?.data?.message?.length
+        ) {
           response.data.message.forEach((err) => toast.error(err));
         } else {
           toast.error(response?.data?.message || "Checkout failed");
         }
-        return rejectWithValue(response?.data || { message: "Checkout failed" });
+        return rejectWithValue(
+          response?.data || { message: "Checkout failed" }
+        );
       }
     } catch (error) {
       console.error("Checkout error:", error);
-      toast.error(error.response?.data?.message || "Something went wrong during checkout");
-      return rejectWithValue(error.response?.data || { message: "Something went wrong during checkout" });
+      toast.error(
+        error.response?.data?.message || "Something went wrong during checkout"
+      );
+      return rejectWithValue(
+        error.response?.data || {
+          message: "Something went wrong during checkout",
+        }
+      );
     }
   }
 );
 
 export const applyDiscount = createAsyncThunk(
-  'checkout/applyDiscount',
+  "checkout/applyDiscount",
   async (args, { rejectWithValue }) => {
     const { payload, setFieldError } = args;
     try {
@@ -64,13 +75,13 @@ export const applyDiscount = createAsyncThunk(
         return rejectWithValue({ message: errorMessage });
       }
     } catch (error) {
-      const errorMessage = error.response?.data?.message || "Something went wrong";
+      const errorMessage =
+        error.response?.data?.message || "Something went wrong";
       toast.error(errorMessage);
       return rejectWithValue({ message: errorMessage });
     }
   }
 );
-
 
 const checkoutSlice = createSlice({
   name: "checkout",
@@ -108,7 +119,8 @@ const checkoutSlice = createSlice({
       })
       .addCase(performCheckout.rejected, (state, action) => {
         state.checkoutLoading = false;
-        state.checkoutError = action.payload?.message || "Failed to place order";
+        state.checkoutError =
+          action.payload?.message || "Failed to place order";
       })
       // Handle applyDiscount states
       .addCase(applyDiscount.pending, (state) => {
@@ -121,15 +133,13 @@ const checkoutSlice = createSlice({
       })
       .addCase(applyDiscount.rejected, (state, action) => {
         state.discountLoading = false;
-        state.discountError = action.payload?.message || "Failed to apply discount";
+        state.discountError =
+          action.payload?.message || "Failed to apply discount";
       });
   },
 });
 
-export const {
-  discountSuccess,
-  clearDiscount,
-  clearCheckoutState
-} = checkoutSlice.actions;
+export const { discountSuccess, clearDiscount, clearCheckoutState } =
+  checkoutSlice.actions;
 
 export default checkoutSlice.reducer;
