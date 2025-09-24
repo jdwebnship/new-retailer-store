@@ -36,7 +36,7 @@ function OrderSuccess() {
             </span>
           </p> */}
           <div
-            className="flex flex-col justify-center gap-6 p-6 rounded-2xl max-w-[26.875rem] mx-auto"
+            className="flex flex-col justify-center gap-[0.9375rem] p-6 rounded-2xl max-w-[26.875rem] mx-auto"
             style={{
               backgroundColor: theme.bottomFooterBackgroundColor,
               height: "fit-content",

@@ -557,7 +557,7 @@ function ProductDetail() {
                                   />
                                 ) : item ? (
                                   <img
-                                    src="https://images.pexels.com/photos/1822845/pexels-photo-1822845.jpeg"
+                                    src={item}
                                     alt={item}
                                     className="absolute top-0 left-0 object-cover w-full h-full block transition-transform duration-3000 group-hover:scale-110"
                                   />
