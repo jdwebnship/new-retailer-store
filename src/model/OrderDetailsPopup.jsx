@@ -171,6 +171,12 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                   <span className="">Subtotal:</span>
                   <span className="">₹{orderPopup?.order?.price * orderPopup?.order?.quantity}</span>
                 </div>
+                {orderPopup?.order?.discount_amount &&
+                  <div className="flex justify-between items-center">
+                    <span className="">Discount:</span>
+                    <span className="">-{orderPopup?.order?.discount_amount * orderPopup?.order?.quantity}</span>
+                  </div>
+                }
                 <div className="flex justify-between items-center">
                   <span className="">Shipping Cost:</span>
                   <span className="">Free</span>

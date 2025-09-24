@@ -15,13 +15,7 @@ import contactSlice from "./slices/contactSlice";
 import cartSlice from "./slices/cartSlice";
 import uiSlice from "./slices/uiSlice";
 import checkoutSlice from "./slices/checkoutSlice";
-// import wishlistReducer from "./slices/wishlistSlice";
-// import storeReducer from "./slices/storeSlice";
-// import checkoutReducer from "./slices/checkoutSlice";
-// import filtersReducer from "./slices/filterSlice";
-// import ordersReducer from "./slices/ordersSlice";
 
-// --- combine all slices
 const appReducer = combineReducers({
   auth: authSlice,
   storeInfo: storeInfoSlice,
@@ -38,13 +32,8 @@ const appReducer = combineReducers({
   cart: cartSlice,
   ui: uiSlice,
   checkout: checkoutSlice,
-  // orders: ordersReducer,
-  // store: storeReducer,
-  // checkout: checkoutReducer,
-  // filters: filtersReducer,
 });
 
-// --- root reducer with RESET_APP handling
 const rootReducer = (state, action) => {
   if (action.type === "RESET_APP") {
     clearState();
@@ -58,30 +47,44 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-// --- load persisted state
 const persistedState = loadState();
 
-// Don't persist UI state
 if (persistedState?.ui) {
   delete persistedState.ui;
 }
 
-// --- create store
 const store = configureStore({
   reducer: rootReducer,
   preloadedState: persistedState,
 });
 
-// --- persist selected reducers on every change
+function removeLoadingKeys(obj) {
+  if (!obj || typeof obj !== "object") return obj;
+
+  if (Array.isArray(obj)) {
+    return obj.map(removeLoadingKeys);
+  }
+
+  return Object.keys(obj).reduce((acc, key) => {
+    if (key.toLowerCase().endsWith("loading")) {
+      return acc;
+    }
+    acc[key] = removeLoadingKeys(obj[key]);
+    return acc;
+  }, {});
+}
+
 store.subscribe(() => {
+  const currentState = store.getState();
+
   saveState({
-    auth: store.getState().auth,
-    cart: store.getState().cart,
-    wishlist: store.getState().wishlist,
-    store: store.getState().store,
-    products: store.getState().products,
-    filters: store.getState().filters,
-    storeInfo: store.getState().storeInfo,
+    auth: removeLoadingKeys(currentState.auth),
+    cart: removeLoadingKeys(currentState.cart),
+    wishlist: removeLoadingKeys(currentState.wishlist),
+    store: removeLoadingKeys(currentState.store),
+    products: removeLoadingKeys(currentState.products),
+    filters: removeLoadingKeys(currentState.filters),
+    storeInfo: removeLoadingKeys(currentState.storeInfo),
   });
 });
 
