@@ -18,7 +18,6 @@ import {
   addtowishList,
   removeFromwishList,
 } from "../redux/slices/WishListSlice";
-import useVariantQuery from "../hooks/useVariantQuery";
 import { toast } from "react-toastify";
 import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
 import useCartQuantity from "../hooks/useCartQuantity";
@@ -34,7 +33,7 @@ function ProductDetail() {
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const [productVariations, setProductVariations] = useState([]);
   const [lightboxImage, setLightboxImage] = useState(null);
-  const [variant, setVariant] = useVariantQuery(productVariations);
+  const [variant, setVariant] = useState(null);
 
   const { productDetails, loading: productLoading } = useSelector(
     (state) => state.products
@@ -109,10 +108,8 @@ function ProductDetail() {
   useEffect(() => {
     if (product?.productVariations?.length) {
       setProductVariations(product.productVariations);
-
-      // // If there's only one variant, select it by default
-      if (product.productVariations.length === 1) {
-        setVariant(product.productVariations[0].product_variation);
+      if (product.productVariations.length) {
+        setVariant(product.productVariations[0]);
       }
     } else {
       setProductVariations([]);
@@ -629,7 +626,7 @@ function ProductDetail() {
               <div className="item-stock-status mb-6  border-b border-[#111111]/15 pb-6">
                 <p className="text-2xl flex items-center">
                   <span className="indicator rounded-[0.625rem] inline-block h-[0.625rem] w-[0.625rem] bg-[#25D366] mr-2"></span>
-                  {product?.quantity > 0 ? "In stock" : "Out of stock"}
+                  {variant?.stock > 0 ? "In stock" : "Out of stock"}
                 </p>
               </div>
               {/* Available Sizes */}
@@ -706,15 +703,14 @@ function ProductDetail() {
                 </div>
                 <LoadingButton
                   loading={addLoading}
-                  // loading={false}
                   onClick={() => {
-                    if (!canIncrease) {
+                    if (cartQuantity >= 5) {
                       dispatch(openCartPopup());
                     } else {
                       handleAddToCart();
                     }
                   }}
-                  text={!canIncrease ? "Go to Cart" : "Add to Cart"}
+                  text={cartQuantity >= 5 ? "Go to Cart" : "Add to Cart"}
                 />
               </div>
               <div className="text-xl mb-6 price-wrapper flex flex-wrap rounded-[0.625rem] w-auto flex-auto gap-3.5">

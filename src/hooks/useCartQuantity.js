@@ -6,11 +6,10 @@ export default function useCartQuantity({
   availableStock = Infinity,
   cartQuantity = 0,
   resetKey = null,
-  onChange = null, // 👈 callback to notify Redux
+  onChange = null,
 } = {}) {
   const [quantity, setQuantity] = useState(initial);
 
-  // Reset when resetKey changes
   useEffect(() => {
     setQuantity(initial);
   }, [resetKey, initial]);
