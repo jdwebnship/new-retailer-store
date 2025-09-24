@@ -3,15 +3,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeOrderPopup } from "../redux/slices/orderPopupSlice";
 import close from "../assets/images/close.png";
 import copy_icon from "../assets/images/copy_icon.png";
+import copied_icon from "../assets/images/copied_icon.png";
 import { formatStatus } from "../utils/common";
 import { useTheme } from "../contexts/ThemeContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
 const OrderDetailsPopup = ({ orderDetail }) => {
   const { theme, bottomFooterTextColor } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [openCancelModel, setOpenCancelModel] = useState(false);
+  const [copied, setCopied] = useState(false);
   const orderPopup = useSelector((state) => state.orderPopup);
   const { orders } = useSelector((state) => state.customerOrders);
   const navigate = useNavigate();
@@ -70,13 +72,23 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                 <h1 className="text-2xl font-bold ">Order Details</h1>
                 <div className="flex items-center gap-2">
                   <span className=" font-mono text-lg">
-                    #{orderPopup.order?.order_id || ""}
+                    #{orderPopup.order?.order_number || ""}
                   </span>
                   <img
                     className="cursor-pointer w-4 h-4"
-                    src={copy_icon}
-                    alt=""
+                    src={copied ? copied_icon : copy_icon}
+                    alt={copied ? "Copied" : "Copy"}
+                    onClick={() => {
+                      if (orderPopup.order?.order_number) {
+                        navigator.clipboard.writeText(orderPopup.order.order_number);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }
+                    }}
                   />
+                  <span className="text-sm">
+                    {copied ? "Copied!" : "Copy"}
+                  </span>
                 </div>
               </div>
               <img
@@ -103,7 +115,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
             <div className="">
               <div className=" text-sm mb-1 uppercase">TOTAL:</div>
               <div className=" text-sm font-bold">
-                ₹{orderPopup.order?.final_amount || ""}
+                ₹{orderPopup.order?.final_amount * orderPopup.order?.quantity || ""}
               </div>
             </div>
             <div className="">
@@ -135,7 +147,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
               <div className="flex items-start gap-3">
                 <div>
                   <h3 className=" font-bold">PAYMENT:</h3>
-                  <div className="">Pay on delivery</div>
+                  <div className="">{orderPopup?.order?.payment_method === "cod" ? "Cash on Delivery (COD)" : "Prepaid"}</div>
                 </div>
               </div>
             </div>
@@ -152,8 +164,12 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                   <span className="">₹{orderPopup?.order?.price}</span>
                 </div>
                 <div className="flex justify-between items-center">
+                  <span className="">Quantity:</span>
+                  <span className="">{orderPopup?.order?.quantity}</span>
+                </div>
+                <div className="flex justify-between items-center">
                   <span className="">Subtotal:</span>
-                  <span className="">₹0</span>
+                  <span className="">₹{orderPopup?.order?.price * orderPopup?.order?.quantity}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="">Shipping Cost:</span>
@@ -162,7 +178,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                 <div className="flex justify-between items-center text-lg">
                   <span className=" font-bold">Total</span>
                   <span className=" font-bold">
-                    ₹{orderPopup?.order?.final_amount}
+                    ₹{orderPopup?.order?.final_amount * orderPopup?.order?.quantity}
                   </span>
                 </div>
               </div>
@@ -171,12 +187,12 @@ const OrderDetailsPopup = ({ orderDetail }) => {
 
           <div className="pt-6 mt-6 border-t flex flex-col sm:flex-row gap-4">
             <button
-              className="flex-1 btn py-4 px-6 rounded-2xl"
               onClick={(e) => {
                 e.preventDefault();
-                handleClose();
+                dispatch(closeOrderPopup());
                 navigate(`/products/${orderPopup?.order?.product_slug}`);
               }}
+              className="flex-1 btn py-4 px-6 rounded-2xl"
             >
               <span className="text-lg">Buy It Again</span>
             </button>

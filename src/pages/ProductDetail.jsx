@@ -36,6 +36,8 @@ function ProductDetail() {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [variant, setVariant] = useVariantQuery(productVariations);
 
+  console.log("variant", variant);
+
   const { productDetails, loading: productLoading } = useSelector(
     (state) => state.products
   );
@@ -47,10 +49,13 @@ function ProductDetail() {
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
   const product = productDetails?.product;
   const wishlistData = wishlist?.data?.wishlist;
+  const productPrice = variant || product
   const productImg = React.useMemo(
     () => (product?.product_images ? product.product_images.split(",") : []),
     [product?.product_images]
   );
+
+  console.log("product", product);
 
   const productVideo = product?.product_video;
   const galleryItems = React.useMemo(() => {
@@ -120,7 +125,6 @@ function ProductDetail() {
 
   const handleVariantSelect = (selectedVariant) => {
     setVariant(selectedVariant);
-    // setQuantity(1); // Reset quantity when variant changes
   };
 
   const discount =
@@ -132,7 +136,7 @@ function ProductDetail() {
       : 0;
 
   const selectedVariant = productVariations.find(
-    (v) => v.product_variation === variant
+    (v) => v.product_variation === variant?.product_variation
   );
 
   const cartQuantity = cartItems
@@ -144,8 +148,19 @@ function ProductDetail() {
     .reduce((sum, item) => sum + item.quantity, 0);
 
   const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
+
   const { quantity, increase, decrease, canIncrease, canDecrease } =
-    useCartQuantity(1, 5, availableStock, cartQuantity, selectedVariant?.id);
+  useCartQuantity({
+    initial: 1,
+    maxLimit: 5,
+    availableStock,
+    cartQuantity,
+    resetKey: selectedVariant?.id,
+    onChange: (newQty, action) => {
+      const quantityChange = action === "increase" ? 1 : -1;
+      dispatch(updateCartItem({ item, qty: quantityChange }));
+    },
+  });
 
   const handleAddToCart = () => {
     // e.stopPropagation();
@@ -598,12 +613,12 @@ function ProductDetail() {
               </h3>
               <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-[0.625rem] p-4 w-auto flex-auto">
                 <span className="text-[1.5rem] font-bold text-[#111111]">
-                  ₹{product?.final_price}
+                  ₹{productPrice?.final_price}
                 </span>
-                {product?.old_price > 0 && (
+                {productPrice?.old_price > 0 && (
                   <>
                     <span className="mx-3 line-through text-[1rem] text-[#808080]">
-                      ₹{product?.old_price}
+                      ₹{productPrice?.old_price}
                     </span>
 
                     <span className="mr-1 text-[0.875rem] discount bg-[#111111] px-[0.375rem] text-[#FFFFFF] rounded-sm">
@@ -632,10 +647,10 @@ function ProductDetail() {
                         key={item.id}
                         disabled={!item?.stock}
                         onClick={() =>
-                          handleVariantSelect(item?.product_variation)
+                          handleVariantSelect(item)
                         }
                         className={`px-5 disabled:opacity-50 relative overflow-hidden py-3 text-[#111111] cursor-pointer text-[16px] font-medium border border-[#E6E7E8] rounded-[0.625rem] ${
-                          variant === item?.product_variation
+                          variant?.product_variation === item?.product_variation
                             ? "!border-[#111111]"
                             : ""
                         }`}

@@ -14,7 +14,6 @@ import {
 } from "../redux/slices/WishListSlice";
 
 const CardComponent = ({ product, isWishlistKey = false }) => {
-  console.log(product);
   const productData = isWishlistKey
     ? {
         name: product.product_name,
@@ -30,7 +29,6 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         added_to_wishlist: product.added_on,
       }
     : product;
-  console.log(productData);
   const { textColor } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();

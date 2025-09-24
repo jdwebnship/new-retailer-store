@@ -11,10 +11,11 @@ import { openOrderPopup } from "../redux/slices/orderPopupSlice";
 import { useTheme } from "../contexts/ThemeContext";
 
 const Orders = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { theme, bottomFooterTextColor } = useTheme();
   const { orders, loading } = useSelector((state) => state.customerOrders);
-  const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(fetchCustomerOrders());
     return () => {
@@ -63,7 +64,7 @@ const Orders = () => {
                         <div>
                           <span className="text-sm uppercase">Total:</span>
                           <p className="text-sm font-bold">
-                            ₹{val?.final_amount}
+                            ₹{val?.final_amount * val?.quantity}
                           </p>
                         </div>
                         <div>
@@ -99,10 +100,7 @@ const Orders = () => {
                         </h6>
                         <div className="flex flex-wrap gap-[0.938rem] items-center mt-[0.5rem]">
                           <Link
-                            onClick={(e) => {
-                              e.preventDefault();
-                              navigate(`/products/${val.product_slug}`);
-                            }}
+                            to={`/products/${val.product_slug}`}
                             className="inline-flex text-sm gap-2 btn px-[0.9375rem] py-[0.5rem] rounded-lg font-medium focus:outline-none items-center"
                           >
                             Buy it Again
