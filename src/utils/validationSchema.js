@@ -101,3 +101,39 @@ export const CheckoutSchema = Yup.object({
   city: Yup.string().required("City is required"),
   state: Yup.string().required("State is required"),
 });
+
+export const UpdateAddressSchema = Yup.object({
+  address: Yup.string().required("Address is required"),
+  pincode: Yup.string()
+    .matches(/^[0-9]{6}$/, "Must be a valid 6-digit pincode")
+    .required("Pincode is required"),
+  city: Yup.string().required("City is required"),
+  state: Yup.string().required("State is required"),
+});
+
+export const UpdatePasswordSchema = Yup.object({
+  old_password: Yup.string()
+    .min(6, "Old password must be at least 6 characters")
+    .required("Old password is required"),
+  new_password: Yup.string()
+    .min(8, "New password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      "New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
+    )
+    .required("New password is required"),
+  confirm_password: Yup.string()
+    .oneOf([Yup.ref("new_password"), null], "Passwords must match")
+    .required("Confirm password is required"),
+});
+
+export const AccountDetailsSchema = Yup.object({
+  firstname: Yup.string()
+    .required("First name is required")
+    .min(2, "First name must be at least 2 characters")
+    .max(50, "First name cannot exceed 50 characters"),
+  lastname: Yup.string()
+    .required("Last name is required")
+    .min(2, "Last name must be at least 2 characters")
+    .max(50, "Last name cannot exceed 50 characters"),
+});

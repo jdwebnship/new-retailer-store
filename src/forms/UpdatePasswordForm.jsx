@@ -1,50 +1,49 @@
-import React from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Formik, Form, Field, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import { toast } from "react-toastify";
-import {
-  resetPassword,
-  clearResetPassword,
-} from "../redux/slices/resetPasswordSlice"; // Adjust path
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import { useDispatch } from "react-redux";
+import { resetPassword } from "../redux/slices/resetPasswordSlice";
+import { UpdatePasswordSchema } from "../utils/validationSchema";
+import LoadingButton from "../components/LoadingButton";
+import { Eye, EyeOff } from "lucide-react";
 
 const UpdatePasswordForm = () => {
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.resetPassword);
-
-  const initialValues = {
-    old_password: "",
-    new_password: "",
-    confirm_password: "",
-  };
-
-  const validationSchema = Yup.object({
-    old_password: Yup.string()
-      .min(6, "Old password must be at least 6 characters")
-      .required("Old password is required"),
-    new_password: Yup.string()
-      .min(8, "New password must be at least 8 characters")
-      .matches(
-        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
-        "New password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
-      )
-      .required("New password is required"),
-    confirm_password: Yup.string()
-      .oneOf([Yup.ref("new_password"), null], "Passwords must match")
-      .required("Confirm password is required"),
+  const [showPassword, setShowPassword] = useState({
+    old_password: false,
+    new_password: false,
+    confirm_password: false,
   });
 
-  const handleSubmit = async (values, { resetForm }) => {
-    try {
-      const resultAction = await dispatch(resetPassword(values));
-      if (resetPassword.fulfilled.match(resultAction)) {
-        resetForm();
-        dispatch(clearResetPassword());
-      }
-    } catch (err) {
-      // Error is handled by toast in the slice
-    }
+  const togglePasswordVisibility = (field) => {
+    setShowPassword((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
   };
+
+  const formik = useFormik({
+    initialValues: {
+      old_password: "",
+      new_password: "",
+      confirm_password: "",
+    },
+    validationSchema: UpdatePasswordSchema,
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
+      try {
+        const resultAction = await dispatch(resetPassword(values)).unwrap();
+        console.log("resultAction", resultAction);
+        if (resultAction.success) {
+          resetForm();
+        }
+      } catch (error) {
+        const errorMessage =
+          error?.response?.data?.message || "Failed to update password";
+        console.log(errorMessage);
+      } finally {
+        setSubmitting(false);
+      }
+    },
+  });
 
   return (
     <div className="w-full text-start">
@@ -52,86 +51,120 @@ const UpdatePasswordForm = () => {
         <h3 className="text-2xl font-bold text-[#111111]">Update Password</h3>
       </div>
       <hr className="opacity-10" />
-      <div className="mt-[1.5rem]">
-        <Formik
-          initialValues={initialValues}
-          validationSchema={validationSchema}
-          onSubmit={handleSubmit}
-        >
-          {({ isSubmitting }) => (
-            <Form>
-              <div className="mb-6 relative">
-                <label
-                  className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="oldpass"
-                >
-                  Old Password
-                </label>
-                <Field
-                  id="oldpass"
-                  name="old_password"
-                  type="password"
-                  className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                  placeholder="Enter old password"
-                />
-                <ErrorMessage
-                  name="old_password"
-                  component="p"
-                  className="text-red-500 text-sm absolute"
-                />
-              </div>
-              <div className="mb-6 relative">
-                <label
-                  className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="newpass"
-                >
-                  New Password
-                </label>
-                <Field
-                  id="newpass"
-                  name="new_password"
-                  type="password"
-                  className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                  placeholder="Enter new password"
-                />
-                <ErrorMessage
-                  name="new_password"
-                  component="p"
-                  className="text-red-500 text-sm absolute"
-                />
-              </div>
-              <div className="mb-6 relative">
-                <label
-                  className="block text-sm mb-2.5 font-bold uppercase"
-                  htmlFor="conpass"
-                >
-                  Confirm Password
-                </label>
-                <Field
-                  id="conpass"
-                  name="confirm_password"
-                  type="password"
-                  className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none"
-                  placeholder="Enter confirm password"
-                />
-                <ErrorMessage
-                  name="confirm_password"
-                  component="p"
-                  className="text-red-500 text-sm absolute"
-                />
-              </div>
-              <button
-                type="submit"
-                className="inline-flex gap-2 btn px-[1.5rem] py-[0.875rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center disabled:opacity-50"
-                disabled={loading || isSubmitting}
-              >
-                {loading || isSubmitting ? "Saving..." : "Save Password"}
-              </button>
-              {error && <p className="text-red-500 mt-4">{error}</p>}
-            </Form>
+      <form onSubmit={formik.handleSubmit} className="mt-[1.5rem]">
+        <div className="mb-6 relative">
+          <label
+            className="block text-sm mb-2.5 font-bold uppercase"
+            htmlFor="old_password"
+          >
+            Old Password
+          </label>
+          <input
+            id="old_password"
+            name="old_password"
+            type={showPassword.old_password ? "text" : "password"}
+            className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none pr-10"
+            placeholder="Enter old password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.old_password}
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-12 text-gray-500 hover:text-gray-700 "
+            onClick={() => togglePasswordVisibility("old_password")}
+          >
+            {showPassword.old_password ? (
+              <Eye size={18} />
+            ) : (
+              <EyeOff size={18} />
+            )}
+          </button>
+          {formik.touched.old_password && formik.errors.old_password && (
+            <div className="text-red-500 text-sm absolute">
+              {formik.errors.old_password}
+            </div>
           )}
-        </Formik>
-      </div>
+        </div>
+
+        <div className="mb-6 relative">
+          <label
+            className="block text-sm mb-2.5 font-bold uppercase"
+            htmlFor="new_password"
+          >
+            New Password
+          </label>
+          <input
+            id="new_password"
+            name="new_password"
+            type={showPassword.new_password ? "text" : "password"}
+            className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none pr-10"
+            placeholder="Enter new password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.new_password}
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-12 text-gray-500 hover:text-gray-700"
+            onClick={() => togglePasswordVisibility("new_password")}
+          >
+            {showPassword.new_password ? (
+              <Eye size={18} />
+            ) : (
+              <EyeOff size={18} />
+            )}
+          </button>
+          {formik.touched.new_password && formik.errors.new_password && (
+            <div className="text-red-500 text-sm absolute">
+              {formik.errors.new_password}
+            </div>
+          )}
+        </div>
+
+        <div className="mb-6 relative">
+          <label
+            className="block text-sm mb-2.5 font-bold uppercase"
+            htmlFor="confirm_password"
+          >
+            Confirm New Password
+          </label>
+          <input
+            id="confirm_password"
+            name="confirm_password"
+            type={showPassword.confirm_password ? "text" : "password"}
+            className="w-full border border-[#AAAAAA] rounded-lg p-[0.82rem] focus:outline-none pr-10"
+            placeholder="Confirm new password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            value={formik.values.confirm_password}
+          />
+          <button
+            type="button"
+            className="absolute right-3 top-12 text-gray-500 hover:text-gray-700"
+            onClick={() => togglePasswordVisibility("confirm_password")}
+          >
+            {showPassword.confirm_password ? (
+              <Eye size={18} />
+            ) : (
+              <EyeOff size={18} />
+            )}
+          </button>
+          {formik.touched.confirm_password &&
+            formik.errors.confirm_password && (
+              <div className="text-red-500 text-sm absolute">
+                {formik.errors.confirm_password}
+              </div>
+            )}
+        </div>
+
+        <LoadingButton
+          type="submit"
+          loading={formik.isSubmitting}
+          text="Update Password"
+          fullWidth={false}
+        />
+      </form>
     </div>
   );
 };
