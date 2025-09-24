@@ -33,6 +33,7 @@ function ProductDetail() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
   const [productVariations, setProductVariations] = useState([]);
+  const [lightboxImage, setLightboxImage] = useState(null);
   const [variant, setVariant] = useVariantQuery(productVariations);
 
   const { productDetails, loading: productLoading } = useSelector(
@@ -459,6 +460,7 @@ function ProductDetail() {
                             <img
                               src={item}
                               alt={product?.name}
+                              onClick={() => setLightboxImage(item)}
                               className="absolute top-0 left-0 object-contain w-full h-full block transition-transform duration-3000 group-hover:scale-110"
                             />
                           ) : (
@@ -485,6 +487,108 @@ function ProductDetail() {
                     </SwiperSlide>
                   )}
                 </Swiper>
+                {lightboxImage !== null && (
+                  <div
+                    className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+                    onClick={() => setLightboxImage(null)}
+                  >
+                    <Swiper
+                      direction="horizontal"
+                      slidesPerView={1}
+                      spaceBetween={24}
+                      grabCursor={true}
+                      thumbs={{
+                        swiper:
+                          thumbsSwiper && !thumbsSwiper.destroyed
+                            ? thumbsSwiper
+                            : null,
+                      }}
+                      modules={[Navigation, Thumbs, Mousewheel]}
+                      navigation={{
+                        nextEl: ".slider__next",
+                        prevEl: ".slider__prev",
+                      }}
+                      breakpoints={{
+                        0: { direction: "horizontal" },
+                        768: { direction: "horizontal" },
+                      }}
+                      onSlideChange={handleSlideChange}
+                      onImagesReady={(swiper) => {
+                        if (mainContainerRef.current) {
+                          const mainImg =
+                            mainContainerRef.current.querySelector("img");
+                          if (mainImg && mainImg.complete) {
+                            const containerWidth =
+                              mainContainerRef.current.offsetWidth;
+                            const aspectRatio =
+                              mainImg.naturalWidth > 0 &&
+                              mainImg.naturalHeight > 0
+                                ? mainImg.naturalWidth / mainImg.naturalHeight
+                                : 1.5;
+                            const calculatedHeight =
+                              containerWidth / aspectRatio;
+                            setMainHeight(`${calculatedHeight}px`);
+                          }
+                        }
+                      }}
+                      className="w-full md:max-w-full flex-1"
+                      ref={mainContainerRef}
+                    >
+                      {galleryItems.length > 0 ? (
+                        galleryItems.map((item, index) => (
+                          <SwiperSlide key={index}>
+                            <div
+                              className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2]
+                            backdrop-blur-sm bg-white/30 p-6 rounded-lg"
+                            >
+                              {item && item.endsWith(".mp4") ? (
+                                <video
+                                  src={item}
+                                  controls={false}
+                                  className="absolute top-0 left-0 object-contain w-full h-full block"
+                                  onClick={(e) =>
+                                    (e.currentTarget.controls = true)
+                                  }
+                                  onPlay={(e) => {
+                                    // Hide controls after 2s, so swipe works again
+                                    // setTimeout(() => {
+                                    e.currentTarget.controls = false;
+                                    // }, 2000);
+                                  }}
+                                />
+                              ) : item ? (
+                                <img
+                                  src={item}
+                                  alt={item}
+                                  className="absolute top-0 left-0 object-contain w-full h-full block transition-transform duration-3000 group-hover:scale-110
+                                object-none"
+                                />
+                              ) : (
+                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
+                                  <img
+                                    src={placeholderImage}
+                                    alt="No image"
+                                    className="w-1/2 h-1/2 object-contain"
+                                  />
+                                </div>
+                              )}
+                            </div>
+                          </SwiperSlide>
+                        ))
+                      ) : (
+                        <SwiperSlide>
+                          <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] flex items-center justify-center text-gray-500">
+                            <img
+                              src={placeholderImage}
+                              alt="No image"
+                              className="w-1/2 h-1/2 object-contain"
+                            />
+                          </div>
+                        </SwiperSlide>
+                      )}
+                    </Swiper>
+                  </div>
+                )}
               </div>
             </div>
 
