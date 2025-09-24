@@ -5,7 +5,7 @@ import close from "../assets/images/close.png";
 import copy_icon from "../assets/images/copy_icon.png";
 import { formatStatus } from "../utils/common";
 import { useTheme } from "../contexts/ThemeContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import CancelOrder from "./CancelOrder";
 
 const OrderDetailsPopup = ({ orderDetail }) => {
@@ -103,7 +103,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
             <div className="">
               <div className=" text-sm mb-1 uppercase">TOTAL:</div>
               <div className=" text-sm font-bold">
-                ₹{orderPopup.order?.final_amount || ""}
+                ₹{orderPopup.order?.final_amount * orderPopup.order?.quantity || ""}
               </div>
             </div>
             <div className="">
@@ -135,7 +135,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
               <div className="flex items-start gap-3">
                 <div>
                   <h3 className=" font-bold">PAYMENT:</h3>
-                  <div className="">Pay on delivery</div>
+                  <div className="">{orderPopup?.order?.payment_method === "cod" ? "Cash on Delivery (COD)" : "Prepaid"}</div>
                 </div>
               </div>
             </div>
@@ -152,8 +152,12 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                   <span className="">₹{orderPopup?.order?.price}</span>
                 </div>
                 <div className="flex justify-between items-center">
+                  <span className="">Quantity:</span>
+                  <span className="">{orderPopup?.order?.quantity}</span>
+                </div>
+                <div className="flex justify-between items-center">
                   <span className="">Subtotal:</span>
-                  <span className="">₹0</span>
+                  <span className="">₹{orderPopup?.order?.price * orderPopup?.order?.quantity}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="">Shipping Cost:</span>
@@ -162,7 +166,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                 <div className="flex justify-between items-center text-lg">
                   <span className=" font-bold">Total</span>
                   <span className=" font-bold">
-                    ₹{orderPopup?.order?.final_amount}
+                    ₹{orderPopup?.order?.final_amount * orderPopup?.order?.quantity}
                   </span>
                 </div>
               </div>
@@ -171,12 +175,12 @@ const OrderDetailsPopup = ({ orderDetail }) => {
 
           <div className="pt-6 mt-6 border-t flex flex-col sm:flex-row gap-4">
             <button
-              className="flex-1 btn py-4 px-6 rounded-2xl"
               onClick={(e) => {
                 e.preventDefault();
-                handleClose();
+                dispatch(closeOrderPopup());
                 navigate(`/products/${orderPopup?.order?.product_slug}`);
               }}
+              className="flex-1 btn py-4 px-6 rounded-2xl"
             >
               <span className="text-lg">Buy It Again</span>
             </button>
