@@ -31,7 +31,6 @@ const UpdatePasswordForm = () => {
     onSubmit: async (values, { setSubmitting, resetForm }) => {
       try {
         const resultAction = await dispatch(resetPassword(values)).unwrap();
-        console.log("resultAction", resultAction);
         if (resultAction.success) {
           resetForm();
         }

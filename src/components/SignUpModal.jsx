@@ -9,6 +9,8 @@ import modalImg from "../assets/images/modal.jpg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { syncGuestCartItems } from "../utils/helper";
+import { SignUpModalSchema } from "../utils/validationSchema";
+import LoadingButton from "./LoadingButton";
 
 // Initial values
 const initialValues = {
@@ -18,24 +20,6 @@ const initialValues = {
   password: "",
   terms: false,
 };
-
-// Validation schema
-const validationSchema = Yup.object({
-  firstName: Yup.string().required("First name is required"),
-  lastName: Yup.string().required("Last name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .required("Password is required")
-    .min(8, "Password must be at least 8 characters")
-    .matches(
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-      "Password must contain at least one uppercase, one lowercase, one number, and one special character"
-    ),
-
-  terms: Yup.boolean().oneOf([true], "Please accept the terms & conditions"),
-});
 
 const SignUpModal = ({ isOpen, onClose }) => {
   const { user } = useSelector((state) => state.auth);
@@ -48,7 +32,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
     initialValues: {
       ...initialValues,
     },
-    validationSchema,
+    validationSchema: SignUpModalSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
       const payload = {
@@ -60,15 +44,15 @@ const SignUpModal = ({ isOpen, onClose }) => {
         id: user.customer.id || "",
       };
       try {
-       
-        const response = await dispatch(registerGuestUser({ data: payload, navigate })).unwrap();
+        const response = await dispatch(
+          registerGuestUser({ data: payload, navigate })
+        ).unwrap();
         const token = response?.data?.token;
-        
+
         if (token && cartItems?.length > 0) {
-          await syncGuestCartItems(token, cartItems,dispatch);
+          await syncGuestCartItems(token, cartItems, dispatch);
         }
         navigate("/checkout");
-        
       } catch (error) {
         console.error("Sign up failed:", error);
         toast.error(error?.message || "Sign up failed. Please try again.");
@@ -258,14 +242,12 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 <p className="text-red-500 text-sm">{formik.errors.terms}</p>
               )}
 
-              {/* Submit Button */}
-              <button
+              <LoadingButton
                 type="submit"
-                className="w-full bg-black text-white rounded-[0.625rem] py-4 px-6 uppercase font-medium mt-6 hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                // disabled={!formik.isValid || formik.isSubmitting}
-              >
-                {formik.isSubmitting ? "Signing Up..." : "Sign Up"}
-              </button>
+                loading={formik.isSubmitting}
+                text="Sign Up"
+                fullWidth={false}
+              />
             </form>
           </div>
         </DialogPanel>

@@ -11,7 +11,6 @@ import { openCheckoutModal } from "../redux/slices/uiSlice";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
-  console.log("cartItems", cartItems);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isCheckoutModalOpen } = useSelector((state) => state.ui);
   const navigate = useNavigate();

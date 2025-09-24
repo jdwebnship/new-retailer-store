@@ -37,8 +37,10 @@ export const cancelOrder = createAsyncThunk(
     const { auth } = getState();
     try {
       if (auth?.isAuthenticated) {
-        const response = await axiosInstance.post("/customer/cancel-order", data);
-        console.log("response",response);
+        const response = await axiosInstance.post(
+          "/customer/cancel-order",
+          data
+        );
         if (response?.data?.status) {
           dispatch(fetchCustomerOrders());
           toast.success(response.data.message);

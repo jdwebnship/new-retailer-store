@@ -2,6 +2,7 @@ import { useFormik } from "formik";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { cancelOrder } from "../redux/slices/customerOrdersSlice";
+import { CancelOrderSchema } from "../utils/validationSchema";
 
 const cancelReasons = [
   { value: "", label: "Select Reason" },
@@ -19,25 +20,6 @@ const cancelReasons = [
   { value: "Other", label: "Other" },
 ];
 
-const validationSchema = Yup.object({
-  reject_reason_select: Yup.string()
-    .required("Please select a reason")
-    .test(
-      "reason-not-empty",
-      "Please select a valid reason",
-      (value) => value && value.trim() !== ""
-    ),
-  reject_reason_input: Yup.string().when("reject_reason_select", {
-    is: "Other",
-    then: (schema) =>
-      schema
-        .trim()
-        .required("Please specify your reason")
-        .min(1, "Reason cannot be empty"),
-    otherwise: (schema) => schema.notRequired().nullable(),
-  }),
-});
-
 const CancelOrder = ({ open, onClose, orderId }) => {
   const dispatch = useDispatch();
 
@@ -46,7 +28,7 @@ const CancelOrder = ({ open, onClose, orderId }) => {
       reject_reason_select: "",
       reject_reason_input: "",
     },
-    validationSchema,
+    validationSchema: CancelOrderSchema,
     onSubmit: (values) => {
       const payload = {
         order_id: orderId,

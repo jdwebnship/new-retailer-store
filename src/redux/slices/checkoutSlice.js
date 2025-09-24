@@ -22,7 +22,6 @@ export const performCheckout = createAsyncThunk(
   async ({ payload, navigate }, { dispatch, rejectWithValue }) => {
     try {
       const response = await axiosInstance.post("/checkout1", payload);
-      console.log("Checkout response:", response);
       if (response?.data?.success || response?.data?.status) {
         dispatch(discountSuccess(null));
         dispatch(updateCustomer(response?.data?.data));

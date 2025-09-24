@@ -266,18 +266,15 @@ function SignIn() {
                       <div className="flex justify-between items-center gap-1 sm:gap-0 mb-3">
                         <button
                           onClick={handleResend}
-                          className={`w-full xs:w-auto text-gray-900 underline opacity-20 hover:opacity-100 cursor-pointer ${
-                            timer > 0 ? "cursor-not-allowed" : ""
-                          } text-xs xs:text-sm sm:text-sm`}
+                          className={`w-auto whitespace-nowrap xs:w-auto underline text-xs xs:text-sm sm:text-sm ${
+                            timer > 0
+                              ? "cursor-not-allowed opacity-50 text-gray-500"
+                              : "cursor-pointer hover:opacity-100 text-gray-900"
+                          }`}
                           disabled={timer > 0}
                         >
-                          <span
-                            className="block w-full text-left"
-                            style={{
-                              cursor: timer > 0 ? "not-allowed" : "pointer",
-                            }}
-                          >
-                            RESEND CODE
+                          <span className="block w-full text-left">
+                            {timer > 0 ? `RESEND IN ${timer}s` : "RESEND CODE"}
                           </span>
                         </button>
                         {timer > 0 && (

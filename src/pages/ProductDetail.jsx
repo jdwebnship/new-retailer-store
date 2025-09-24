@@ -36,8 +36,6 @@ function ProductDetail() {
   const [lightboxImage, setLightboxImage] = useState(null);
   const [variant, setVariant] = useVariantQuery(productVariations);
 
-  console.log("variant", variant);
-
   const { productDetails, loading: productLoading } = useSelector(
     (state) => state.products
   );
@@ -49,13 +47,11 @@ function ProductDetail() {
   const phone_number = storeInfo?.storeinfo?.retailer?.phone_number;
   const product = productDetails?.product;
   const wishlistData = wishlist?.data?.wishlist;
-  const productPrice = variant || product
+  const productPrice = variant || product;
   const productImg = React.useMemo(
     () => (product?.product_images ? product.product_images.split(",") : []),
     [product?.product_images]
   );
-
-  console.log("product", product);
 
   const productVideo = product?.product_video;
   const galleryItems = React.useMemo(() => {
@@ -150,17 +146,17 @@ function ProductDetail() {
   const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
 
   const { quantity, increase, decrease, canIncrease, canDecrease } =
-  useCartQuantity({
-    initial: 1,
-    maxLimit: 5,
-    availableStock,
-    cartQuantity,
-    resetKey: selectedVariant?.id,
-    onChange: (newQty, action) => {
-      const quantityChange = action === "increase" ? 1 : -1;
-      dispatch(updateCartItem({ item, qty: quantityChange }));
-    },
-  });
+    useCartQuantity({
+      initial: 1,
+      maxLimit: 5,
+      availableStock,
+      cartQuantity,
+      resetKey: selectedVariant?.id,
+      onChange: (newQty, action) => {
+        const quantityChange = action === "increase" ? 1 : -1;
+        dispatch(updateCartItem({ item, qty: quantityChange }));
+      },
+    });
 
   const handleAddToCart = () => {
     // e.stopPropagation();
@@ -646,9 +642,7 @@ function ProductDetail() {
                       <button
                         key={item.id}
                         disabled={!item?.stock}
-                        onClick={() =>
-                          handleVariantSelect(item)
-                        }
+                        onClick={() => handleVariantSelect(item)}
                         className={`px-5 disabled:opacity-50 relative overflow-hidden py-3 text-[#111111] cursor-pointer text-[16px] font-medium border border-[#E6E7E8] rounded-[0.625rem] ${
                           variant?.product_variation === item?.product_variation
                             ? "!border-[#111111]"

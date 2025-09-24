@@ -146,13 +146,22 @@ const ModalComponent = ({
   };
 
   // Timer logic
+  // Timer logic
   useEffect(() => {
-    let interval;
-    if (step === "otp" && timer > 0) {
-      interval = setInterval(() => setTimer((prev) => prev - 1), 1000);
-    }
+    if (step !== "otp" || timer <= 0) return;
+
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
     return () => clearInterval(interval);
-  }, [step, timer]);
+  }, [step, timer]); // ✅ restart when timer is reset
 
   // Prevent background scrolling when modal is open
   useEffect(() => {
@@ -312,15 +321,18 @@ const ModalComponent = ({
                     <div className="flex justify-between items-center gap-1 sm:gap-0">
                       <button
                         onClick={handleResend}
-                        className={`w-full xs:w-auto text-gray-900 underline opacity-20 hover:opacity-100 cursor-pointer ${
-                          timer > 0 ? "cursor-not-allowed" : ""
-                        } text-xs xs:text-sm sm:text-sm`}
                         disabled={timer > 0}
+                        className={`w-auto whitespace-nowrap xs:w-auto underline text-xs xs:text-sm sm:text-sm ${
+                          timer > 0
+                            ? "cursor-not-allowed opacity-50 text-gray-500"
+                            : "cursor-pointer hover:opacity-100 text-gray-900"
+                        }`}
                       >
                         <span className="block w-full text-left">
-                          RESEND CODE
+                          {timer > 0 ? `RESEND IN ${timer}s` : "RESEND CODE"}
                         </span>
                       </button>
+
                       {timer > 0 && (
                         <span className="block w-full xs:w-auto text-right text-xs xs:text-sm sm:text-sm">
                           ({timer}s)

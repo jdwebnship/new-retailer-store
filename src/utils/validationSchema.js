@@ -137,3 +137,38 @@ export const AccountDetailsSchema = Yup.object({
     .min(2, "Last name must be at least 2 characters")
     .max(50, "Last name cannot exceed 50 characters"),
 });
+
+export const SignUpModalSchema = Yup.object({
+  firstName: Yup.string().required("First name is required"),
+  lastName: Yup.string().required("Last name is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(8, "Password must be at least 8 characters")
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+      "Password must contain at least one uppercase, one lowercase, one number, and one special character"
+    ),
+  terms: Yup.boolean().oneOf([true], "Please accept the terms & conditions"),
+});
+
+export const CancelOrderSchema = Yup.object({
+  reject_reason_select: Yup.string()
+    .required("Please select a reason")
+    .test(
+      "reason-not-empty",
+      "Please select a valid reason",
+      (value) => value && value.trim() !== ""
+    ),
+  reject_reason_input: Yup.string().when("reject_reason_select", {
+    is: "Other",
+    then: (schema) =>
+      schema
+        .trim()
+        .required("Please specify your reason")
+        .min(1, "Reason cannot be empty"),
+    otherwise: (schema) => schema.notRequired().nullable(),
+  }),
+});
