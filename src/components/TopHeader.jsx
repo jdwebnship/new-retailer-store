@@ -54,7 +54,7 @@ function TopHeader({ visible = true, onHeightChange }) {
     >
       <div className="w-[100%] px-2 sm:px-6 lg:px-10 xl:px-[4.6875rem] mx-auto">
         <div className="flex items-center justify-between mx-auto text-center">
-          <div className="flex text-base gap-2 sm:gap-4 customer-care">
+          <div className="sm:flex text-base gap-2 sm:gap-4 customer-care hidden">
             <a
               href="#"
               className="flex  gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
@@ -82,7 +82,7 @@ function TopHeader({ visible = true, onHeightChange }) {
             {storeInfo?.storeinfo?.offer_text ||
               "All over India Delivery Available."}
           </span>
-          <div className="flex text-base gap-2 sm:gap-4 social-login">
+          <div className="sm:flex hidden text-base gap-2 sm:gap-4 social-login">
             <a
               href="#"
               to={storeInfo?.storeinfo?.facebook || "#"}

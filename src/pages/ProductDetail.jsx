@@ -336,7 +336,7 @@ function ProductDetail() {
                       ? galleryItems.map((item, index) => (
                           <SwiperSlide key={index}>
                             <div
-                              className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] ${
+                              className={`slider__image w-full h-full rounded-[10px] overflow-hidden transition duration-250 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 swiper-slide-thumb-active:grayscale-0 swiper-slide-thumb-active:opacity-100 relative before:content-[''] before:block before:float-left before:pt-[100%] after:content-[''] after:table after:clear-both ${
                                 activeIndex === index
                                   ? "grayscale-0 opacity-100"
                                   : "grayscale opacity-50"
@@ -355,7 +355,7 @@ function ProductDetail() {
                                   className="absolute top-0 left-0 object-contain w-full h-full block"
                                 />
                               ) : (
-                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
+                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-500">
                                   <img
                                     src={placeholderImage}
                                     alt="No image"
@@ -489,104 +489,103 @@ function ProductDetail() {
                 </Swiper>
                 {lightboxImage !== null && (
                   <div
-                    className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50"
+                    className="fixed inset-0 flex items-center justify-center z-50 bg-black/50 bg-opacity-80"
                     onClick={() => setLightboxImage(null)}
                   >
-                    <Swiper
-                      direction="horizontal"
-                      slidesPerView={1}
-                      spaceBetween={24}
-                      grabCursor={true}
-                      thumbs={{
-                        swiper:
-                          thumbsSwiper && !thumbsSwiper.destroyed
-                            ? thumbsSwiper
-                            : null,
-                      }}
-                      modules={[Navigation, Thumbs, Mousewheel]}
-                      navigation={{
-                        nextEl: ".slider__next",
-                        prevEl: ".slider__prev",
-                      }}
-                      breakpoints={{
-                        0: { direction: "horizontal" },
-                        768: { direction: "horizontal" },
-                      }}
-                      onSlideChange={handleSlideChange}
-                      onImagesReady={(swiper) => {
-                        if (mainContainerRef.current) {
-                          const mainImg =
-                            mainContainerRef.current.querySelector("img");
-                          if (mainImg && mainImg.complete) {
-                            const containerWidth =
-                              mainContainerRef.current.offsetWidth;
-                            const aspectRatio =
-                              mainImg.naturalWidth > 0 &&
-                              mainImg.naturalHeight > 0
-                                ? mainImg.naturalWidth / mainImg.naturalHeight
-                                : 1.5;
-                            const calculatedHeight =
-                              containerWidth / aspectRatio;
-                            setMainHeight(`${calculatedHeight}px`);
+                    <div className="w-full max-w-[600px] h-[80vh] rounded-lg p-6 overflow-auto">
+                      <Swiper
+                        direction="horizontal"
+                        slidesPerView={1}
+                        height="auto"
+                        spaceBetween={24}
+                        grabCursor={true}
+                        thumbs={{
+                          swiper:
+                            thumbsSwiper && !thumbsSwiper.destroyed
+                              ? thumbsSwiper
+                              : null,
+                        }}
+                        modules={[Navigation, Thumbs, Mousewheel]}
+                        navigation={{
+                          nextEl: ".slider__next",
+                          prevEl: ".slider__prev",
+                        }}
+                        breakpoints={{
+                          0: { direction: "horizontal" },
+                          768: { direction: "horizontal" },
+                        }}
+                        onSlideChange={handleSlideChange}
+                        onImagesReady={(swiper) => {
+                          if (mainContainerRef.current) {
+                            const mainImg =
+                              mainContainerRef.current.querySelector("img");
+                            if (mainImg && mainImg.complete) {
+                              const containerWidth =
+                                mainContainerRef.current.offsetWidth;
+                              const aspectRatio =
+                                mainImg.naturalWidth > 0 &&
+                                mainImg.naturalHeight > 0
+                                  ? mainImg.naturalWidth / mainImg.naturalHeight
+                                  : 1.5;
+                              const calculatedHeight =
+                                containerWidth / aspectRatio;
+                              setMainHeight(`${calculatedHeight}px`);
+                            }
                           }
-                        }
-                      }}
-                      className="w-full md:max-w-full flex-1"
-                      ref={mainContainerRef}
-                    >
-                      {galleryItems.length > 0 ? (
-                        galleryItems.map((item, index) => (
-                          <SwiperSlide key={index}>
-                            <div
-                              className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2]
-                            backdrop-blur-sm bg-white/30 p-6 rounded-lg"
-                            >
-                              {item && item.endsWith(".mp4") ? (
-                                <video
-                                  src={item}
-                                  controls={false}
-                                  className="absolute top-0 left-0 object-contain w-full h-full block"
-                                  onClick={(e) =>
-                                    (e.currentTarget.controls = true)
-                                  }
-                                  onPlay={(e) => {
-                                    // Hide controls after 2s, so swipe works again
-                                    // setTimeout(() => {
-                                    e.currentTarget.controls = false;
-                                    // }, 2000);
-                                  }}
-                                />
-                              ) : item ? (
-                                <img
-                                  src={item}
-                                  alt={item}
-                                  className="absolute top-0 left-0 object-contain w-full h-full block transition-transform duration-3000 group-hover:scale-110
-                                object-none"
-                                />
-                              ) : (
-                                <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                                  <img
-                                    src={placeholderImage}
-                                    alt="No image"
-                                    className="w-1/2 h-1/2 object-contain"
+                        }}
+                        className="w-full md:max-w-full flex-1 h-full"
+                        ref={mainContainerRef}
+                      >
+                        {galleryItems.length > 0 ? (
+                          galleryItems.map((item, index) => (
+                            <SwiperSlide key={index}>
+                              <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both backdrop-blur-sm p-6">
+                                {item && item.endsWith(".mp4") ? (
+                                  <video
+                                    src={item}
+                                    controls={false}
+                                    className="absolute top-0 left-0 object-contain w-full h-full block"
+                                    onClick={(e) =>
+                                      (e.currentTarget.controls = true)
+                                    }
+                                    onPlay={(e) => {
+                                      // Hide controls after 2s, so swipe works again
+                                      // setTimeout(() => {
+                                      e.currentTarget.controls = false;
+                                      // }, 2000);
+                                    }}
                                   />
-                                </div>
-                              )}
+                                ) : item ? (
+                                  <img
+                                    src="https://images.pexels.com/photos/1822845/pexels-photo-1822845.jpeg"
+                                    alt={item}
+                                    className="absolute top-0 left-0 object-cover w-full h-full block transition-transform duration-3000 group-hover:scale-110"
+                                  />
+                                ) : (
+                                  <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center text-gray-500">
+                                    <img
+                                      src={placeholderImage}
+                                      alt="No image"
+                                      className="w-1/2 h-1/2 object-contain"
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </SwiperSlide>
+                          ))
+                        ) : (
+                          <SwiperSlide>
+                            <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both flex items-center justify-center text-gray-500">
+                              <img
+                                src={placeholderImage}
+                                alt="No image"
+                                className="w-1/2 h-1/2 object-contain"
+                              />
                             </div>
                           </SwiperSlide>
-                        ))
-                      ) : (
-                        <SwiperSlide>
-                          <div className="slider__image w-full h-full rounded-[10px] overflow-hidden relative before:content-[''] before:block before:float-left before:pt-[100%] 2xl:before:pt-[100%] after:content-[''] after:table after:clear-both bg-[#f2f2f2] flex items-center justify-center text-gray-500">
-                            <img
-                              src={placeholderImage}
-                              alt="No image"
-                              className="w-1/2 h-1/2 object-contain"
-                            />
-                          </div>
-                        </SwiperSlide>
-                      )}
-                    </Swiper>
+                        )}
+                      </Swiper>
+                    </div>
                   </div>
                 )}
               </div>

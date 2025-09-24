@@ -376,18 +376,18 @@ function Product() {
         <div className="grid grid-cols-1 lg:grid-cols-12 px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
           {/* 🔹 Mobile Sidebar Drawer */}
           {isSidebarOpen && (
-            <div className="fixed inset-0 z-50 flex lg:hidden">
+            <div className="fixed inset-0 z-50 flex lg:hidden transition-all duration-300">
               {/* Overlay */}
               <div
-                className="fixed inset-0 bg-black/50"
+                className="fixed inset-0 bg-black/50 transition-all duration-300"
                 onClick={() => setIsSidebarOpen(false)}
               />
               {/* Drawer */}
-              <div className="relative bg-white w-72 max-w-full h-full p-5 shadow-lg overflow-y-auto">
+              <div className="relative bg-white w-72 max-w-full h-full p-5 shadow-lg overflow-y-auto transition-all duration-300">
                 {/* Close Button */}
                 <button
                   onClick={() => setIsSidebarOpen(false)}
-                  className="absolute top-4 right-4"
+                  className="absolute top-4 right-4 cursor-pointer"
                 >
                   <img src={cross} alt="Close" />
                 </button>
@@ -955,7 +955,8 @@ function Product() {
                         }
                         return newParams;
                       });
-                    };0
+                    };
+                    0;
                     handlePriceRangeChange(newRange);
                   }}
                 />
@@ -1009,7 +1010,6 @@ function Product() {
                         fill="white"
                       />
                     </svg>
-                    Filter
                   </button>
                 </div>
               </div>

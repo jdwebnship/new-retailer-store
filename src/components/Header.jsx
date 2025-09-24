@@ -107,7 +107,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
             {/* Hamburger for mobile */}
             <button
               type="button"
-              className="lg:hidden"
+              className="lg:hidden cursor-pointer"
               aria-label="Open menu"
               aria-expanded={isMenuOpen}
               aria-controls="mobile-drawer"
@@ -451,7 +451,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
             </span>
             <button
               type="button"
-              className="inline-flex items-center justify-center w-10 h-10"
+              className="inline-flex items-center justify-center w-10 h-10 cursor-pointer"
               aria-label="Close menu"
               onClick={() => setIsMenuOpen(false)}
               autoFocus
