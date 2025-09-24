@@ -62,7 +62,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="icon">
                 <Mail />{" "}
               </span>
-              <span className="hidden lg:block">
+              <span className="hidden xl:block">
                 {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
               </span>
             </a>
@@ -73,7 +73,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="icon">
                 <Call />
               </span>
-              <span className="hidden lg:block">
+              <span className="hidden xl:block">
                 {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
               </span>
             </a>
@@ -91,7 +91,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="icon">
                 <Facebook />
               </span>
-              <span className="hidden lg:block">Facebook</span>
+              <span className="hidden xl:block">Facebook</span>
             </a>
             <a
               href="#"
@@ -101,7 +101,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="icon">
                 <Instagram />
               </span>
-              <span className="hidden lg:block">Instagram</span>
+              <span className="hidden xl:block">Instagram</span>
             </a>
             <a
               href="#"
@@ -111,7 +111,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="icon">
                 <Twitter />
               </span>
-              <span className="hidden lg:block">Twitter</span>
+              <span className="hidden xl:block">Twitter</span>
             </a>
           </div>
         </div>

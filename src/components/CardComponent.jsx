@@ -17,18 +17,18 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
   console.log(product);
   const productData = isWishlistKey
     ? {
-      name: product.product_name,
-      slug: product.product_slug,
-      final_price: product.new_price,
-      old_price: product.old_price,
-      product_images: product.product_images,
-      id: product.retailer_product_id || product.product_id,
-      product_id: product.product_id,
-      retailer_product_id: product.retailer_product_id,
-      retailer_id: product.retailer_id,
-      wholesaler_id: product.wholesaler_id,
-      added_to_wishlist: product.added_on,
-    }
+        name: product.product_name,
+        slug: product.product_slug,
+        final_price: product.new_price,
+        old_price: product.old_price,
+        product_images: product.product_images,
+        id: product.retailer_product_id || product.product_id,
+        product_id: product.product_id,
+        retailer_product_id: product.retailer_product_id,
+        retailer_id: product.retailer_id,
+        wholesaler_id: product.wholesaler_id,
+        added_to_wishlist: product.added_on,
+      }
     : product;
   console.log(productData);
   const { textColor } = useTheme();
@@ -94,7 +94,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
           height: "auto",
           display: "flex",
           flexDirection: "column",
-          gap: "1rem",
+          gap: "0.9375rem",
         }}
       >
         {getProductImage(productData) && (
@@ -176,9 +176,11 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         </div>
 
         <div className="flex flex-col gap-[0.1875rem] text-start">
-          {isWishlistKey &&
-            <h6>{productData?.added_to_wishlist}</h6>
-          }
+          {isWishlistKey && (
+            <h6 className="text-[#AAAAAA] text-sm font-normal">
+              {productData?.added_to_wishlist}
+            </h6>
+          )}
           {productData?.name && (
             <h3
               className="line-clamp-1 mb-[0.375rem] text-[#111111]"
@@ -198,8 +200,8 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
               </p>
               {product?.old_price !== 0 && (
                 <p
-                  className="font-regular line-through"
-                  style={{ margin: 0, fontSize: "1.125rem", color: "#555" }}
+                  className="font-normal line-through text-[#808080]"
+                  style={{ margin: 0 }}
                 >
                   ₹{productData?.old_price}
                 </p>
@@ -216,7 +218,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
                   retailer_product_id: productData.retailer_product_id,
                 })
               }
-              className="text-sm uppercase underline text-start cursor-pointer text-[#111111]"
+              className="text-sm font-normal uppercase underline text-start cursor-pointer text-[#111111]"
             >
               Remove From Wishlist
             </button>
