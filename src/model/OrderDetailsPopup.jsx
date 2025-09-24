@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { closeOrderPopup } from "../redux/slices/orderPopupSlice";
 import close from "../assets/images/close.png";
 import copy_icon from "../assets/images/copy_icon.png";
+import copied_icon from "../assets/images/copied_icon.png";
 import { formatStatus } from "../utils/common";
 import { useTheme } from "../contexts/ThemeContext";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ const OrderDetailsPopup = ({ orderDetail }) => {
   const { theme, bottomFooterTextColor } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [openCancelModel, setOpenCancelModel] = useState(false);
+  const [copied, setCopied] = useState(false);
   const orderPopup = useSelector((state) => state.orderPopup);
   const { orders } = useSelector((state) => state.customerOrders);
   const navigate = useNavigate();
@@ -70,13 +72,23 @@ const OrderDetailsPopup = ({ orderDetail }) => {
                 <h1 className="text-2xl font-bold ">Order Details</h1>
                 <div className="flex items-center gap-2">
                   <span className=" font-mono text-lg">
-                    #{orderPopup.order?.order_id || ""}
+                    #{orderPopup.order?.order_number || ""}
                   </span>
                   <img
                     className="cursor-pointer w-4 h-4"
-                    src={copy_icon}
-                    alt=""
+                    src={copied ? copied_icon : copy_icon}
+                    alt={copied ? "Copied" : "Copy"}
+                    onClick={() => {
+                      if (orderPopup.order?.order_number) {
+                        navigator.clipboard.writeText(orderPopup.order.order_number);
+                        setCopied(true);
+                        setTimeout(() => setCopied(false), 2000);
+                      }
+                    }}
                   />
+                  <span className="text-sm">
+                    {copied ? "Copied!" : "Copy"}
+                  </span>
                 </div>
               </div>
               <img

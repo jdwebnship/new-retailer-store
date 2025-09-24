@@ -148,8 +148,6 @@ function ProductDetail() {
     .reduce((sum, item) => sum + item.quantity, 0);
 
   const availableStock = selectedVariant?.stock ?? product?.quantity ?? 0;
-  // const { quantity, increase, decrease, canIncrease, canDecrease } =
-  //   useCartQuantity(1, 5, availableStock, cartQuantity, selectedVariant?.id);
 
   const { quantity, increase, decrease, canIncrease, canDecrease } =
   useCartQuantity({

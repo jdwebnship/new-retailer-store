@@ -119,7 +119,7 @@ function Checkout() {
               retailer_product_id:
                 item?.product_id || item?.retailer_product_id,
               final_amount: item?.discountApplied
-                ? item?.discountedPrice
+                ? item?.final_price * item?.quantity - discount?.discount
                 : item?.final_price,
               product_variation:
                 item?.selected_variant?.product_variation || null,
@@ -131,7 +131,7 @@ function Checkout() {
               wholesaler_id: item.wholesaler_id,
               product_id: item?.id || item?.product_id,
               final_amount: item?.discountApplied
-                ? item?.discountedPrice
+                ? item?.final_price * item?.quantity - discount?.discount
                 : item?.final_price,
               product_variation:
                 item?.selected_variant?.product_variation || null,
