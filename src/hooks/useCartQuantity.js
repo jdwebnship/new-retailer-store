@@ -10,6 +10,12 @@ export default function useCartQuantity({
 } = {}) {
   const [quantity, setQuantity] = useState(initial);
 
+  console.log("quantity", quantity)
+  console.log("initial", initial)
+  console.log("maxLimit", maxLimit)
+  console.log("availableStock", availableStock)
+  console.log("cartQuantity", cartQuantity)
+
   // Reset when resetKey changes
   useEffect(() => {
     setQuantity(initial);
@@ -45,7 +51,7 @@ export default function useCartQuantity({
     decrease,
     reset,
     canIncrease:
-      quantity <= Math.min(availableStock - cartQuantity, maxLimit) &&
+      quantity < Math.min(availableStock - cartQuantity, maxLimit) &&
       quantity <= availableStock,
     canDecrease: quantity > 0,
   };

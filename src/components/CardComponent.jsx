@@ -16,18 +16,20 @@ import {
 const CardComponent = ({ product, isWishlistKey = false }) => {
   const productData = isWishlistKey
     ? {
-        name: product.product_name,
-        slug: product.product_slug,
-        new_price: product.price,
-        final_price: product.final_price,
-        product_images: product.product_images,
-        id: product.retailer_product_id || product.product_id,
-        product_id: product.product_id,
-        retailer_product_id: product.retailer_product_id,
-        retailer_id: product.retailer_id,
-        wholesaler_id: product.wholesaler_id,
-      }
+      name: product.product_name,
+      slug: product.product_slug,
+      new_price: product.price,
+      final_price: product.final_price,
+      product_images: product.product_images,
+      id: product.retailer_product_id || product.product_id,
+      product_id: product.product_id,
+      retailer_product_id: product.retailer_product_id,
+      retailer_id: product.retailer_id,
+      wholesaler_id: product.wholesaler_id,
+      added_to_wishlist: product.added_on,
+    }
     : product;
+  console.log(productData);
   const { textColor } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -103,16 +105,6 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
               overflow: "hidden",
             }}
           >
-            {/* <img
-          src={imageSrc}
-          alt={productName}
-          style={{
-            height: "29.125rem",
-            borderRadius: "1.125rem",
-            overflow: "hidden",
-          }}
-        > */}
-
             <img
               className="absolute top-0 left-0"
               src={getProductImage(productData)}
@@ -183,6 +175,9 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
         </div>
 
         <div className="flex flex-col gap-[0.1875rem] text-start">
+          {isWishlistKey &&
+            <h6>{productData?.added_to_wishlist}</h6>
+          }
           {productData?.name && (
             <h3
               className="line-clamp-1 mb-[0.375rem] text-[#111111]"
