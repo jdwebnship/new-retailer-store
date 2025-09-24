@@ -26,8 +26,8 @@ export const registerUser = createAsyncThunk(
       } else {
         toast.error(
           response?.data?.errors ||
-            response?.data?.message ||
-            "Something went wrong"
+          response?.data?.message ||
+          "Something went wrong"
         );
       }
 
@@ -73,7 +73,7 @@ export const login = createAsyncThunk(
       } else {
         toast.error(
           response?.data?.message ||
-            "Please verify your email before logging in."
+          "Please verify your email before logging in."
         );
       }
       return response.data;
@@ -200,8 +200,8 @@ export const sendLoginOTP = createAsyncThunk(
       } else {
         toast.error(
           response?.data?.message ||
-            response?.data?.errors ||
-            "Something went wrong"
+          response?.data?.errors ||
+          "Something went wrong"
         );
       }
 
@@ -320,6 +320,9 @@ const authSlice = createSlice({
         state.isAuthenticated = action.payload.data.email_verification_token
           ? false
           : true;
+        if (state.user?.customer && !state.user.customer.alt_phone_number) {
+          state.user.customer.alt_phone_number = state.user.customer.phone_number;
+        }
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.loading = false;
@@ -337,6 +340,9 @@ const authSlice = createSlice({
         state.isAuthenticated = action.payload.data.email_verification_token
           ? false
           : true;
+        if (state.user?.customer && !state.user.customer.alt_phone_number) {
+          state.user.customer.alt_phone_number = state.user.customer.phone_number;
+        }
       })
       .addCase(registerGuestUser.rejected, (state, action) => {
         state.loading = false;
@@ -352,6 +358,9 @@ const authSlice = createSlice({
         state.loading = false;
         state.user = action.payload.data;
         state.isAuthenticated = action.payload.success ? true : false;
+        if (state.user?.customer && !state.user.customer.alt_phone_number) {
+          state.user.customer.alt_phone_number = state.user.customer.phone_number;
+        }
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
@@ -397,6 +406,9 @@ const authSlice = createSlice({
         state.verified = true;
         state.user = action.payload.data;
         state.isAuthenticated = action.payload.success ? true : false;
+        if (state.user?.customer && !state.user.customer.alt_phone_number) {
+          state.user.customer.alt_phone_number = state.user.customer.phone_number;
+        }
       })
       .addCase(verifyOTP.rejected, (state, action) => {
         state.verificationLoading = false;
@@ -412,6 +424,9 @@ const authSlice = createSlice({
         state.verified = true;
         state.user = action.payload.data;
         state.isAuthenticated = action.payload.success ? true : false;
+        if (state.user?.customer && !state.user.customer.alt_phone_number) {
+          state.user.customer.alt_phone_number = state.user.customer.phone_number;
+        }
       })
       .addCase(verifyLoginOTP.rejected, (state, action) => {
         state.verificationLoading = false;
