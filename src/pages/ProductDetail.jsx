@@ -159,10 +159,6 @@ function ProductDetail() {
     cartQuantity,
     resetKey: selectedVariant?.id,
     onChange: (newQty, action) => {
-      if (action === "decrease" && quantity === 1) {
-        dispatch(removeFromCartapi(item));
-        return;
-      }
       const quantityChange = action === "increase" ? 1 : -1;
       dispatch(updateCartItem({ item, qty: quantityChange }));
     },

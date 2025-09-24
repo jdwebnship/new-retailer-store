@@ -212,6 +212,7 @@ export const removeFromCartapi = createAsyncThunk(
             ? item?.retailer_product_id || item?.product_id
             : "",
           product_id: !item?.retailer_id ? item?.id || item?.product_id : "",
+          variant_id: item?.selected_variant?.id || null,
         };
         dispatch(removeFromCart(keyPayload));
         const response = await axiosInstance.post(
@@ -222,6 +223,7 @@ export const removeFromCartapi = createAsyncThunk(
         return response.data;
       } else {
         dispatch(removeFromCart(keyPayload));
+        toast.success("Item removed from cart");
       }
     } catch (error) {
       if (auth?.isAuthenticated) {
