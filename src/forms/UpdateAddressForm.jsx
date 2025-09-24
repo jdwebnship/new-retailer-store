@@ -60,7 +60,7 @@ const UpdateAddressForm = () => {
   return (
     <div className="w-full text-start">
       <div className="flex justify-between w-full pb-[1.5rem] items-center">
-        <h3 className="text-2xl font-bold">Update Address</h3>
+        <h3 className="text-2xl font-bold text-[#111111]">Update Address</h3>
       </div>
       <hr className="opacity-10" />
       <div className="mt-[1.5rem]">
@@ -97,14 +97,14 @@ const UpdateAddressForm = () => {
                   className="block text-sm mb-2.5 font-bold uppercase"
                   htmlFor="pincode"
                 >
-                  Your Pincode
+                  Zip Code
                 </label>
                 <Field
                   id="pincode"
                   name="pincode"
                   type="text"
                   className={`w-full border rounded-lg p-[0.82rem] focus:outline-none border-[#AAAAAA] }`}
-                  placeholder="Enter your pincode"
+                  placeholder="Enter your zipcode"
                 />
                 <ErrorMessage
                   name="pincode"
@@ -176,7 +176,7 @@ const UpdateAddressForm = () => {
               </div>
               <button
                 type="submit"
-                className="inline-flex gap-2 btn px-[1.5rem] py-[0.875rem] rounded-lg text-base lg:text-lg font-medium focus:outline-none items-center disabled:opacity-50"
+                className="inline-flex gap-2 btn px-[1.55rem] py-[0.875rem] rounded-lg text-base lg:text-lg  focus:outline-none items-center disabled:opacity-50"
                 disabled={loading || isSubmitting}
               >
                 {loading || isSubmitting ? "Saving..." : "Save Address"}

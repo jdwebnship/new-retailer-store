@@ -8,7 +8,10 @@ import "swiper/css/mousewheel";
 import "swiper/css/navigation";
 import whatsapp from "../assets/whatsapp-og.svg";
 import { useNavigate, useParams } from "react-router-dom";
-import { fetchProducts, fetchProductsDetails } from "../redux/slices/productSlice";
+import {
+  fetchProducts,
+  fetchProductsDetails,
+} from "../redux/slices/productSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getWhatsappLink, isInWishlist } from "../utils/common";
 import {
@@ -92,7 +95,12 @@ function ProductDetail() {
     }
 
     if (productDetails?.product?.sub_category_id) {
-      dispatch(fetchProducts({ sub_category: productDetails?.product?.sub_category_id, page: 1 }));
+      dispatch(
+        fetchProducts({
+          sub_category: productDetails?.product?.sub_category_id,
+          page: 1,
+        })
+      );
     }
   }, [slug, dispatch, navigate]);
 
@@ -485,7 +493,7 @@ function ProductDetail() {
               <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5 text-[#111111]">
                 {product?.name}
               </h3>
-              <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-lg p-4 w-auto flex-auto">
+              <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-[0.625rem] p-4 w-auto flex-auto">
                 <span className="text-[1.5rem] font-bold text-[#111111]">
                   ₹{product?.final_price}
                 </span>
@@ -506,7 +514,7 @@ function ProductDetail() {
               </div>
               <div className="item-stock-status mb-6  border-b border-[#111111]/15 pb-6">
                 <p className="text-2xl flex items-center">
-                  <span className="indicator rounded-lg inline-block h-[0.625rem] w-[0.625rem] bg-[#25D366] mr-2"></span>
+                  <span className="indicator rounded-[0.625rem] inline-block h-[0.625rem] w-[0.625rem] bg-[#25D366] mr-2"></span>
                   {product?.quantity > 0 ? "In stock" : "Out of stock"}
                 </p>
               </div>
@@ -523,9 +531,9 @@ function ProductDetail() {
                         onClick={() =>
                           handleVariantSelect(item?.product_variation)
                         }
-                        className={`px-4 disabled:opacity-50 relative overflow-hidden py-2.5 text-[#5C5F6A] cursor-pointer text-[12px] font-medium border border-[#E6E7E8] rounded ${
+                        className={`px-5 disabled:opacity-50 relative overflow-hidden py-3 text-[#111111] cursor-pointer text-[16px] font-medium border border-[#E6E7E8] rounded-[0.625rem] ${
                           variant === item?.product_variation
-                            ? "border-[#111111]"
+                            ? "!border-[#111111]"
                             : ""
                         }`}
                       >
@@ -540,10 +548,10 @@ function ProductDetail() {
               )}
               <div className="flex gap-4 mb-3.5">
                 <div className="quantity-wrapper">
-                  <div className="inline-flex items-center border border-gray-300 rounded-md py-2 h-full">
+                  <div className="inline-flex items-center border border-gray-300 rounded-[0.625rem] py-2 h-full">
                     <button
                       onClick={decrease}
-                      className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition"
+                      className="w-10 h-full text-gray-800 rounded-[0.625rem] flex items-center justify-center cursor-pointer transition"
                       disabled={!canDecrease}
                     >
                       <svg
@@ -565,7 +573,7 @@ function ProductDetail() {
                     </span>
                     <button
                       onClick={increase}
-                      className="w-10 h-full text-gray-800 rounded-md flex items-center justify-center cursor-pointer transition disabled:cursor-not-allowed"
+                      className="w-10 h-full text-gray-800 rounded-[0.625rem] flex items-center justify-center cursor-pointer transition disabled:cursor-not-allowed"
                       disabled={!canIncrease}
                     >
                       <svg
@@ -597,14 +605,14 @@ function ProductDetail() {
                   text={!canIncrease ? "Go to Cart" : "Add to Cart"}
                 />
               </div>
-              <div className="text-xl mb-6 price-wrapper flex flex-wrap rounded-lg w-auto flex-auto gap-3.5">
+              <div className="text-xl mb-6 price-wrapper flex flex-wrap rounded-[0.625rem] w-auto flex-auto gap-3.5">
                 <button
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     getWhatsappLink(e, product, phone_number);
                   }}
-                  className="flex-1 !text-[#25D366] !border-[#25D366] btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm focus:outline-none flex items-center justify-center"
+                  className="flex-1 !text-[#25D366] !border-[#25D366] btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-[0.625rem] text-base focus:outline-none flex items-center justify-center"
                 >
                   <span className="max-w-[1.5rem] mr-2">
                     <img
@@ -621,7 +629,7 @@ function ProductDetail() {
                     e.stopPropagation();
                     addToWishList();
                   }}
-                  className="flex-[100%] text-[#111111] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none flex items-center justify-center"
+                  className="flex-[100%] text-[#111111] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-[0.625rem] text-base focus:outline-none flex items-center justify-center"
                 >
                   <span className="max-w-[1.5rem] mr-2">
                     <svg

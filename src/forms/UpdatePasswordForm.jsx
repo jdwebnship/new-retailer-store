@@ -49,7 +49,7 @@ const UpdatePasswordForm = () => {
   return (
     <div className="w-full text-start">
       <div className="flex justify-between w-full pb-[1.5rem] items-center">
-        <h3 className="text-2xl font-bold">Update Password</h3>
+        <h3 className="text-2xl font-bold text-[#111111]">Update Password</h3>
       </div>
       <hr className="opacity-10" />
       <div className="mt-[1.5rem]">

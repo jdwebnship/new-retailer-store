@@ -75,11 +75,10 @@ function Checkout() {
     (acc, item) => acc + item.final_price * item.quantity,
     0
   );
-  const totalProductWithSameId = updatedCartItems
-    ?.filter((item) =>
-      discount?.product_id?.includes(item.retailer_product_id || item.product_id)
-    )
-    // .reduce((sum, item) => sum + (item.quantity || 0), 0);
+  const totalProductWithSameId = updatedCartItems?.filter((item) =>
+    discount?.product_id?.includes(item.retailer_product_id || item.product_id)
+  );
+  // .reduce((sum, item) => sum + (item.quantity || 0), 0);
   const total = subtotal;
   const discTotal = Number(discount?.discount)
     ? total - Number(discount?.discount) * totalProductWithSameId?.length
@@ -115,30 +114,30 @@ function Checkout() {
         const base = { quantity: item.quantity || 1 };
         return item.retailer_id
           ? {
-            ...base,
-            retailer_id: item.retailer_id,
-            retailer_product_id:
-              item?.product_id || item?.retailer_product_id,
-            final_amount: item?.discountApplied
-              ? item?.discountedPrice
-              : item?.final_price,
-            product_variation:
-              item?.selected_variant?.product_variation || null,
-            quantity: item?.quantity || null,
-            coupon_id: item?.discountApplied ? discount?.id : undefined,
-          }
+              ...base,
+              retailer_id: item.retailer_id,
+              retailer_product_id:
+                item?.product_id || item?.retailer_product_id,
+              final_amount: item?.discountApplied
+                ? item?.discountedPrice
+                : item?.final_price,
+              product_variation:
+                item?.selected_variant?.product_variation || null,
+              quantity: item?.quantity || null,
+              coupon_id: item?.discountApplied ? discount?.id : undefined,
+            }
           : {
-            ...base,
-            wholesaler_id: item.wholesaler_id,
-            product_id: item?.id || item?.product_id,
-            final_amount: item?.discountApplied
-              ? item?.discountedPrice
-              : item?.final_price,
-            product_variation:
-              item?.selected_variant?.product_variation || null,
-            quantity: item?.quantity || null,
-            coupon_id: item?.discountApplied ? discount?.id : undefined,
-          };
+              ...base,
+              wholesaler_id: item.wholesaler_id,
+              product_id: item?.id || item?.product_id,
+              final_amount: item?.discountApplied
+                ? item?.discountedPrice
+                : item?.final_price,
+              product_variation:
+                item?.selected_variant?.product_variation || null,
+              quantity: item?.quantity || null,
+              coupon_id: item?.discountApplied ? discount?.id : undefined,
+            };
       });
       const payload = {
         ...values,
@@ -422,13 +421,13 @@ function Checkout() {
                             />
                           </div>
                         ) : (
-                        <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                          <img
-                            src={placeholderImage}
-                            alt="No image"
-                            className="w-1/2 h-1/2 object-contain"
-                          />
-                        </div>
+                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
+                            <img
+                              src={placeholderImage}
+                              alt="No image"
+                              className="w-1/2 h-1/2 object-contain"
+                            />
+                          </div>
                         )}
                         <div>
                           <h3 className="font-bold line-clamp-2 text-sm sm:text-base text-[#111111]">
@@ -516,13 +515,14 @@ function Checkout() {
                       name="coupon_code"
                       placeholder="Coupon Code"
                       className={`w-full px-4 py-4 text-gray-700 placeholder-gray-500 bg-transparent focus:outline-none 
-                      ${couponForm.touched.coupon_code &&
-                          couponForm.errors.coupon_code
+                      ${
+                        couponForm.touched.coupon_code &&
+                        couponForm.errors.coupon_code
                           ? "border-red-500"
                           : discount
-                            ? "border-green-500"
-                            : "border-none"
-                        }`}
+                          ? "border-green-500"
+                          : "border-none"
+                      }`}
                       value={couponForm.values.coupon_code}
                       onChange={couponForm.handleChange}
                       onBlur={couponForm.handleBlur}
@@ -540,9 +540,10 @@ function Checkout() {
                       type="submit"
                       disabled={couponForm.values.coupon_code === ""}
                       className={`btn sm:px-[3rem] px-[0.9rem] py-[0.9rem] rounded-r-sm lg:text-lg focus:outline-none  
-                        ${couponForm.values.coupon_code === ""
-                          ? "bg-gray-400"
-                          : "bg-black hover:bg-gray-800"
+                        ${
+                          couponForm.values.coupon_code === ""
+                            ? "bg-gray-400"
+                            : "bg-black hover:bg-gray-800"
                         }`}
                     >
                       Apply
@@ -557,10 +558,11 @@ function Checkout() {
               <h3 className="text-2xl font-bold mb-4">Payment Method</h3>
               <div className="grid sm:grid-cols-2 gap-4">
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "cod"
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "cod"
                       ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       : "border-[#AAAAAA] hover:border-black/60"
-                    }`}
+                  }`}
                 >
                   <input
                     type="radio"
@@ -570,14 +572,16 @@ function Checkout() {
                     onChange={() => setPaymentMethod("cod")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "cod"
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "cod"
                         ? "border-black"
                         : "border-[#AAAAAA]"
-                      }`}
+                    }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "cod" ? "bg-black" : "bg-transparent"
-                        }`}
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "cod" ? "bg-black" : "bg-transparent"
+                      }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -588,10 +592,11 @@ function Checkout() {
                 </label>
 
                 <label
-                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "prepaid"
+                  className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${
+                    paymentMethod === "prepaid"
                       ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                       : "border-[#AAAAAA] hover:border-black/60"
-                    }`}
+                  }`}
                 >
                   <input
                     type="radio"
@@ -601,16 +606,18 @@ function Checkout() {
                     onChange={() => setPaymentMethod("prepaid")}
                   />
                   <span
-                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "prepaid"
+                    className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${
+                      paymentMethod === "prepaid"
                         ? "border-black"
                         : "border-[#AAAAAA]"
-                      }`}
+                    }`}
                   >
                     <span
-                      className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "prepaid"
+                      className={`block w-2.5 h-2.5 rounded-full ${
+                        paymentMethod === "prepaid"
                           ? "bg-black"
                           : "bg-transparent"
-                        }`}
+                      }`}
                     />
                   </span>
                   <div className="flex flex-col">
@@ -628,15 +635,17 @@ function Checkout() {
                       {item.label}
                     </span>
                     <span
-                      className={`sm:text-lg font-medium ${item.label.toLowerCase() === "discount"
+                      className={`sm:text-lg font-medium ${
+                        item.label.toLowerCase() === "discount"
                           ? "text-green-600"
-                          : "text-gray-900"
-                        }`}
+                          : "text-[#111111]"
+                      }`}
                     >
                       {item.isFree
                         ? "Free"
-                        : `${item.label.toLowerCase() === "discount" ? "-" : ""
-                        }₹${item.value?.toFixed(2)}`}
+                        : `${
+                            item.label.toLowerCase() === "discount" ? "-" : ""
+                          }₹${item.value?.toFixed(2)}`}
                     </span>
                   </div>
                 ))}
@@ -666,7 +675,7 @@ function Checkout() {
             </button>
             <div className="text-center mt-6">
               <Link
-                className="sm:text-lg uppercase font-normal underline hover:text-[#007BFF]"
+                className="sm:text-lg uppercase  text-[#111111] font-normal underline hover:text-[#007BFF]"
                 to={"/shop"}
               >
                 Continue Shopping

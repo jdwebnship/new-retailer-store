@@ -186,7 +186,7 @@ const MyAccount = () => {
   return (
     <div>
       <CommonHeader />
-      <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.25rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0]">
+      <div className="2xl:max-w-[81rem] mx-auto py-10 md:py-[6.25rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-0sm:text-lg font-medium text-gray-900">
         {/* Left Navigation */}
         <div className="flex gap-6 flex-col md:flex-row">
           <nav

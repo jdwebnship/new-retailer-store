@@ -48,7 +48,7 @@ const Orders = () => {
               >
                 <div className="rounded-[0.625rem] border border-[#AAAAAA]/15 overflow-auto">
                   <div
-                    className="top-card  p-[0.938rem] !text-[#111111]"
+                    className="top-card px-[0.938rem] py-3 !text-[#111111]"
                     style={{
                       backgroundColor: theme?.bottomFooterBackgroundColor,
                       color: bottomFooterTextColor,
