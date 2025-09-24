@@ -14,12 +14,13 @@ import {
 } from "../redux/slices/WishListSlice";
 
 const CardComponent = ({ product, isWishlistKey = false }) => {
+  console.log(product);
   const productData = isWishlistKey
     ? {
       name: product.product_name,
       slug: product.product_slug,
-      new_price: product.price,
-      final_price: product.final_price,
+      final_price: product.new_price,
+      old_price: product.old_price,
       product_images: product.product_images,
       id: product.retailer_product_id || product.product_id,
       product_id: product.product_id,
