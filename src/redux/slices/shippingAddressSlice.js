@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axiosInstance";
 import { toast } from "react-toastify";
+import { updateCustomer } from "./authSlice";
 
 const initialState = {
   shippingAddress: null,
@@ -18,6 +19,7 @@ export const postShippingAddress = createAsyncThunk(
       );
       if (response?.data?.success) {
         toast.success(response?.data?.message);
+        dispatch(updateCustomer(response?.data?.data));
         dispatch(getShippingAddress());
       } else {
         toast.error(response?.data?.message);

@@ -7,7 +7,6 @@ import {
 } from "../redux/slices/shippingAddressSlice";
 import { countryData } from "../utils/country";
 import { UpdateAddressSchema } from "../utils/validationSchema";
-import { toast } from "react-toastify";
 import LoadingButton from "../components/LoadingButton";
 import Loader from "../components/Loader";
 
@@ -27,14 +26,14 @@ const UpdateAddressForm = () => {
     validationSchema: UpdateAddressSchema,
     enableReinitialize: true,
     onSubmit: async (values) => {
-        await dispatch(
-          postShippingAddress({
-            address: values.address,
-            pincode: values.pincode,
-            city: values.city,
-            state: values.state,
-          })
-        ).unwrap();
+      await dispatch(
+        postShippingAddress({
+          address: values.address,
+          pincode: values.pincode,
+          city: values.city,
+          state: values.state,
+        })
+      ).unwrap();
     },
   });
 
