@@ -9,11 +9,13 @@ import { fetchCart } from "../redux/slices/cartSlice";
 import OrderList from "../components/orderList";
 import { openCheckoutModal } from "../redux/slices/uiSlice";
 import LoadingButton from "../components/LoadingButton";
+import { useTheme } from "../contexts/ThemeContext";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isCheckoutModalOpen } = useSelector((state) => state.ui);
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -84,7 +86,13 @@ function Cart() {
               </div>
             )}
           </div>
-          <aside className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-10">
+          <aside
+            className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-10"
+            style={{
+              backgroundColor: theme.bottomFooterBackgroundColor,
+              height: "fit-content",
+            }}
+          >
             <h2 className="md:text-2xl text-lg font-semibold mb-6">
               Order Summary
             </h2>

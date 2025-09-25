@@ -10,7 +10,7 @@ const initialState = {
 
 export const postShippingAddress = createAsyncThunk(
   "shippingAddress/postShippingAddress",
-  async (data, { rejectWithValue }) => {
+  async (data, { rejectWithValue, dispatch }) => {
     try {
       const response = await axiosInstance.post(
         "/customer/shipping-address",
@@ -18,6 +18,7 @@ export const postShippingAddress = createAsyncThunk(
       );
       if (response?.data?.success) {
         toast.success(response?.data?.message);
+        dispatch(getShippingAddress());
       } else {
         toast.error(response?.data?.message);
       }

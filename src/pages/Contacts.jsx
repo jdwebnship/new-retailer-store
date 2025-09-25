@@ -15,9 +15,11 @@ import Map from "../assets/map-pin1.svg";
 import Twitter from "../assets/twitter.svg";
 import { ContactSchema } from "../utils/validationSchema";
 import LoadingButton from "../components/LoadingButton";
+import { useTheme } from "../contexts/ThemeContext";
 
 function Contacts() {
   const dispatch = useDispatch();
+  const { theme } = useTheme();
   const { loading, success, error, message } = useSelector(
     (state) => state.contact
   );
@@ -79,8 +81,12 @@ function Contacts() {
       <CommonHeader />
       <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0] text-left">
         <div className="flex flex-col lg:flex-row gap-[1.5rem] xl:gap-y-[4.375rem]">
-          <div className="space-y-6 lg:w-2/6 ">
-            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
+          <div className="space-y-6 lg:w-2/6">
+            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3"
+              style={{
+                backgroundColor: theme.bottomFooterBackgroundColor,
+              }}
+            >
               <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                 Contact Information
               </h3>
@@ -121,7 +127,11 @@ function Contacts() {
               </a>
             </div>
 
-            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3">
+            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3"
+              style={{
+                backgroundColor: theme.bottomFooterBackgroundColor,
+              }}
+            >
               <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                 Business Hours
               </h3>
@@ -132,7 +142,11 @@ function Contacts() {
               </div>
             </div>
 
-            <div className="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4">
+            <div className="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4"
+              style={{
+                backgroundColor: theme.bottomFooterBackgroundColor,
+              }}
+            >
               <div className="w-full">
                 <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                   Follow Our Journey

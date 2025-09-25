@@ -1,3 +1,5 @@
+import placeholder from "../assets/images/placeholder.png";
+
 export const getCategoryUrl = (slug) => {
   if (!slug || typeof slug !== "string") {
     console.warn("Invalid slug provided to getCategoryUrl:", slug);
@@ -26,16 +28,17 @@ export const getProductUrl = (product) => {
 };
 
 export const getProductImage = (product) => {
-  if (!product) {
-    return "/placeholder.png";
+  if (!product || !product.product_images) {
+    return placeholder;
   }
 
   const image =
     product.product_images && product.product_images.split(",").length
       ? product.product_images.split(",")[0]
-      : "/placeholder.png";
-  return image;
+      : placeholder;
+  return image[0];
 };
+
 
 // Provided getErrorMessages function
 export function getErrorMessages(errors) {

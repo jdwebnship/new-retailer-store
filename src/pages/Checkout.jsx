@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
-import watch from "../assets/watch.png";
+import placeholderImage from "../assets/images/placeholder.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import { useFormik } from "formik";
@@ -413,23 +413,13 @@ function Checkout() {
                   <div key={item.cart_id} className="bottom-card">
                     <div className="flex sm:gap-[0.82rem] justify-between">
                       <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
-                        {item?.product_images ? (
-                          <div className="w-[4rem] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden shrink-0">
-                            <img
-                              src={getProductImage(item)}
-                              alt={item.product_name}
-                              className="w-full h-full object-cover shrink-0"
-                            />
-                          </div>
-                        ) : (
-                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                            <img
-                              src={placeholderImage}
-                              alt="No image"
-                              className="w-1/2 h-1/2 object-contain"
-                            />
-                          </div>
-                        )}
+                        <div className="w-[4rem] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden shrink-0">
+                          <img
+                            src={getProductImage(item)}
+                            alt={item.product_name}
+                            className="w-full h-full object-cover shrink-0"
+                          />
+                        </div>
                         <div>
                           <h3 className="font-bold line-clamp-2 text-sm sm:text-base text-[#111111]">
                             {item.product_name}
@@ -539,7 +529,7 @@ function Checkout() {
                     <LoadingButton
                       type="submit"
                       disabled={couponForm.values.coupon_code === ""}
-                      loading={couponLoading}
+                      loading={discountLoading}
                       text="Apply"
                     />
                   </div>
@@ -553,8 +543,8 @@ function Checkout() {
               <div className="grid sm:grid-cols-2 gap-4">
                 <label
                   className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "cod"
-                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                      : "border-[#AAAAAA] hover:border-black/60"
+                    ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                    : "border-[#AAAAAA] hover:border-black/60"
                     }`}
                 >
                   <input
@@ -566,8 +556,8 @@ function Checkout() {
                   />
                   <span
                     className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "cod"
-                        ? "border-black"
-                        : "border-[#AAAAAA]"
+                      ? "border-black"
+                      : "border-[#AAAAAA]"
                       }`}
                   >
                     <span
@@ -584,8 +574,8 @@ function Checkout() {
 
                 <label
                   className={`flex items-center gap-3 p-2 xl:p-4 border rounded-xl cursor-pointer transition-all duration-300 ${paymentMethod === "prepaid"
-                      ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                      : "border-[#AAAAAA] hover:border-black/60"
+                    ? "border-black shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
+                    : "border-[#AAAAAA] hover:border-black/60"
                     }`}
                 >
                   <input
@@ -597,14 +587,14 @@ function Checkout() {
                   />
                   <span
                     className={`inline-flex items-center justify-center w-5 h-5 rounded-full border mr-1 ${paymentMethod === "prepaid"
-                        ? "border-black"
-                        : "border-[#AAAAAA]"
+                      ? "border-black"
+                      : "border-[#AAAAAA]"
                       }`}
                   >
                     <span
                       className={`block w-2.5 h-2.5 rounded-full ${paymentMethod === "prepaid"
-                          ? "bg-black"
-                          : "bg-transparent"
+                        ? "bg-black"
+                        : "bg-transparent"
                         }`}
                     />
                   </span>
@@ -624,8 +614,8 @@ function Checkout() {
                     </span>
                     <span
                       className={`sm:text-lg font-medium ${item.label.toLowerCase() === "discount"
-                          ? "text-green-600"
-                          : "text-[#111111]"
+                        ? "text-green-600"
+                        : "text-[#111111]"
                         }`}
                     >
                       {item.isFree
