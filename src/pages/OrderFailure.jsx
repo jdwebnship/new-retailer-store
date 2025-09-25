@@ -32,7 +32,7 @@ function OrderSuccess() {
               products and exclusive promotions.
             </p>
             <Link
-              to="/my-account"
+              to="/shop"
               className="w-full sm:text-lg font-normal btn text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
             >
               Continue Shopping
