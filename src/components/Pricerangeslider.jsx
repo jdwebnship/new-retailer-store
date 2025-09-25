@@ -1,8 +1,6 @@
 import { ThemeProvider } from "../contexts/ThemeContext";
-import { useTheme } from "../contexts/ThemeContext";
 
 export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
-  const { theme, bottomFooterTextColor } = useTheme();
   const handleMinChange = (e) => {
     const newMin = Math.min(+e.target.value, value[1] - 500);
     onChange([newMin, value[1]]);

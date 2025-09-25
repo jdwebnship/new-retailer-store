@@ -39,7 +39,7 @@ const UpdateAddressForm = () => {
 
   useEffect(() => {
     dispatch(getShippingAddress());
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className="w-full text-start">

@@ -3,11 +3,11 @@ import { useSearchParams } from "react-router-dom";
 import CommonHeader from "../components/CommonHeader";
 import cross from "../assets/x.svg";
 import CardComponent from "../components/CardComponent";
-import PriceRangeSlider from "../components/Pricerangeslider";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProducts } from "../redux/slices/productSlice";
 import ReactPaginate from "react-paginate";
 import { debounce } from "lodash";
+import PriceRangeSlider from "../components/PricerangeSlider";
 
 function Product() {
   const { storeInfo, loading } = useSelector((state) => state.storeInfo);
@@ -92,19 +92,19 @@ function Product() {
   }, [filters.categories, categories]);
 
   const debouncedFetchProducts = useCallback(
-    debounce((params, dispatch, search, onComplete) => {
+    (params, dispatch, search, onComplete) => {
       if (search) {
-        // Don't fetch if we're already showing search results
         onComplete?.();
         return;
       }
-      dispatch(fetchProducts(params))
-        .then(() => onComplete?.())
-        .catch(() => onComplete?.());
-    }, 300),
-    [dispatch]
+      return debounce(() => {
+        dispatch(fetchProducts(params))
+          .then(() => onComplete?.())
+          .catch(() => onComplete?.());
+      }, 300)();
+    },
+    [] // Add any dependencies here if needed
   );
-
   useEffect(() => {
     // If we have a search query, don't fetch regular products
     if (searchQuery) {
