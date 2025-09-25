@@ -178,7 +178,10 @@ function Footer() {
       </div>
 
       <div className="pt-[0.9375rem]">
-        <p>© {new Date().getFullYear()} My Vite App. All rights reserved.</p>
+        <p>
+          © {new Date().getFullYear()} {storeInfo?.storeinfo?.store_name}. All
+          rights reserved.
+        </p>
       </div>
     </footer>
   );
