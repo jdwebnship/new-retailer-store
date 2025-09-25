@@ -20,7 +20,7 @@ function BottomFooter() {
         <p className="text-[1.125rem] lg:text-[22px]">
           We love to surprise our subscribers with occasional gifts.
         </p>
-        <div className="flex justify-center items-stretch px-4">
+        <div className="flex justify-center items-stretch mx-4 border-1 rounded-[0.625rem]">
           <input
             type="email"
             id="email"

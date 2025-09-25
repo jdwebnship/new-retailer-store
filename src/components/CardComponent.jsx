@@ -194,7 +194,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
               </p>
               {product?.old_price !== 0 && (
                 <p
-                  className="font-normal line-through text-[#808080]"
+                  className="font-normal line-through opacity-40"
                   style={{ margin: 0 }}
                 >
                   ₹{productData?.old_price}

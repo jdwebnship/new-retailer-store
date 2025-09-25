@@ -415,7 +415,7 @@ function Product() {
                         </div>
                         <div className="flex flex-wrap gap-[0.5rem] py-[1.5rem]">
                           {searchQuery && (
-                            <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                            <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                               Search: {searchQuery}
                               <img
                                 className="cursor-pointer"
@@ -432,7 +432,7 @@ function Product() {
                             </span>
                           )}
                           {filters.in_stock && (
-                            <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                            <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                               In stock
                               <img
                                 className="cursor-pointer"
@@ -443,7 +443,7 @@ function Product() {
                             </span>
                           )}
                           {filters.out_of_stock && (
-                            <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                            <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                               Out of Stock
                               <img
                                 className="cursor-pointer"
@@ -463,7 +463,7 @@ function Product() {
                             return (
                               <span
                                 key={category.id}
-                                className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
+                                className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
                               >
                                 {categoryName}
                                 <img
@@ -483,7 +483,7 @@ function Product() {
                           {filters.sizes.map((size) => (
                             <span
                               key={size}
-                              className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
+                              className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
                             >
                               {size}
                               <img
@@ -498,7 +498,7 @@ function Product() {
                           ))}
                           {(filters.priceRange[0] > 0 ||
                             filters.priceRange[1] < 10000) && (
-                            <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                            <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                               ₹{filters.priceRange[0]} - ₹
                               {filters.priceRange[1]}
                               <img
@@ -521,7 +521,7 @@ function Product() {
                             </span>
                           )}
                           {/* {filters.sort_by && (
-                    <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                    <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                       {filters.sort_by}
                       <img
                         className="cursor-pointer"
@@ -710,7 +710,7 @@ function Product() {
                   </div>
                   <div className="flex flex-wrap gap-[0.5rem] py-[1.5rem]">
                     {searchQuery && (
-                      <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                      <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                         Search: {searchQuery}
                         <img
                           className="cursor-pointer"
@@ -725,7 +725,7 @@ function Product() {
                       </span>
                     )}
                     {filters.in_stock && (
-                      <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                      <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                         In stock
                         <img
                           className="cursor-pointer"
@@ -736,7 +736,7 @@ function Product() {
                       </span>
                     )}
                     {filters.out_of_stock && (
-                      <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                      <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                         Out of Stock
                         <img
                           className="cursor-pointer"
@@ -754,7 +754,7 @@ function Product() {
                       return (
                         <span
                           key={category.id}
-                          className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
+                          className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
                         >
                           {categoryName}
                           <img
@@ -774,7 +774,7 @@ function Product() {
                     {filters.sizes.map((size) => (
                       <span
                         key={size}
-                        className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
+                        className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg"
                       >
                         {size}
                         <img
@@ -787,7 +787,7 @@ function Product() {
                     ))}
                     {(filters.priceRange[0] > 0 ||
                       filters.priceRange[1] < 10000) && (
-                      <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                      <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                         ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
                         <img
                           className="cursor-pointer"
@@ -809,7 +809,7 @@ function Product() {
                       </span>
                     )}
                     {/* {filters.sort_by && (
-                    <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                    <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                       {filters.sort_by}
                       <img
                         className="cursor-pointer"

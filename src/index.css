@@ -70,7 +70,7 @@ textarea {
 .custom-checkbox {
   background-color: transparent;
   /* Light mode background */
-  border: 1px solid #11111125;
+  border: 1px solid #1111118e;
   /* Light mode border (gray-300) */
   transition: all 0.2s ease;
 }
