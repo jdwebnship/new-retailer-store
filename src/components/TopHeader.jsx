@@ -7,6 +7,7 @@ import Call from "./Call";
 import Facebook from "./Facebook";
 import Twitter from "./Twitter";
 import Instagram from "./instagram";
+import { Link } from "react-router-dom";
 
 function TopHeader({ visible = true, onHeightChange }) {
   const { theme, topHeaderTextColor } = useTheme();
@@ -83,36 +84,36 @@ function TopHeader({ visible = true, onHeightChange }) {
               "All over India Delivery Available."}
           </span>
           <div className="sm:flex hidden text-base gap-2 sm:gap-4 social-login">
-            <a
-              href="#"
-              to={storeInfo?.storeinfo?.facebook || "#"}
+            <Link
+              to={storeInfo?.storeinfo?.facebook_url || "#"}
+              target="_blank"
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
                 <Facebook />
               </span>
               <span className="hidden xl:block">Facebook</span>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
               to={storeInfo?.storeinfo?.instagram_url || "#"}
+              target="_blank"
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
                 <Instagram />
               </span>
               <span className="hidden xl:block">Instagram</span>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
               to={storeInfo?.storeinfo?.twitter_url || "#"}
+              target="_blank"
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
                 <Twitter />
               </span>
               <span className="hidden xl:block">Twitter</span>
-            </a>
+            </Link>
           </div>
         </div>
       </div>

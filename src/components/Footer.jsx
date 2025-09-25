@@ -143,7 +143,8 @@ function Footer() {
             <ul className="font-regular flex flex-col gap-4 social-login">
               <li className="mb-1">
                 <Link
-                  to={storeInfo?.storeinfo?.facebook || "#"}
+                  to={storeInfo?.storeinfo?.facebook_url || "#"}
+                  target="_blank"
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Facebook />
@@ -153,6 +154,7 @@ function Footer() {
               <li className="mb-1">
                 <Link
                   to={storeInfo?.storeinfo?.instagram_url || "#"}
+                  target="_blank"
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Instagram />
@@ -162,6 +164,7 @@ function Footer() {
               <li className="mb-1">
                 <Link
                   to={storeInfo?.storeinfo?.twitter_url || "#"}
+                  target="_blank"
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Twitter />
