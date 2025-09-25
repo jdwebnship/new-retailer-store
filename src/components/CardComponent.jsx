@@ -181,7 +181,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
           )}
           {productData?.name && (
             <h3
-              className="line-clamp-1 mb-[0.375rem] text-[#111111]"
+              className="line-clamp-1 mb-[0.375rem]  "
               style={{ margin: 0, fontSize: "1.125rem" }}
             >
               {productData?.name}
@@ -191,7 +191,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
           {productData?.final_price && (
             <div className="flex gap-2">
               <p
-                className="font-bold text-[#111111]"
+                className="font-bold  "
                 style={{ margin: 0, fontSize: "1.125rem", color: textColor }}
               >
                 ₹{productData?.final_price}
@@ -216,7 +216,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
                   retailer_product_id: productData.retailer_product_id,
                 })
               }
-              className="text-sm font-normal uppercase underline text-start cursor-pointer text-[#111111]"
+              className="text-sm font-normal uppercase underline text-start cursor-pointer  "
             >
               Remove From Wishlist
             </button>

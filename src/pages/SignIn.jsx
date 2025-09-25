@@ -199,7 +199,7 @@ function SignIn() {
               <div className="mt-6 text-right">
                 <Link
                   to={"/forgot-password"}
-                  className="text-sm underline text-[#111111] hover:text-[#007BFF] site-link uppercase transition-all duration-300"
+                  className="text-sm underline   hover:text-[#007BFF] site-link uppercase transition-all duration-300"
                 >
                   Forgot your Password?
                 </Link>

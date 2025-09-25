@@ -403,7 +403,7 @@ function Product() {
                     >
                       <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem] !text-left">
                         <div className="flex justify-between w-full">
-                          <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111]">
+                          <h4 className="text-lg font-bold uppercase text-[0.875rem]  ">
                             Filter By <span>({activeFilterCount})</span>
                           </h4>
                           <span
@@ -535,7 +535,7 @@ function Product() {
                       </div>
                     </div>
                     <div className="mb-[1.5rem] text-start">
-                      <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111] mb-[0.9375rem]">
+                      <h4 className="text-lg font-bold uppercase text-[0.875rem]   mb-[0.9375rem]">
                         Availability <span>(2)</span>
                       </h4>
                       <div className="flex flex-wrap gap-5 lg:gap-[0.5rem] flex-row lg:flex-col">
@@ -567,7 +567,7 @@ function Product() {
                       </div>
                     ) : categories.length > 0 ? (
                       <div className="mb-[1.5rem] text-start">
-                        <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem] text-[#111111]">
+                        <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem]  ">
                           Category <span>({categories.length})</span>
                         </h4>
                         <div className="flex lg:flex-nowrap gap-5 lg:gap-[0.5rem] flex-col">
@@ -612,7 +612,7 @@ function Product() {
               </div>
             ) : uniqueSizes.length > 0 ? (
               <div className="mb-[1.5rem]">
-                <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem] text-[#111111]">
+                <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem]  ">
                   Size <span>({uniqueSizes.length})</span>
                 </h4>
                 <div className="flex flex-wrap gap-5 lg:gap-[0.5rem] flex-row lg:flex-col">
@@ -638,7 +638,7 @@ function Product() {
               </div>
             )} */}
                     <div className="text-start">
-                      <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111] mb-[0.9375rem]">
+                      <h4 className="text-lg font-bold uppercase text-[0.875rem]   mb-[0.9375rem]">
                         Price
                       </h4>
                       <PriceRangeSlider
@@ -698,7 +698,7 @@ function Product() {
               >
                 <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem]">
                   <div className="flex justify-between w-full">
-                    <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111]">
+                    <h4 className="text-lg font-bold uppercase text-[0.875rem]  ">
                       Filter By <span>({activeFilterCount})</span>
                     </h4>
                     <span
@@ -823,7 +823,7 @@ function Product() {
                 </div>
               </div>
               <div className="mb-[1.5rem]">
-                <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111] mb-[0.9375rem]">
+                <h4 className="text-lg font-bold uppercase text-[0.875rem]   mb-[0.9375rem]">
                   Availability <span>(2)</span>
                 </h4>
                 <div className="flex flex-wrap gap-5 lg:gap-[0.5rem] flex-row lg:flex-col">
@@ -853,7 +853,7 @@ function Product() {
                 </div>
               ) : categories.length > 0 ? (
                 <div className="mb-[1.5rem]">
-                  <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem] text-[#111111]">
+                  <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem]  ">
                     Category <span>({categories.length})</span>
                   </h4>
                   <div className="flex lg:flex-nowrap gap-5 lg:gap-[0.5rem] flex-col">
@@ -894,7 +894,7 @@ function Product() {
               </div>
             ) : uniqueSizes.length > 0 ? (
               <div className="mb-[1.5rem]">
-                <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem] text-[#111111]">
+                <h4 className="text-lg font-bold mb-[0.9375rem] uppercase text-[0.875rem]  ">
                   Size <span>({uniqueSizes.length})</span>
                 </h4>
                 <div className="flex flex-wrap gap-5 lg:gap-[0.5rem] flex-row lg:flex-col">
@@ -920,7 +920,7 @@ function Product() {
               </div>
             )} */}
               <div>
-                <h4 className="text-lg font-bold uppercase text-[0.875rem] text-[#111111] mb-[0.9375rem]">
+                <h4 className="text-lg font-bold uppercase text-[0.875rem]   mb-[0.9375rem]">
                   Price
                 </h4>
                 <PriceRangeSlider

@@ -58,7 +58,7 @@ const UpdateAddressForm = () => {
   return (
     <div className="w-full text-start">
       <div className="flex justify-between items-center pb-6">
-        <h3 className="text-2xl font-bold text-[#111111]">Update Address</h3>
+        <h3 className="text-2xl font-bold  ">Update Address</h3>
       </div>
       <hr className="opacity-10" />
       <form onSubmit={formik.handleSubmit} className="mt-6">

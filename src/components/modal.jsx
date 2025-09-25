@@ -350,7 +350,7 @@ const ModalComponent = ({
                     </button>
                     <button
                       onClick={() => setStep("phone")}
-                      className="w-full border border-[#000000] text-[#111111] rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none cursor-pointer text-sm xs:text-base"
+                      className="w-full border border-[#000000]   rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none cursor-pointer text-sm xs:text-base"
                     >
                       Back
                     </button>

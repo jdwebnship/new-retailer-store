@@ -1,10 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  removeFromCartapi,
-  updateCartItem,
-} from "../redux/slices/cartSlice";
+import { removeFromCartapi, updateCartItem } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
 import { openCheckoutModal } from "../redux/slices/uiSlice";
@@ -115,7 +112,7 @@ const CartPopup = ({ items = [], onClose }) => {
           <Link
             to="/shop"
             onClick={() => onClose()}
-            className="text-[#111111] text-lg underline hover:text-[#007BFF] cursor-pointer transition-all duration-300 text-center"
+            className="  text-lg underline hover:text-[#007BFF] cursor-pointer transition-all duration-300 text-center"
           >
             CONTINUE SHOPPING
           </Link>
@@ -170,7 +167,7 @@ const CartItem = ({ item }) => {
           <div className="text-left">
             <span className="leading-none inline-block text-base text-[#AAAAAA]">
               Size:
-              <strong className="font-bold text-[#111111] ml-2">
+              <strong className="font-bold   ml-2">
                 {item?.selected_variant?.product_variation}
               </strong>
             </span>
@@ -221,7 +218,7 @@ const CartItem = ({ item }) => {
             </button>
           </div>
           <button
-            className="text-sm text-[#111111] underline cursor-pointer hover:text-[#007BFF] transition-all duration-300"
+            className="text-sm   underline cursor-pointer hover:text-[#007BFF] transition-all duration-300"
             onClick={() => dispatch(removeFromCartapi(item))}
           >
             REMOVE

@@ -202,7 +202,7 @@ function SignUp() {
               />
               <label
                 htmlFor="terms"
-                className="text-sm font-medium select-none text-[#111111]"
+                className="text-sm font-medium select-none  "
               >
                 By creating an account you agree with our{" "}
                 <Link
@@ -229,7 +229,7 @@ function SignUp() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-sm uppercase text-[#111111]">
+            <p className="text-sm uppercase  ">
               Already have an account?{" "}
               <Link
                 to={"/signin"}

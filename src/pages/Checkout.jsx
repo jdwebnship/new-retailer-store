@@ -176,9 +176,7 @@ function Checkout() {
                     readOnly
                   />
                 </div>
-                <h3 className="text-2xl font-bold text-[#111111]">
-                  Shipping Details
-                </h3>
+                <h3 className="text-2xl font-bold  ">Shipping Details</h3>
                 <hr className="opacity-10" />
                 {/* Email */}
                 <div className="relative">
@@ -397,13 +395,8 @@ function Checkout() {
           >
             <div className="flex  flex-col gap-6">
               <div className="flex justify-between items-center">
-                <h3 className="text-2xl font-bold text-[#111111]">
-                  Your Orders
-                </h3>
-                <Link
-                  to="/cart"
-                  className="text-sm uppercase underline text-[#111111]"
-                >
+                <h3 className="text-2xl font-bold  ">Your Orders</h3>
+                <Link to="/cart" className="text-sm uppercase underline  ">
                   Edit Cart
                 </Link>
               </div>
@@ -430,7 +423,7 @@ function Checkout() {
                           </div>
                         )}
                         <div>
-                          <h3 className="font-bold line-clamp-2 text-sm sm:text-base text-[#111111]">
+                          <h3 className="font-bold line-clamp-2 text-sm sm:text-base  ">
                             {item.product_name}
                           </h3>
                           <div className="flex items-center gap-2 text-[#5C5F6A] mt-1">
@@ -440,7 +433,7 @@ function Checkout() {
                                   <span className="font-bold text-[#AAAAAA]">
                                     Size:{" "}
                                   </span>
-                                  <span className="text-[#111111] font-bold">
+                                  <span className="  font-bold">
                                     {item.selected_variant.product_variation}
                                   </span>
                                 </span>
@@ -449,7 +442,7 @@ function Checkout() {
                             <span>
                               {item?.discountApplied ? (
                                 <>
-                                  <span className="text-[#111111] font-bold pr-2">
+                                  <span className="  font-bold pr-2">
                                     <span>₹ </span>
                                     {item?.final_price * item?.quantity -
                                       discount?.discount}
@@ -465,7 +458,7 @@ function Checkout() {
                                 </>
                               ) : (
                                 <span className="text-base ">
-                                  <span className="text-[#111111] font-bold pr-2">
+                                  <span className="  font-bold pr-2">
                                     ₹{item?.final_price * item?.quantity}{" "}
                                   </span>
                                 </span>
@@ -631,14 +624,14 @@ function Checkout() {
                 .filter((item) => item.display !== false)
                 .map((item, index) => (
                   <div key={index} className="flex justify-between">
-                    <span className="sm:text-lg font-medium text-[#111111]">
+                    <span className="sm:text-lg font-medium  ">
                       {item.label}
                     </span>
                     <span
                       className={`sm:text-lg font-medium ${
                         item.label.toLowerCase() === "discount"
                           ? "text-green-600"
-                          : "text-[#111111]"
+                          : " "
                       }`}
                     >
                       {item.isFree
@@ -651,10 +644,8 @@ function Checkout() {
                 ))}
 
               <div className="border-t border-[#11111126] pt-6 mt-6 flex justify-between font-medium">
-                <span className="md:text-2xl text-lg font-medium text-[#111111]">
-                  Total
-                </span>
-                <span className="md:text-2xl text-lg font-medium text-[#111111]">
+                <span className="md:text-2xl text-lg font-medium  ">Total</span>
+                <span className="md:text-2xl text-lg font-medium  ">
                   ₹{discTotal?.toFixed(2)}
                 </span>
               </div>
@@ -675,7 +666,7 @@ function Checkout() {
             </button>
             <div className="text-center mt-6">
               <Link
-                className="sm:text-lg uppercase  text-[#111111] font-normal underline hover:text-[#007BFF]"
+                className="sm:text-lg uppercase    font-normal underline hover:text-[#007BFF]"
                 to={"/shop"}
               >
                 Continue Shopping

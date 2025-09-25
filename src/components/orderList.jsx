@@ -46,9 +46,11 @@ export default function OrderList({ item }) {
           />
         </Link>
         <div>
-          <Link to={item?.product_slug ? `/products/${item.product_slug}` : "#"}>
+          <Link
+            to={item?.product_slug ? `/products/${item.product_slug}` : "#"}
+          >
             <div
-              className="sm:text-lg text-base font-bold mb-2.5 text-[#111111] 
+              className="sm:text-lg text-base font-bold mb-2.5   
                  transition-colors duration-300 hover:text-[#007BFF] cursor-pointer"
             >
               {item?.product_name || "Unnamed Product"}
@@ -58,13 +60,13 @@ export default function OrderList({ item }) {
             {item?.selected_variant?.product_variation && (
               <span className="leading-none inline-block font-bold text-base text-[#AAAAAA] border-r border-[#AAAAAA] pr-2 mr-2">
                 Size:
-                <strong className="font-bold text-[#111111] ml-2">
+                <strong className="font-bold   ml-2">
                   {item?.selected_variant?.product_variation}
                 </strong>
               </span>
             )}
             <div className="flex items-center gap-2">
-              <span className="leading-none text-base font-bold text-[#111111]">
+              <span className="leading-none text-base font-bold  ">
                 ₹
                 {item?.final_price
                   ? Number(item.final_price).toLocaleString("en-IN", {
@@ -76,7 +78,7 @@ export default function OrderList({ item }) {
           </div>
           <button
             onClick={() => dispatch(removeFromCartapi(item))}
-            className="text-sm underline uppercase cursor-pointer text-[#111111]"
+            className="text-sm underline uppercase cursor-pointer  "
           >
             Remove
           </button>
@@ -87,19 +89,17 @@ export default function OrderList({ item }) {
       <div className="flex items-center gap-7.5 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
         <button
           onClick={decrease}
-          className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer flex justify-center"
+          className="text-2xl font-normal   focus:outline-none cursor-pointer flex justify-center"
           style={{ minWidth: "2.5rem" }}
           disabled={!canDecrease}
         >
           <img src={minus} alt="" />
         </button>
-        <span className="text-base font-normal text-[#111111] select-none ">
-          {quantity}
-        </span>
+        <span className="text-base font-normal   select-none ">{quantity}</span>
         <button
           onClick={increase}
           disabled={!canIncrease}
-          className="text-2xl font-normal text-[#111111] focus:outline-none cursor-pointer flex justify-center disabled:cursor-not-allowed"
+          className="text-2xl font-normal   focus:outline-none cursor-pointer flex justify-center disabled:cursor-not-allowed"
           style={{ minWidth: "2.5rem" }}
         >
           <img src={plus} alt="" />
@@ -108,7 +108,7 @@ export default function OrderList({ item }) {
 
       {/* Total Price */}
       <div className="md:ml-[0] ml-[6rem]">
-        <p className="text-lg font-bold text-[#111111]">
+        <p className="text-lg font-bold  ">
           ₹
           {item?.final_price && item?.quantity
             ? (item.final_price * item.quantity).toLocaleString("en-IN", {

@@ -18,13 +18,13 @@ function OrderSuccess() {
           <div className="text-3xl mb-[0.9375rem]">
             <img className="mx-auto" src={order} alt="" />
           </div>
-          <h1 className="text-2xl font-semibold mb-[0.9375rem] text-[#111111]">
+          <h1 className="text-2xl font-semibold mb-[0.9375rem]  ">
             Order Placed Successfully
           </h1>
           {/* <h1 className="text-2xl font-semibold mb-[0.9375rem]">
             ⚠️ Oops! Something went wrong.
           </h1> */}
-          <div className="text-sm font-medium py-6 flex gap-2 justify-center items-center text-[#111111]">
+          <div className="text-sm font-medium py-6 flex gap-2 justify-center items-center  ">
             <div className="flex gap-2 flex-wrap justify-center md:max-w-[32.875rem]">
               <div className="py-[0.5rem] whitespace-nowrap">
                 Your order ID :
@@ -48,7 +48,7 @@ function OrderSuccess() {
           </div>
 
           <div
-            className="flex flex-col justify-center gap-[0.9375rem] p-6 rounded-2xl max-w-[26.875rem] mx-auto text-[#111111]"
+            className="flex flex-col justify-center gap-[0.9375rem] p-6 rounded-2xl max-w-[26.875rem] mx-auto  "
             style={{
               backgroundColor: theme.bottomFooterBackgroundColor,
               height: "fit-content",

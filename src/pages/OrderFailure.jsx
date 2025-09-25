@@ -13,7 +13,7 @@ function OrderSuccess() {
     <div>
       <CommonHeader />
       <div className="px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] py-16 text-center">
-        <div className="mx-auto max-w-xl p-8 !text-[#111111]">
+        <div className="mx-auto max-w-xl p-8 ! ">
           <div className="text-3xl mb-2">
             <img className="mx-auto" src={order} alt="" />
           </div>

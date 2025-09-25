@@ -9,17 +9,17 @@ const Wishlist = () => {
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { wishlist } = useSelector((state) => state.wishlist);
   const wishlistData = wishlist?.data?.wishlist;
-  
+
   useEffect(() => {
     if (isAuthenticated) {
-      dispatch(fetchWishList())
+      dispatch(fetchWishList());
     }
-  }, [dispatch, isAuthenticated])
+  }, [dispatch, isAuthenticated]);
 
   return (
     <div className="w-full">
       <div className="flex justify-between w-full pb-[1.5rem] items-center">
-        <h3 className="text-2xl font-bold text-[#111111]">Wishlist</h3>
+        <h3 className="text-2xl font-bold  ">Wishlist</h3>
       </div>
       <hr className="opacity-10" />
 

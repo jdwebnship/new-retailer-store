@@ -601,11 +601,11 @@ function ProductDetail() {
 
             {/* Details Column */}
             <div className="w-full lg:max-w-[calc((((100vw-5rem)+2rem)/12)*5-2rem)] xl:max-w-[calc((((100vw-7.5rem)+3.125rem)/12)*5-3.125rem)] 2xl:max-w-[calc((((100vw-7.5rem)+6.25rem)/12)*5-6.25rem)] text-left px-3.5">
-              <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5 text-[#111111]">
+              <h3 className="text-[1.5rem] lg:text-[2rem] font-bold mb-3.5  ">
                 {product?.name}
               </h3>
               <div className="text-xl mb-3.5 price-wrapper inline-flex items-center border border-gray-300 rounded-[0.625rem] p-4 w-auto flex-auto">
-                <span className="text-[1.5rem] font-bold text-[#111111]">
+                <span className="text-[1.5rem] font-bold  ">
                   ₹{productPrice?.final_price}
                 </span>
                 {productPrice?.old_price > 0 && (
@@ -640,7 +640,7 @@ function ProductDetail() {
                         key={item.id}
                         disabled={!item?.stock}
                         onClick={() => handleVariantSelect(item)}
-                        className={`px-5 disabled:opacity-50 relative overflow-hidden py-3 text-[#111111] cursor-pointer text-[16px] font-medium border border-[#E6E7E8] rounded-[0.625rem] ${
+                        className={`px-5 disabled:opacity-50 relative overflow-hidden py-3   cursor-pointer text-[16px] font-medium border border-[#E6E7E8] rounded-[0.625rem] ${
                           variant?.product_variation === item?.product_variation
                             ? "!border-[#111111]"
                             : ""
@@ -677,7 +677,7 @@ function ProductDetail() {
                         />
                       </svg>
                     </button>
-                    <span className="w-12 text-center text-lg font-medium text-[#111111]">
+                    <span className="w-12 text-center text-lg font-medium  ">
                       {quantity}
                     </span>
                     <button
@@ -737,7 +737,7 @@ function ProductDetail() {
                     e.stopPropagation();
                     addToWishList();
                   }}
-                  className="flex-[100%] text-[#111111] sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-[0.625rem] text-base focus:outline-none flex items-center justify-center"
+                  className="flex-[100%]   sm:flex-1 lg:flex-[100%] 2xl:flex-1 btn btn-outline sm:px-[1.5rem] px-[0.9rem] py-[0.9375rem] rounded-[0.625rem] text-base focus:outline-none flex items-center justify-center"
                 >
                   <span className="max-w-[1.5rem] mr-2">
                     <svg
@@ -761,11 +761,11 @@ function ProductDetail() {
               </div>
               {product?.description && (
                 <div className="description-wrapper border-t border-[#111111]/15 pt-6">
-                  <h4 className="text-sm font-bold mb-4 text-[#111111] lg:text-2xl">
+                  <h4 className="text-sm font-bold mb-4   lg:text-2xl">
                     Product Summary
                   </h4>
                   <div
-                    className="mb-4 text-[#111111] text-lg"
+                    className="mb-4   text-lg"
                     dangerouslySetInnerHTML={{ __html: product?.description }}
                   ></div>
                 </div>
