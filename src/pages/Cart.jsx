@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import OrderList from "../components/orderList";
 import { openCheckoutModal } from "../redux/slices/uiSlice";
+import LoadingButton from "../components/LoadingButton";
+import { useTheme } from "../contexts/ThemeContext";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
   const { isAuthenticated } = useSelector((state) => state.auth);
   const { isCheckoutModalOpen } = useSelector((state) => state.ui);
+  const { theme } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -83,7 +86,13 @@ function Cart() {
               </div>
             )}
           </div>
-          <aside className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-10">
+          <aside
+            className="bg-[#FFF7F2] rounded-[2.125rem] p-[1.875rem] h-fit lg:mt-10"
+            style={{
+              backgroundColor: theme.bottomFooterBackgroundColor,
+              height: "fit-content",
+            }}
+          >
             <h2 className="md:text-2xl text-lg font-semibold mb-6">
               Order Summary
             </h2>
@@ -108,26 +117,17 @@ function Cart() {
                 </span>
               </div>
             </div>
-            {!isAuthenticated ? (
-              <button
-                onClick={() => {
-                  // setIsModalOpen(true);
+            <LoadingButton
+              onClick={() => {
+                if (!isAuthenticated) {
                   dispatch(openCheckoutModal());
-                }}
-                disabled={!cartItems?.length}
-                className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
-              >
-                Checkout
-              </button>
-            ) : (
-              <button
-                onClick={proceedToCheckout}
-                disabled={!cartItems?.length}
-                className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
-              >
-                Checkout
-              </button>
-            )}
+                } else {
+                  proceedToCheckout();
+                }
+              }}
+              text="Checkout"
+              disabled={!cartItems?.length}
+            />
             <div className="text-center mt-6">
               <Link
                 className="sm:text-lg uppercase font-normal underline   hover:text-[#007BFF] transition-all duration-300"
@@ -141,8 +141,6 @@ function Cart() {
       </div>
       <ModalComponent
         isModalOpen={isCheckoutModalOpen}
-        // setIsModalOpen={setIsModalOpen}
-        // onOTPSendError={handleOTPSendError}
         setShowSignUpModal={setShowSignUpModal}
       />
       <SignUpModal

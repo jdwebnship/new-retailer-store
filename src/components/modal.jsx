@@ -11,39 +11,31 @@ import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { closeCheckoutModal } from "../redux/slices/uiSlice";
 import { syncGuestCartItems } from "../utils/helper";
+import LoadingButton from "./LoadingButton";
 
-const ModalComponent = ({
-  isModalOpen,
-  // setIsModalOpen,
-  setShowSignUpModal,
-}) => {
+const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { verificationError } = useSelector((state) => state.auth);
+  const { verificationError, loading, verificationLoading } = useSelector(
+    (state) => state.auth
+  );
   const { cartItems } = useSelector((state) => state.cart);
 
-  // useEffect(() => {
-  //           dispatch(fetchCart());
-  //       }, []);
-
-  const [step, setStep] = useState("phone"); // "phone" or "otp"
+  const [step, setStep] = useState("phone");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [otp, setOtp] = useState(["", "", "", ""]); // Array for 4 OTP digits
-  const [timer, setTimer] = useState(30); // 30-second timer for resend
+  const [otp, setOtp] = useState(["", "", "", ""]);
+  const [timer, setTimer] = useState(30);
 
-  // Handle OTP input
   const handleOtpChange = (e, index) => {
-    const value = e.target.value.replace(/\D/g, ""); // Only digits
+    const value = e.target.value.replace(/\D/g, "");
     if (value.length === 1) {
       const newOtp = [...otp];
       newOtp[index] = value;
       setOtp(newOtp);
-      // Move focus to next input if not last
       if (index < 3) {
         document.getElementById(`otp-input-${index + 1}`).focus();
       }
     } else if (value.length === 0) {
-      // Allow clearing the field and move focus to previous
       const newOtp = [...otp];
       newOtp[index] = "";
       setOtp(newOtp);
@@ -51,12 +43,10 @@ const ModalComponent = ({
         document.getElementById(`otp-input-${index - 1}`).focus();
       }
     } else if (value.length > 1) {
-      // If user pastes more than one digit, ignore (paste is handled separately)
       return;
     }
   };
 
-  // Handle OTP paste
   const handleOtpPaste = (e) => {
     e.preventDefault();
     const paste = e.clipboardData.getData("text").replace(/\D/g, "");
@@ -68,11 +58,9 @@ const ModalComponent = ({
     }
   };
 
-  // Handle phone number submission
   const handleContinue = async () => {
     const cleanNumber = phoneNumber.replace(/\D/g, "");
     if (cleanNumber.length === 10) {
-      // Use the cleaned 10-digit number
       const mobile = cleanNumber;
 
       try {
@@ -81,17 +69,10 @@ const ModalComponent = ({
         setTimer(30);
       } catch (error) {
         console.error("Failed to send OTP:", error);
-        // if (error?.userNotRegistered && typeof onOTPSendError === "function") {
-        //   onOTPSendError(error);
-        // } else {
-        //   // Show error toast for other errors
-        //   toast.error(error?.message || "Failed to send OTP");
-        // }
       }
     }
   };
 
-  // Handle OTP submission
   const handleConfirm = async () => {
     const otpValue = otp.join("");
     if (otpValue.length === 4) {
@@ -115,19 +96,14 @@ const ModalComponent = ({
               navigate("/checkout");
             }
           }
-          // setIsModalOpen(false);
           dispatch(closeCheckoutModal());
         }
-        // On successful verification, close the modal
-        // Reset OTP state for next time
-        // dispatch(resetOTPState());
       } catch (error) {
         console.error("OTP verification failed:", error);
       }
     }
   };
 
-  // Handle resend code
   const handleResend = async () => {
     if (timer > 0) return;
 
@@ -136,17 +112,14 @@ const ModalComponent = ({
 
     try {
       await dispatch(sendOTP(mobile)).unwrap();
-      setTimer(30); // Reset timer on successful resend
+      setTimer(30);
     } catch (error) {
       console.error("Failed to resend OTP:", error);
     }
     setOtp(["", "", "", ""]);
     setTimer(30);
-    // Add logic to resend OTP here
   };
 
-  // Timer logic
-  // Timer logic
   useEffect(() => {
     if (step !== "otp" || timer <= 0) return;
 
@@ -161,16 +134,14 @@ const ModalComponent = ({
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [step, timer]); // ✅ restart when timer is reset
+  }, [step, timer]);
 
-  // Prevent background scrolling when modal is open
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
     }
-    // Cleanup on component unmount
     return () => {
       document.body.style.overflow = "auto";
     };
@@ -256,13 +227,12 @@ const ModalComponent = ({
                     </p>
                   )}
                 </div>
-                <button
+                <LoadingButton
                   onClick={handleContinue}
-                  className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
+                  loading={loading}
                   disabled={!phoneNumber || !/^\d{10}$/.test(phoneNumber)}
-                >
-                  Continue
-                </button>
+                  text="Continue"
+                />
                 <p className="text-xs xs:text-sm sm:text-sm text-left">
                   By signing in, you agree to our{" "}
                   <Link
@@ -341,13 +311,12 @@ const ModalComponent = ({
                     </div>
                   </div>
                   <div className="flex flex-col gap-2 xs:gap-3 sm:gap-[0.9879rem] mt-2">
-                    <button
+                    <LoadingButton
                       onClick={handleConfirm}
-                      className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed mb-2 sm:mb-[0.9375rem] text-base xs:text-lg"
+                      loading={verificationLoading}
                       disabled={otp.join("").length !== 4}
-                    >
-                      Confirm
-                    </button>
+                      text="Confirm"
+                    />
                     <button
                       onClick={() => setStep("phone")}
                       className="w-full border border-[#000000]   rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none cursor-pointer text-sm xs:text-base"

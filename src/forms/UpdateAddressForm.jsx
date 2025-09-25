@@ -26,9 +26,8 @@ const UpdateAddressForm = () => {
     },
     validationSchema: UpdateAddressSchema,
     enableReinitialize: true,
-    onSubmit: async (values, { setSubmitting }) => {
-      try {
-        const resultAction = await dispatch(
+    onSubmit: async (values) => {
+        await dispatch(
           postShippingAddress({
             address: values.address,
             pincode: values.pincode,
@@ -36,18 +35,6 @@ const UpdateAddressForm = () => {
             state: values.state,
           })
         ).unwrap();
-        if (postShippingAddress.fulfilled.match(resultAction)) {
-          dispatch(getShippingAddress());
-        } else {
-          throw new Error(
-            resultAction.payload?.message || "Failed to update address"
-          );
-        }
-      } catch (error) {
-        toast.error(error.message || "Failed to update address");
-      } finally {
-        setSubmitting(false);
-      }
     },
   });
 

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
-import watch from "../assets/watch.png";
+import placeholderImage from "../assets/images/placeholder.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import { useFormik } from "formik";
@@ -15,6 +15,7 @@ import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { CheckoutSchema } from "../utils/validationSchema";
 import { getProductImage } from "../utils/common";
+import LoadingButton from "../components/LoadingButton";
 
 function Checkout() {
   const navigate = useNavigate();
@@ -104,7 +105,9 @@ function Checkout() {
       lastname: userData.lastname || "",
       address: userData.address || "",
       pincode: userData.pincode || "",
-      alt_phone_number: userData.alt_phone_number || "",
+      alt_phone_number: userData.alt_phone_number
+        ? userData.alt_phone_number
+        : userData.phone_number || "",
       city: userData.city || "",
       state: userData.state || "",
     },
@@ -405,23 +408,13 @@ function Checkout() {
                   <div key={item.cart_id} className="bottom-card">
                     <div className="flex sm:gap-[0.82rem] justify-between">
                       <div className="flex gap-[0.5rem] sm:gap-[1.5rem]">
-                        {item?.product_images ? (
-                          <div className="w-[4rem] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden shrink-0">
-                            <img
-                              src={getProductImage(item)}
-                              alt={item.product_name}
-                              className="w-full h-full object-cover shrink-0"
-                            />
-                          </div>
-                        ) : (
-                          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center bg-[#f2f2f2] text-gray-500">
-                            <img
-                              src={placeholderImage}
-                              alt="No image"
-                              className="w-1/2 h-1/2 object-contain"
-                            />
-                          </div>
-                        )}
+                        <div className="w-[4rem] md:w-[5rem] h-[4rem] md:h-[5rem] rounded-[0.625rem] overflow-hidden shrink-0">
+                          <img
+                            src={getProductImage(item)}
+                            alt={item.product_name}
+                            className="w-full h-full object-cover shrink-0"
+                          />
+                        </div>
                         <div>
                           <h3 className="font-bold line-clamp-2 text-sm sm:text-base  ">
                             {item.product_name}
@@ -529,18 +522,12 @@ function Checkout() {
                       )}
                   </div>
                   <div className="flex gap-2">
-                    <button
+                    <LoadingButton
                       type="submit"
                       disabled={couponForm.values.coupon_code === ""}
-                      className={`btn sm:px-[3rem] px-[0.9rem] py-[0.9rem] rounded-r-sm lg:text-lg focus:outline-none  
-                        ${
-                          couponForm.values.coupon_code === ""
-                            ? "bg-gray-400"
-                            : "bg-black hover:bg-gray-800"
-                        }`}
-                    >
-                      Apply
-                    </button>
+                      loading={discountLoading}
+                      text="Apply"
+                    />
                   </div>
                 </form>
               )}
@@ -650,20 +637,17 @@ function Checkout() {
                 </span>
               </div>
             </div>
-            <button
+            <LoadingButton
               type="submit"
               form="checkout-form"
               onClick={(e) => {
                 e.preventDefault();
                 formik.handleSubmit();
               }}
-              className={`mt-6 w-full sm:text-lg font-normal text-white rounded-[0.625rem] py-4 uppercase cursor-pointer ${
-                checkoutLoading || !paymentMethod ? "bg-[#111111]/50" : "btn"
-              }`}
               disabled={checkoutLoading || !paymentMethod}
-            >
-              {checkoutLoading ? "Placing Order..." : "Place Order"}
-            </button>
+              loading={checkoutLoading}
+              text="Place Order"
+            />
             <div className="text-center mt-6">
               <Link
                 className="sm:text-lg uppercase    font-normal underline hover:text-[#007BFF]"

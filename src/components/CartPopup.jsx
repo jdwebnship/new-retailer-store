@@ -5,6 +5,7 @@ import { removeFromCartapi, updateCartItem } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
 import { openCheckoutModal } from "../redux/slices/uiSlice";
+import LoadingButton from "./LoadingButton";
 
 const CartPopup = ({ items = [], onClose }) => {
   const navigate = useNavigate();
@@ -70,36 +71,18 @@ const CartPopup = ({ items = [], onClose }) => {
 
         {/* Footer */}
         <div className="flex flex-col gap-6 border-t border-[#11111126]">
-          {/* <button
-            className="btn py-4 rounded-md cursor-pointer"
+          <LoadingButton
             onClick={() => {
-              navigate("/cart");
-              dispatch(openCheckoutModal());
-              onClose();
-            }}
-          >
-            CHECKOUT
-          </button> */}
-
-          {!isAuthenticated ? (
-            <button
-              onClick={() => {
+              if (!isAuthenticated) {
                 navigate("/cart");
                 dispatch(openCheckoutModal());
                 onClose();
-              }}
-              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
-            >
-              Checkout
-            </button>
-          ) : (
-            <button
-              onClick={proceedToCheckout}
-              className="mt-6 w-full sm:text-lg font-normal bg-black text-white rounded-[0.625rem] sm:py-4 py-3 uppercase disabled:opacity-60 cursor-pointer"
-            >
-              Checkout
-            </button>
-          )}
+              } else {
+                proceedToCheckout();
+              }
+            }}
+            text="Checkout"
+          />
           <button
             onClick={() => {
               navigate("/cart");

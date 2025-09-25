@@ -35,12 +35,6 @@ function BottomFooter({}) {
           >
             SUBSCRIBE
           </button>
-          {/* <button
-            type="submit"
-            className="px-[1.5rem] py-[0.9375rem] rounded-r-lg bg-black text-white text-sm font-medium hover:bg-black focus:outline-none"
-          >
-            SUBSCRIBE
-          </button> */}
         </div>
       </form>
     </section>

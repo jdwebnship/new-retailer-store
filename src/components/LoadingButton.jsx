@@ -17,7 +17,7 @@ const LoadingButton = ({
       className={`${
         fullWidth ? "w-full" : ""
       } btn text-white py-3.5 px-6 rounded-[0.625rem] font-medium text-base hover:bg-opacity-90 transition-all duration-300 flex justify-center items-center cursor-pointer ${
-        loading ? "opacity-70 cursor-not-allowed" : ""
+        loading || disabled ? "opacity-70 cursor-not-allowed" : ""
       } ${className}`}
     >
       {loading ? (

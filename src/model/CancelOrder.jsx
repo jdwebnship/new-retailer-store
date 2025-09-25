@@ -1,8 +1,9 @@
 import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import { cancelOrder } from "../redux/slices/customerOrdersSlice";
 import { CancelOrderSchema } from "../utils/validationSchema";
+import LoadingButton from "../components/LoadingButton";
 
 const cancelReasons = [
   { value: "", label: "Select Reason" },
@@ -22,6 +23,7 @@ const cancelReasons = [
 
 const CancelOrder = ({ open, onClose, orderId }) => {
   const dispatch = useDispatch();
+  const { loading } = useSelector((state) => state.customerOrders);
 
   const formik = useFormik({
     initialValues: {
@@ -118,16 +120,16 @@ const CancelOrder = ({ open, onClose, orderId }) => {
                 onClose();
                 formik.resetForm();
               }}
-              className="px-4 py-2 border bg-[#f22834] text-white border-[#f22834] rounded-md cursor-pointer"
+              className="px-4 py-2 border text-black rounded-md cursor-pointer"
             >
               Close
             </button>
-            <button
+            <LoadingButton
               type="submit"
-              className="px-4 py-2 border bg-[#25D366] cursor-pointer border-[#25D366] rounded-md  text-white"
-            >
-              Confirm Cancel
-            </button>
+              loading={loading}
+              text="Confirm Cancel"
+              fullWidth={false}
+            />
           </div>
         </form>
       </div>
