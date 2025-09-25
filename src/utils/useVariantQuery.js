@@ -27,31 +27,41 @@ const useVariantQuery = (variantList = []) => {
         (v) => v.product_variation === variant
       );
       if (variantObj?.stock > 0) {
-        setSearchParams((prev) => {
-          const updated = new URLSearchParams(prev);
-          if (updated.get("variant") !== variant) {
-            updated.set("variant", variant);
-          }
-          return updated;
-        }, { replace: true });
+        setSearchParams(
+          (prev) => {
+            const updated = new URLSearchParams(prev);
+            if (updated.get("variant") !== variant) {
+              updated.set("variant", variant);
+            }
+            return updated;
+          },
+          { replace: true }
+        );
       } else {
-        setSearchParams((prev) => {
+        setSearchParams(
+          (prev) => {
+            const updated = new URLSearchParams(prev);
+            if (updated.has("variant")) {
+              updated.delete("variant");
+            }
+            return updated;
+          },
+          { replace: true }
+        );
+      }
+    } else {
+      setSearchParams(
+        (prev) => {
           const updated = new URLSearchParams(prev);
           if (updated.has("variant")) {
             updated.delete("variant");
           }
           return updated;
-        }, { replace: true });
-      }
-    } else {
-      setSearchParams((prev) => {
-        const updated = new URLSearchParams(prev);
-        if (updated.has("variant")) {
-          updated.delete("variant");
-        }
-        return updated;
-      }, { replace: true });
+        },
+        { replace: true }
+      );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [variant, validVariants.join(",")]);
 
   // Sync state when URL changes (e.g., back/forward)
@@ -67,6 +77,7 @@ const useVariantQuery = (variantList = []) => {
         setVariant("");
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams.toString(), validVariants.join(",")]);
 
   return [variant, setVariant];

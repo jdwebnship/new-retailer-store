@@ -25,7 +25,7 @@ function Cart() {
     if (isAuthenticated) {
       dispatch(fetchCart());
     }
-  }, [isAuthenticated]);
+  }, [dispatch, isAuthenticated]);
 
   const { subtotal, total, itemCount } = useMemo(() => {
     if (!cartItems?.length) {

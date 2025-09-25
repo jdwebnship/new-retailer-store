@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "../contexts/ThemeContext";
 import CardComponent from "./CardComponent";
 
 function SecondProductSection() {

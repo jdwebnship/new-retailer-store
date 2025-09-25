@@ -9,8 +9,8 @@ import {
 } from "../utils/common";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addtowishList,
-  removeFromwishList,
+  addToWishListData,
+  removeFromWishList,
 } from "../redux/slices/WishListSlice";
 
 const CardComponent = ({ product, isWishlistKey = false }) => {
@@ -49,7 +49,7 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
             ? productData?.id
             : null,
         };
-        dispatch(removeFromwishList(payload, dispatch));
+        dispatch(removeFromWishList(payload, dispatch));
       } else {
         const payload = {
           product_id: productData?.id,
@@ -60,23 +60,19 @@ const CardComponent = ({ product, isWishlistKey = false }) => {
             ? null
             : productData?.wholesaler_id,
         };
-        dispatch(addtowishList(payload, dispatch));
+        dispatch(addToWishListData(payload, dispatch));
       }
     } else {
       navigate("/signin");
     }
   };
 
-  const removeDataFromWishlist = ({
-    product_id,
-    retailer_id,
-    retailer_product_id,
-  }) => {
+  const removeDataFromWishlist = ({ product_id, retailer_product_id }) => {
     const payload = {
       retailer_product_id: retailer_product_id ? retailer_product_id : "",
       product_id: !retailer_product_id ? product_id : "",
     };
-    dispatch(removeFromwishList(payload));
+    dispatch(removeFromWishList(payload));
   };
 
   return (

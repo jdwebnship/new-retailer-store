@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { removeFromCartapi, updateCartItem } from "../redux/slices/cartSlice";
+import { removeFromCartApi, updateCartItem } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
 import minus from "../assets/minus.svg";
@@ -23,7 +23,7 @@ export default function OrderList({ item }) {
       resetKey: item.id,
       onChange: (newQty, action) => {
         if (action === "decrease" && quantity === 1) {
-          dispatch(removeFromCartapi(item));
+          dispatch(removeFromCartApi(item));
           return;
         }
         const quantityChange = action === "increase" ? 1 : -1;
@@ -77,7 +77,7 @@ export default function OrderList({ item }) {
             </div>
           </div>
           <button
-            onClick={() => dispatch(removeFromCartapi(item))}
+            onClick={() => dispatch(removeFromCartApi(item))}
             className="text-sm underline uppercase cursor-pointer  "
           >
             Remove

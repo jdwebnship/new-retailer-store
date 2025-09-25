@@ -6,7 +6,7 @@ import { useTheme } from "../contexts/ThemeContext";
 
 const Support = () => {
   const { storeInfo } = useSelector((state) => state.storeInfo);
-  const { theme, bottomFooterTextColor, textColor } = useTheme();
+  const { theme, bottomFooterTextColor } = useTheme();
   return (
     <>
       <CommonHeader title="Support Center" />

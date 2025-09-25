@@ -92,29 +92,29 @@ export const addToCart = createAsyncThunk(
             quantity: productObj.quantity,
             product_stock: productObj.product_stock,
             product_name: item?.name || item?.product_name,
-          product_images: item?.product_images,
-          status: productObj.status,
-          message: productObj.message,
-          wishlist_id: productObj.wishlist_id,
-          final_price: Number(
-            item?.selectedVariant?.final_price ?? item?.final_price ?? 0
-          ).toFixed(2),
-          retailer_id: item?.retailer_id,
-          wholesaler_id: item?.wholesaler_id,
-          product_id: item?.id || item?.product_id,
-          selected_variant: item?.selectedVariant
-            ? {
-                id: item.selectedVariant.id,
-                product_variation: item.selectedVariant.product_variation,
-                final_price: item.selectedVariant.final_price,
-                stock: item.selectedVariant.stock,
-              }
-            : null,
-        };
-        dispatch(addToCartUser(cartItem));
-        dispatch(openCartPopup());
-        toast.success(response.data.message || "Item added to cart.");
-        }else{
+            product_images: item?.product_images,
+            status: productObj.status,
+            message: productObj.message,
+            wishlist_id: productObj.wishlist_id,
+            final_price: Number(
+              item?.selectedVariant?.final_price ?? item?.final_price ?? 0
+            ).toFixed(2),
+            retailer_id: item?.retailer_id,
+            wholesaler_id: item?.wholesaler_id,
+            product_id: item?.id || item?.product_id,
+            selected_variant: item?.selectedVariant
+              ? {
+                  id: item.selectedVariant.id,
+                  product_variation: item.selectedVariant.product_variation,
+                  final_price: item.selectedVariant.final_price,
+                  stock: item.selectedVariant.stock,
+                }
+              : null,
+          };
+          dispatch(addToCartUser(cartItem));
+          dispatch(openCartPopup());
+          toast.success(response.data.message || "Item added to cart.");
+        } else {
           toast.error(response.data.message || "Failed to add item to cart");
         }
       }
@@ -197,8 +197,8 @@ export const updateCartItem = createAsyncThunk(
   }
 );
 
-export const removeFromCartapi = createAsyncThunk(
-  "cart/removeFromCartapi",
+export const removeFromCartApi = createAsyncThunk(
+  "cart/ removeFromCartApi",
   async (item, { rejectWithValue, dispatch, getState }) => {
     const { auth } = getState();
     const keyPayload = {
@@ -451,7 +451,7 @@ const cartSlice = createSlice({
       state.loading = true;
       state.error = null;
     });
-    builder.addCase(updateCartItem.fulfilled, (state, action) => {
+    builder.addCase(updateCartItem.fulfilled, (state) => {
       // const item = state.cartItems.find(
       //   (item) => item.id === action.payload.itemId
       // );

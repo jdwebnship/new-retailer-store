@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 function Cart() {
-  const { theme, headerTextColor } = useTheme();
+  const { headerTextColor } = useTheme();
   const navigate = useNavigate();
   return (
     <div

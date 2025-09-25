@@ -54,6 +54,7 @@ function App() {
   useEffect(() => {
     const total = topHeaderHeight + headerHeight; // always full height
     setContentPaddingTop(total);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // empty deps = run only on mount
 
   useLayoutEffect(() => {

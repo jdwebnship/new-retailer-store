@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
 function Call() {
-  const { theme, footerTextColor } = useTheme();
+  const { footerTextColor } = useTheme();
   return (
     <span className="relative">
-      {/* Settings Button */}
-
       <svg
         width="24"
         height="24"

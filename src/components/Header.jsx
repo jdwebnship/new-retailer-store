@@ -18,7 +18,7 @@ import CartPopup from "./CartPopup";
 import { closeCartPopup } from "../redux/slices/cartSlice";
 import Loader from "./Loader";
 
-function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
+function Header({ offsetY = 0, onHeightChange }) {
   const { theme, headerTextColor } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
-import placeholderImage from "../assets/images/placeholder.png";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import { useFormik } from "formik";

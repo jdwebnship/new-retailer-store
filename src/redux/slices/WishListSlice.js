@@ -22,16 +22,19 @@ export const fetchWishList = createAsyncThunk(
   }
 );
 
-export const addtowishList = createAsyncThunk(
-  "wishlist/addtowishList",
+export const addToWishListData = createAsyncThunk(
+  "wishlist/ addToWishListData",
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post("/customer/add-to-wishlist", data);
+      const response = await axiosInstance.post(
+        "/customer/add-to-wishlist",
+        data
+      );
       if (response?.data?.success) {
-        dispatch(fetchWishList())
-        toast.success(response?.data?.message)
+        dispatch(fetchWishList());
+        toast.success(response?.data?.message);
       } else {
-        toast.error(response?.data?.message)
+        toast.error(response?.data?.message);
       }
       return response.data;
     } catch (error) {
@@ -42,16 +45,19 @@ export const addtowishList = createAsyncThunk(
   }
 );
 
-export const removeFromwishList = createAsyncThunk(
-  "wishlist/removeFromwishList",
+export const removeFromWishList = createAsyncThunk(
+  "wishlist/ removeFromWishList",
   async (data, { rejectWithValue, dispatch }) => {
     try {
-      const response = await axiosInstance.post("/customer/remove-to-wishlist", data);
+      const response = await axiosInstance.post(
+        "/customer/remove-to-wishlist",
+        data
+      );
       if (response?.data?.success) {
-        dispatch(fetchWishList())
-        toast.success(response?.data?.message)
+        dispatch(fetchWishList());
+        toast.success(response?.data?.message);
       } else {
-        toast.error(response?.data?.message)
+        toast.error(response?.data?.message);
       }
       return response.data;
     } catch (error) {
@@ -87,7 +93,7 @@ const wishlistSlice = createSlice({
       .addCase(fetchWishList.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload || "Failed to fetch store information";
-      })
+      });
   },
 });
 

@@ -1,8 +1,7 @@
 import React from "react";
 import { useTheme } from "../contexts/ThemeContext";
-import { getContrastingColor } from "../utils/colorUtils";
 
-function BottomFooter({}) {
+function BottomFooter() {
   const { theme, bottomFooterTextColor } = useTheme();
 
   return (

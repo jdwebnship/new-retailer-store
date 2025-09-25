@@ -15,8 +15,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { getWhatsappLink, isInWishlist } from "../utils/common";
 import {
-  addtowishList,
-  removeFromwishList,
+  addToWishListData,
+  removeFromWishList,
 } from "../redux/slices/WishListSlice";
 import { toast } from "react-toastify";
 import { addToCart, openCartPopup } from "../redux/slices/cartSlice";
@@ -62,7 +62,9 @@ function ProductDetail() {
   const isWishlist =
     (isAuthenticated && isInWishlist(product?.id, wishlistData)) || false;
 
+  // eslint-disable-next-line no-unused-vars
   const [thumbHeight, setThumbHeight] = useState("515px");
+  // eslint-disable-next-line no-unused-vars
   const [mainHeight, setMainHeight] = useState("400px");
   const mainContainerRef = useRef(null);
   const thumbContainerRef = useRef(null);
@@ -74,14 +76,14 @@ function ProductDetail() {
           product_id: !product?.retailer_id ? product?.id : null,
           retailer_product_id: product?.retailer_id ? product?.id : null,
         };
-        dispatch(removeFromwishList(payload, dispatch));
+        dispatch(removeFromWishList(payload, dispatch));
       } else {
         const payload = {
           product_id: product?.id,
           retailer_id: product?.wholesaler_id ? null : product?.retailer_id,
           wholesaler_id: product?.retailer_id ? null : product?.wholesaler_id,
         };
-        dispatch(addtowishList(payload, dispatch));
+        dispatch(addToWishListData(payload, dispatch));
       }
     } else {
       navigate("/signin");
@@ -103,6 +105,7 @@ function ProductDetail() {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [slug, dispatch, navigate]);
 
   useEffect(() => {
@@ -149,16 +152,16 @@ function ProductDetail() {
       availableStock,
       cartQuantity,
       resetKey: selectedVariant?.id,
-      onChange: (newQty, action) => {
-        const quantityChange = action === "increase" ? 1 : -1;
-        dispatch(updateCartItem({ item, qty: quantityChange }));
-      },
+      // onChange: (newQty, action) => {
+      //   const quantityChange = action === "increase" ? 1 : -1;
+      //   dispatch(updateCartItem({ item, qty: quantityChange }));
+      // },
     });
 
   const handleAddToCart = () => {
     // e.stopPropagation();
     if (availableStock === 0) {
-      toast.warning("Product is not avaliable");
+      toast.warning("Product is not available");
     } else if (cartQuantity + quantity > availableStock) {
       toast.warning("Cannot add more than available stock");
     } else if (productVariations?.length) {
@@ -428,7 +431,7 @@ function ProductDetail() {
                     768: { direction: "horizontal" },
                   }}
                   onSlideChange={handleSlideChange}
-                  onImagesReady={(swiper) => {
+                  onImagesReady={() => {
                     if (mainContainerRef.current) {
                       const mainImg =
                         mainContainerRef.current.querySelector("img");
@@ -523,7 +526,7 @@ function ProductDetail() {
                           768: { direction: "horizontal" },
                         }}
                         onSlideChange={handleSlideChange}
-                        onImagesReady={(swiper) => {
+                        onImagesReady={() => {
                           if (mainContainerRef.current) {
                             const mainImg =
                               mainContainerRef.current.querySelector("img");

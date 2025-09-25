@@ -1,13 +1,11 @@
 import React from "react";
 import CommonHeader from "../components/CommonHeader";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import order from "../assets/images/fail.svg";
 import { useTheme } from "../contexts/ThemeContext";
 
 function OrderSuccess() {
-  const location = useLocation();
-  const orderId = location.state?.orderId ?? "#ORD-000000";
-  const { theme, bottomFooterTextColor } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <div>
@@ -17,24 +15,11 @@ function OrderSuccess() {
           <div className="text-3xl mb-2">
             <img className="mx-auto" src={order} alt="" />
           </div>
-          {/* <h1 className="text-2xl font-semibold mb-[0.9375rem]">
-            Order Placed Successfully
-          </h1> */}
+
           <h1 className="text-2xl font-semibold mb-6">
             ⚠️ Oops! Something went wrong.
           </h1>
-          {/* <p className="text-sm font-medium py-6">
-            Reference ID:{" "}
-            <span
-              className="px-[0.9375rem] py-[0.5rem] rounded-lg"
-              style={{
-                backgroundColor: theme.bottomFooterBackgroundColor,
-                height: "fit-content",
-              }}
-            >
-              {orderId}
-            </span>
-          </p> */}
+
           <div
             className="flex flex-col justify-center gap-[0.9375rem] p-6 rounded-2xl max-w-[26.875rem] mx-auto"
             style={{

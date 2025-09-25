@@ -1,12 +1,9 @@
-import { useState } from "react";
 import { useTheme } from "../contexts/ThemeContext";
 
 function Instagram() {
-  const { theme, footerTextColor } = useTheme();
+  const { footerTextColor } = useTheme();
   return (
     <span className="relative">
-      {/* Settings Button */}
-
       <svg
         width="25"
         height="24"

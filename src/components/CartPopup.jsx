@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCartapi, updateCartItem } from "../redux/slices/cartSlice";
+import { removeFromCartApi, updateCartItem } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
 import { openCheckoutModal } from "../redux/slices/uiSlice";
@@ -124,7 +124,7 @@ const CartItem = ({ item }) => {
       resetKey: item.id,
       onChange: (newQty, action) => {
         if (action === "decrease" && quantity === 1) {
-          dispatch(removeFromCartapi(item));
+          dispatch(removeFromCartApi(item));
           return;
         }
         const quantityChange = action === "increase" ? 1 : -1;
@@ -202,7 +202,7 @@ const CartItem = ({ item }) => {
           </div>
           <button
             className="text-sm   underline cursor-pointer hover:text-[#007BFF] transition-all duration-300"
-            onClick={() => dispatch(removeFromCartapi(item))}
+            onClick={() => dispatch(removeFromCartApi(item))}
           >
             REMOVE
           </button>

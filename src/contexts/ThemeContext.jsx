@@ -13,7 +13,7 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children, theme = {} }) {
   const [currentTheme, setCurrentTheme] = useState({
-    fontFamily: "Satoshi, -apple-system, sans-serif",
+    fontFamily: "Instrument Sans, sans-serif",
     backgroundColor: "#ffffff",
     buttonBackgroundColor: "#111111",
     topHeaderBackgroundColor: "#111111",
@@ -169,4 +169,5 @@ export function ThemeProvider({ children, theme = {} }) {
   );
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => useContext(ThemeContext);
