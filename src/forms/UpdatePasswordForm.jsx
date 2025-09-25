@@ -37,7 +37,7 @@ const UpdatePasswordForm = () => {
       } catch (error) {
         const errorMessage =
           error?.response?.data?.message || "Failed to update password";
-        console.log(errorMessage);
+        console.error(errorMessage);
       } finally {
         setSubmitting(false);
       }

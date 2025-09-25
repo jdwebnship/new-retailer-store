@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { fetchSearchProducts } from "../redux/slices/productSlice";
 
 function Search() {
-  const { theme, headerTextColor } = useTheme();
+  const { headerTextColor } = useTheme();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -70,18 +70,18 @@ function Search() {
     }
   };
 
-  const performSearch = async (query) => {
-    const trimmed = (query || "").trim();
-    if (!trimmed) return;
-    try {
-      await dispatch(fetchSearchProducts({ search: trimmed })).unwrap();
-      navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
-      setIsSearchOpen(false);
-      setSearchQuery("");
-    } catch (error) {
-      console.error("Search failed:", error);
-    }
-  };
+  // const performSearch = async (query) => {
+  //   const trimmed = (query || "").trim();
+  //   if (!trimmed) return;
+  //   try {
+  //     await dispatch(fetchSearchProducts({ search: trimmed })).unwrap();
+  //     navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
+  //     setIsSearchOpen(false);
+  //     setSearchQuery("");
+  //   } catch (error) {
+  //     console.error("Search failed:", error);
+  //   }
+  // };
 
   const handleSuggestionClick = (text) => {
     setSearchQuery(text);

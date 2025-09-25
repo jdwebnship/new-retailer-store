@@ -31,7 +31,7 @@ const AccountDetails = () => {
       } catch (error) {
         const errorMessage =
           error?.response?.data?.message || "Failed to update account details";
-        console.log(errorMessage);
+        console.error(errorMessage);
       } finally {
         setSubmitting(false);
       }

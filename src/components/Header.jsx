@@ -415,7 +415,7 @@ function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
             <Search />
             <Profile />
             <Cart />
-            {/* <Settings /> */}
+            <Settings />
           </div>
           {/* Add more links as needed */}
         </nav>
