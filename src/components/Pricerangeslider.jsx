@@ -1,4 +1,8 @@
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { useTheme } from "../contexts/ThemeContext";
+
 export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
+  const { theme, bottomFooterTextColor } = useTheme();
   const handleMinChange = (e) => {
     const newMin = Math.min(+e.target.value, value[1] - 500);
     onChange([newMin, value[1]]);
@@ -15,10 +19,12 @@ export default function PriceRangeSlider({ value = [1000, 5000], onChange }) {
       <div className="relative w-full h-2 md:h-1 bg-gray-200 rounded-full mb-5 sm:mb-3">
         {/* Filled range track */}
         <div
-          className="absolute h-2 md:h-1 bg-black rounded-full"
+          className="absolute h-2 md:h-1 rounded-full"
           style={{
             left: `${(value[0] / 10000) * 100}%`,
             right: `${100 - (value[1] / 10000) * 100}%`,
+            backgroundColor:
+              ThemeProvider?.bottomFooterBackgroundColor || "#111111",
           }}
         />
         {/* Min handle */}

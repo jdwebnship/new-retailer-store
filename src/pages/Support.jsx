@@ -14,10 +14,10 @@ const Support = () => {
         <div className="container mx-auto">
           {/* Hero Section */}
           <div className="text-center mb-6">
-            <h1 className="text-4xl font-bold text-gray-800 mb-4 text-left">
+            <h1 className="text-4xl font-bold mb-4 text-left">
               We're Here to Help
             </h1>
-            <p className="text-xl text-gray-600 text-left">
+            <p className="text-xl text-left">
               Get assistance with your healthcare & e-commerce needs from our
               dedicated support team.
             </p>
@@ -64,7 +64,7 @@ const Support = () => {
           </div>
 
           {/* Support Options */}
-          <h2 className="text-2xl font-bold text-gray-800 mb-6 text-start">
+          <h2 className="text-2xl font-bold mb-6 text-start">
             Support Options
           </h2>
           <div className="grid md:grid-cols-3 gap-6 mb-12">
@@ -127,10 +127,8 @@ const Support = () => {
           <div className="w-full max-w-full">
             <div className="grid grid-cols-1 gap-6">
               <div className="text-left">
-                <h2 className="text-2xl font-bold text-gray-800 mb-4">
-                  How to Reach Us
-                </h2>
-                <p className="text-gray-700 mb-6">
+                <h2 className="text-2xl font-bold mb-4">How to Reach Us</h2>
+                <p className=" mb-6">
                   Email us at{" "}
                   <a
                     href={`mailto:${
@@ -145,10 +143,8 @@ const Support = () => {
                   . Please include a brief description of your issue.
                 </p>
 
-                <h3 className="text-xl font-semibold text-gray-800 mb-3">
-                  Additional Help
-                </h3>
-                <p className="text-gray-700">
+                <h3 className="text-xl font-semibold mb-3">Additional Help</h3>
+                <p className="">
                   For immediate assistance, call us at{" "}
                   <a href="#" className="text-blue-600 hover:underline">
                     {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}

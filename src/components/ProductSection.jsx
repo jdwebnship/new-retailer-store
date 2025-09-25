@@ -36,7 +36,7 @@ function ProductSection() {
             </div>
           </>
         ) : (
-          <p className="text-center text-gray-500">No products found.</p>
+          <p className="text-center opacity-50">No products found.</p>
         )}
       </section>
     </div>
