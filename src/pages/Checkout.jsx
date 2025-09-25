@@ -527,6 +527,7 @@ function Checkout() {
                       disabled={couponForm.values.coupon_code === ""}
                       loading={discountLoading}
                       text="Apply"
+                      BorderRadius={true}
                     />
                   </div>
                 </form>

@@ -8,6 +8,7 @@ const LoadingButton = ({
   className = "",
   text = "",
   fullWidth = true,
+  BorderRadius = false,
 }) => {
   return (
     <button
@@ -16,7 +17,9 @@ const LoadingButton = ({
       disabled={disabled || loading}
       className={`${
         fullWidth ? "w-full" : ""
-      } btn text-white py-3.5 px-6 rounded-[0.625rem] font-medium text-base hover:bg-opacity-90 transition-all duration-300 flex justify-center items-center cursor-pointer ${
+      } btn text-white py-3.5 px-6 font-medium text-base hover:bg-opacity-90 transition-all duration-300 flex justify-center items-center cursor-pointer ${
+        BorderRadius ? "rounded-r-sm" : "rounded-[0.625rem]"
+      } ${
         loading || disabled ? "opacity-70 cursor-not-allowed" : ""
       } ${className}`}
     >
