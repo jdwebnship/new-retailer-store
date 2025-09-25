@@ -202,8 +202,6 @@ function Search() {
                     />
                   </svg>
                 </button>
-                {/* Hidden submit button to ensure Enter submits in all browsers */}
-                <button type="submit" className="hidden" aria-hidden="true" />
               </div>
 
               {/* Suggested Search Terms */}

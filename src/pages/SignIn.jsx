@@ -17,7 +17,7 @@ function SignIn() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
-  const { loading } = useSelector((state) => state.auth);
+  const { loading, verificationLoading } = useSelector((state) => state.auth);
   const [isOtpLogin, setIsOtpLogin] = useState(false);
   const [isOtpSent, setIsOtpSent] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -266,11 +266,10 @@ function SignIn() {
                       <div className="flex justify-between items-center gap-1 sm:gap-0 mb-3">
                         <button
                           onClick={handleResend}
-                          className={`w-auto whitespace-nowrap xs:w-auto underline text-xs xs:text-sm sm:text-sm ${
-                            timer > 0
-                              ? "cursor-not-allowed opacity-50 text-gray-500"
-                              : "cursor-pointer hover:opacity-100 text-gray-900"
-                          }`}
+                          className={`w-auto whitespace-nowrap xs:w-auto underline text-xs xs:text-sm sm:text-sm ${timer > 0
+                            ? "cursor-not-allowed opacity-50 text-gray-500"
+                            : "cursor-pointer hover:opacity-100 text-gray-900"
+                            }`}
                           disabled={timer > 0}
                         >
                           <span className="block w-full text-left">
@@ -285,26 +284,23 @@ function SignIn() {
                       </div>
                     </div>
                     <div className="flex flex-col gap-2 xs:gap-3 sm:gap-[0.9879rem] mt-2">
-                      <button
+                      <LoadingButton
                         onClick={handleConfirm}
-                        className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed text-base xs:text-lg"
-                        // disabled={otp.join("").length !== 4}
+                        loading={verificationLoading}
                         disabled={otp.join("").length !== 4}
-                      >
-                        Confirm
-                      </button>
+                        text="Confirm"
+                      />
                     </div>
                   </div>
                 )}
 
                 {!isOtpSent && (
-                  <button
+                  <LoadingButton
                     onClick={handleContinue}
-                    className="w-full btn rounded-md sm:rounded-[0.625rem] py-2 xs:py-3 sm:py-4 uppercase font-medium outline-none disabled:bg-gray-400 disabled:cursor-not-allowed text-base xs:text-lg"
+                    loading={loading}
                     disabled={!phoneNumber || !/^\d{10}$/.test(phoneNumber)}
-                  >
-                    Send OTP
-                  </button>
+                    text="Send OTP"
+                  />
                 )}
               </div>
             </div>

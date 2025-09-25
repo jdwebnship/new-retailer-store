@@ -14,6 +14,7 @@ import Call from "../assets/call.svg";
 import Map from "../assets/map-pin1.svg";
 import Twitter from "../assets/twitter.svg";
 import { ContactSchema } from "../utils/validationSchema";
+import LoadingButton from "../components/LoadingButton";
 
 function Contacts() {
   const dispatch = useDispatch();
@@ -392,13 +393,12 @@ function Contacts() {
                 </label>
               </div>
               <div>
-                <button
+                <LoadingButton
                   type="submit"
                   disabled={loading}
-                  className="bg-[#111111] text-white py-3 px-8 rounded-lg hover:bg-[#333333] transition-colors duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {loading ? "Sending..." : "Send Message"}
-                </button>
+                  loading={loading}
+                  text="Send Message"
+                />
               </div>
             </form>
           </div>
