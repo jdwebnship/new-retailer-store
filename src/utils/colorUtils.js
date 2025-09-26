@@ -1,4 +1,3 @@
-// src/utils/colorUtils.js
 export function getContrastingColor(hexColor) {
   if (!hexColor || typeof hexColor !== "string") {
     return "#111111";
@@ -17,7 +16,6 @@ export function getContrastingColor(hexColor) {
   const r = parseInt(full.substring(0, 2), 16);
   const g = parseInt(full.substring(2, 4), 16);
   const b = parseInt(full.substring(4, 6), 16);
-  // YIQ formula for perceived brightness
   const yiq = (r * 299 + g * 587 + b * 114) / 1000;
   return yiq >= 128 ? "#111111" : "#ffffff";
 }

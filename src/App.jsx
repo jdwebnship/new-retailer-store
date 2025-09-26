@@ -4,13 +4,12 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import BottomFooter from "./components/BottomFooter";
 import { gsap } from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger"; // Import ScrollTrigger
-import ScrollSmoother from "./gsap-bonus/ScrollSmoother"; // Local file import
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import ScrollSmoother from "./gsap-bonus/ScrollSmoother";
 import AppRoutes from "./Routes/routes";
 import "./App.css";
 import ScrollToTop from "./components/ScrollToTop";
 
-// Register plugins once at the module level
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 function App() {
@@ -23,7 +22,7 @@ function App() {
   useEffect(() => {
     let lastY = window.scrollY;
     let ticking = false;
-    const threshold = 12; // pixels to avoid flicker
+    const threshold = 12;
 
     const onScroll = () => {
       const currentY = window.scrollY;
@@ -52,34 +51,31 @@ function App() {
   }, []);
 
   useEffect(() => {
-    const total = topHeaderHeight + headerHeight; // always full height
+    const total = topHeaderHeight + headerHeight;
     setContentPaddingTop(total);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // empty deps = run only on mount
+  }, []);
 
   useLayoutEffect(() => {
-    // Verify elements exist
     const wrapper = document.querySelector("#smooth-wrapper");
     const content = document.querySelector("#smooth-content");
 
     if (wrapper && content) {
-      // Initialize ScrollSmoother
       const smoother = ScrollSmoother.create({
         wrapper: "#smooth-wrapper",
         content: "#smooth-content",
-        smooth: 1.5, // Smoothing duration (seconds)
-        effects: true, // Enable data-speed/data-lag effects
-        normalizeScroll: true, // Improves touch device scrolling
+        smooth: 1.5,
+        effects: true,
+        normalizeScroll: true,
       });
 
-      // Cleanup on unmount
       return () => {
         smoother && smoother.kill();
       };
     } else {
       console.warn("ScrollSmoother: Wrapper or content element not found.");
     }
-  }, []); // Empty dependency array: run once after mount
+  }, []);
 
   return (
     <div>

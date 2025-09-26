@@ -1,4 +1,3 @@
-// src/components/Footer.jsx
 import { useTheme } from "../contexts/ThemeContext";
 import Facebook from "./Facebook";
 import Instagram from "./instagram";
@@ -19,7 +18,7 @@ function Footer() {
     window.scrollTo({
       top: 0,
       left: 0,
-      behavior: "instant", // use "smooth" if you want animation
+      behavior: "instant",
     });
   }, [location.pathname]);
 

@@ -1,4 +1,3 @@
-// src/contexts/ThemeContext.jsx
 import React, {
   createContext,
   useContext,
@@ -20,19 +19,15 @@ export function ThemeProvider({ children, theme = {} }) {
     headerBackgroundColor: "#FFFFFF",
     footerBackgroundColor: "#111111",
     bottomFooterBackgroundColor: "#FFF7F2",
-    // Add bannerType default
     bannerType: "slider",
-    // Category layout: 'swiper' | 'list'
     categoryLayout: "swiper",
     ...theme,
   });
 
-  // Get store info from Redux store
   const storeInfo = useSelector(
     (state) => state.storeInfo?.storeInfo?.storeinfo ?? null
   );
 
-  // Update theme when store info changes
   useEffect(() => {
     if (storeInfo) {
       setCurrentTheme((prevTheme) => {
@@ -57,7 +52,6 @@ export function ThemeProvider({ children, theme = {} }) {
           categoryLayout: storeInfo.categoryLayout || prevTheme.categoryLayout,
         };
 
-        // prevent unnecessary state updates
         if (JSON.stringify(updatedTheme) === JSON.stringify(prevTheme)) {
           return prevTheme;
         }
@@ -146,10 +140,8 @@ export function ThemeProvider({ children, theme = {} }) {
         setCurrentTheme((prev) => ({ ...prev, footerBackgroundColor })),
       setBottomFooterBackgroundColor: (bottomFooterBackgroundColor) =>
         setCurrentTheme((prev) => ({ ...prev, bottomFooterBackgroundColor })),
-      // Add setBannerType
       setBannerType: (bannerType) =>
         setCurrentTheme((prev) => ({ ...prev, bannerType })),
-      // Add category layout setter
       setCategoryLayout: (categoryLayout) =>
         setCurrentTheme((prev) => ({ ...prev, categoryLayout })),
     }),

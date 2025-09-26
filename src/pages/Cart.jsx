@@ -1,4 +1,3 @@
-// src/pages/Cart.jsx
 import React, { useEffect, useMemo, useState } from "react";
 import CommonHeader from "../components/CommonHeader";
 import { Link, useNavigate } from "react-router-dom";
@@ -50,14 +49,6 @@ function Cart() {
     }
     navigate("/checkout");
   };
-
-  // const handleOTPSendError = (error) => {
-  //   if (error?.userNotRegistered) {
-  //     setPhoneNumber(error.mobile);
-  //     setShowSignUpModal(true);
-  //     setIsModalOpen(false);
-  //   }
-  // };
 
   return (
     <div>

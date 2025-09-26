@@ -15,14 +15,12 @@ function Search() {
 
   const { searchLoading } = useSelector((state) => state.products);
 
-  // Focus input when search opens
   useEffect(() => {
     if (isSearchOpen && searchInputRef.current) {
       searchInputRef.current.focus();
     }
   }, [isSearchOpen]);
 
-  // Handle escape key to close search
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === "Escape") {
@@ -53,58 +51,37 @@ function Search() {
     };
   }, [isSearchOpen]);
 
-  // Handle search submission
   const handleSearch = async (e) => {
     e.preventDefault();
     const trimmedQuery = searchQuery.trim();
     if (trimmedQuery) {
       try {
         await dispatch(fetchSearchProducts({ search: trimmedQuery })).unwrap();
-        // Navigate to shop page with search query
         navigate(`/shop?search=${encodeURIComponent(trimmedQuery)}`);
-        // Close search box and clear query
         setIsSearchOpen(false);
         setSearchQuery("");
       } catch (error) {
         console.error("Search failed:", error);
-        // Optionally show error to user
       }
     }
   };
 
-  // const performSearch = async (query) => {
-  //   const trimmed = (query || "").trim();
-  //   if (!trimmed) return;
-  //   try {
-  //     await dispatch(fetchSearchProducts({ search: trimmed })).unwrap();
-  //     navigate(`/shop?search=${encodeURIComponent(trimmed)}`);
-  //     setIsSearchOpen(false);
-  //     setSearchQuery("");
-  //   } catch (error) {
-  //     console.error("Search failed:", error);
-  //   }
-  // };
-
   const handleSuggestionClick = (text) => {
     setSearchQuery(text);
-    // focus back the input so user can continue typing or press Enter
     requestAnimationFrame(() => {
       if (searchInputRef.current) {
         searchInputRef.current.focus();
-        // place cursor at end
         const value = searchInputRef.current.value;
         searchInputRef.current.setSelectionRange(value.length, value.length);
       }
     });
   };
 
-  // Handle search icon click
   const handleSearchClick = () => {
     setIsSearchOpen(true);
     setSearchQuery("");
   };
 
-  // Handle close search with animation
   const handleCloseSearch = () => {
     setIsClosing(true);
     setTimeout(() => {
@@ -116,7 +93,6 @@ function Search() {
 
   return (
     <div className="relative">
-      {/* Search Icon Button */}
       <button
         onClick={handleSearchClick}
         className="h-full flex items-center cursor-pointer"
@@ -139,17 +115,14 @@ function Search() {
         </svg>
       </button>
 
-      {/* Search Dropdown */}
       {isSearchOpen && (
         <>
-          {/* Dropdown */}
           <div
             className={`fixed top-full left-1/2  rounded-xl w-full max-w-[19.375rem] sm:max-w-[37.5rem] bg-white shadow-2xl z-50 search-dropdown ${
               isClosing ? "search-dropdown-closing" : ""
             }`}
           >
             <form onSubmit={handleSearch}>
-              {/* Search Input Row */}
               <div className="flex items-center px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-100">
                 <div className="flex-1 relative flex items-center">
                   <svg
@@ -231,7 +204,6 @@ function Search() {
                 )}
               </div>
 
-              {/* Suggested Search Terms */}
               <div className="px-4 py-4 sm:px-6 sm:py-6">
                 <h3 className="text-xs font-semibold text-gray-500 mb-3 uppercase tracking-wider">
                   Suggested Search Terms
