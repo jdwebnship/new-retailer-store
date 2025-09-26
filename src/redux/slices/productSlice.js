@@ -40,7 +40,7 @@ export const fetchProducts = createAsyncThunk(
 
       return {
         data: response.data,
-        currentPage: params.page || 1,
+        // currentPage: params.page || 1,
       };
     } catch (error) {
       return rejectWithValue(
@@ -97,7 +97,7 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.product = action.payload.data;
-        state.currentPage = action.payload.currentPage;
+        // state.currentPage = action.payload.currentPage;
       })
       .addCase(fetchProducts.rejected, (state, action) => {
         state.loading = false;
@@ -111,7 +111,7 @@ const productSlice = createSlice({
       .addCase(fetchProductsDetails.fulfilled, (state, action) => {
         state.loading = false;
         state.productDetails = action.payload.data;
-        state.currentPage = action.payload.currentPage;
+        // state.currentPage = action.payload.currentPage;
       })
       .addCase(fetchProductsDetails.rejected, (state, action) => {
         state.loading = false;

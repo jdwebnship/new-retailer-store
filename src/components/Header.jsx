@@ -17,8 +17,10 @@ import OrderDetailsPopup from "../model/OrderDetailsPopup";
 import CartPopup from "./CartPopup";
 import { closeCartPopup } from "../redux/slices/cartSlice";
 import Loader from "./Loader";
+import { useNavigate } from "react-router-dom";
 
-function Header({ offsetY = 0, onHeightChange }) {
+function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
+  const navigate = useNavigate();
   const { theme, headerTextColor } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
@@ -93,9 +95,8 @@ function Header({ offsetY = 0, onHeightChange }) {
         }}
       >
         <nav
-          className={`flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] lg:gap-1 gap-4 transition-[height,background-color] duration-300 ease-out ${
-            isSticky ? "sm:h-[5rem] h-[4.5rem]" : "sm:h-[6.25rem] h-[5rem]"
-          }`}
+          className={`flex items-center relative justify-between px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem] lg:gap-1 gap-4 transition-[height,background-color] duration-300 ease-out ${isSticky ? "sm:h-[5rem] h-[4.5rem]" : "sm:h-[6.25rem] h-[5rem]"
+            }`}
           style={{
             backgroundColor: theme?.headerBackgroundColor || "#ffffff",
             color: headerTextColor || "#ffffff",
@@ -201,12 +202,12 @@ function Header({ offsetY = 0, onHeightChange }) {
                                 theme?.headerBackgroundColor || "#ffffff",
                             }}
                             onMouseEnter={(e) =>
-                              (e.target.style.backgroundColor =
-                                "rgba(0,0,0,0.05)")
+                            (e.target.style.backgroundColor =
+                              "rgba(0,0,0,0.05)")
                             }
                             onMouseLeave={(e) =>
-                              (e.target.style.backgroundColor =
-                                theme?.headerBackgroundColor || "#ffffff")
+                            (e.target.style.backgroundColor =
+                              theme?.headerBackgroundColor || "#ffffff")
                             }
                           >
                             {category.name}
@@ -376,11 +377,10 @@ function Header({ offsetY = 0, onHeightChange }) {
               <img
                 src={storeInfo.storeinfo.logo}
                 alt={storeInfo?.storeinfo?.store_name || "Store logo"}
-                className={`${
-                  isSticky
+                className={`${isSticky
                     ? "sm:w-[4rem] sm:h-[4rem] w-14 h-14"
                     : "sm:w-[5rem] sm:h-[5rem] w-16 h-16"
-                } transition-all duration-300 ease-out`}
+                  } transition-all duration-300 ease-out`}
               />
             ) : (
               <h1
@@ -486,7 +486,10 @@ function Header({ offsetY = 0, onHeightChange }) {
               <button
                 className="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-black/10 transition uppercase text-sm"
                 style={{ color: headerTextColor || "#111111" }}
-                onClick={() => setIsMobileCategoryOpen(!isMobileCategoryOpen)}
+                onClick={() => {
+                  setIsMobileCategoryOpen(!isMobileCategoryOpen);
+                  navigate("/categories")
+                }}
               >
                 Category
                 <svg
