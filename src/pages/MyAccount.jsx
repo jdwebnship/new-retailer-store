@@ -190,7 +190,7 @@ const MyAccount = () => {
         {/* Left Navigation */}
         <div className="flex gap-6 flex-col md:flex-row">
           <nav
-            className="md:max-w-[14.625rem] min-w-[14.625rem]  p-[1.875rem] pl-0 rounded-2xl"
+            className="md:max-w-[14.625rem] min-w-[14.625rem]  p-[1.875rem] pl-0 rounded-2xl sticky top-[110px]"
             style={{
               backgroundColor: theme.bottomFooterBackgroundColor,
               height: "fit-content",
