@@ -5,10 +5,9 @@ export default function ScrollToTop({ containerId } = {}) {
   const location = useLocation();
   const triggeredByAnchor = useRef(false);
 
-  // Detect last click target
   useEffect(() => {
     const handleClick = (e) => {
-      const target = e.target.closest("a"); // only anchors
+      const target = e.target.closest("a");
       triggeredByAnchor.current = !!target;
     };
     document.addEventListener("click", handleClick, true);
@@ -21,7 +20,6 @@ export default function ScrollToTop({ containerId } = {}) {
     const se = document.scrollingElement || document.documentElement;
     const container = containerId ? document.getElementById(containerId) : null;
 
-    // enable smooth temporarily
     const enableSmooth = (el) => {
       if (el && el.style) el.style.scrollBehavior = "smooth";
     };
@@ -32,18 +30,15 @@ export default function ScrollToTop({ containerId } = {}) {
     enableSmooth(se);
     if (container) enableSmooth(container);
 
-    // Smooth scroll
     window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     if (container) {
       container.scrollTo({ top: 0, left: 0, behavior: "smooth" });
     }
-
-    // After animation, remove smooth style
     const tid = setTimeout(() => {
       disableSmooth(se);
       if (container) disableSmooth(container);
-      triggeredByAnchor.current = false; // reset for next navigation
-    }, 500); // duration ~0.5s
+      triggeredByAnchor.current = false;
+    }, 500);
 
     return () => clearTimeout(tid);
   }, [

@@ -2,7 +2,6 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 
-// Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -39,15 +38,15 @@ function SocialAdvertisementImage() {
       <Swiper
         modules={[Navigation, Pagination]}
         spaceBetween={0}
-        slidesPerView={1.3} // Default for small screens
-        loop={true} // ✅ Enable infinite loop
-        centeredSlides={true} // ✅ Center the active slide
+        slidesPerView={1.3}
+        loop={true} 
+        centeredSlides={true}
         // navigation
         // pagination={{ clickable: true }}
         breakpoints={{
           0: { slidesPerView: 2.8 },
           768: { slidesPerView: 4.8 },
-          1366: { slidesPerView: 5.8 }, // Show ~5 slides on large screens
+          1366: { slidesPerView: 5.8 },
         }}
         style={{
           width: "100%",

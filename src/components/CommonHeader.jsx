@@ -7,7 +7,6 @@ function CommonHeader({ className = "", ...props }) {
   const { slug } = useParams();
   const location = useLocation();
   const { productDetails } = useSelector((state) => state.products);
-  // Define page titles and breadcrumb configurations
   const routeConfigs = {
     "/": {
       content: (
@@ -128,7 +127,6 @@ function CommonHeader({ className = "", ...props }) {
     },
   };
 
-  // Breadcrumb component for reusability
   const Breadcrumb = ({ currentPage, subTitle }) => (
     <nav className="flex justify-center" aria-label="Breadcrumb">
       <ol className="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
@@ -171,7 +169,6 @@ function CommonHeader({ className = "", ...props }) {
     </nav>
   );
 
-  // Default content for unmatched routes
   const defaultContent = (
     <div className="flex items-center justify-between w-full px-4 sm:px-6 lg:px-10 xl:px-[4.6875rem]">
       <h1 className="text-2xl font-bold">Default Header</h1>
@@ -186,7 +183,6 @@ function CommonHeader({ className = "", ...props }) {
     </div>
   );
 
-  // Determine content based on route
   const routeConfig = routeConfigs[location.pathname] || {};
   const innerContent =
     routeConfig.content ||

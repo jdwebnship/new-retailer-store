@@ -1,12 +1,11 @@
 import React from "react";
 import { useTheme } from "../contexts/ThemeContext";
 import Marquee from "react-fast-marquee";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ButtonLink from "./ButtonLink";
 
 const MarqueeText = () => {
-  const items = Array(8).fill("Step into style|Empower your look"); // repeat pattern
+  const items = Array(8).fill("Step into style|Empower your look");
   return (
     <div className="flex gap-[1.875rem] text-[0.875rem] mr-[1.875rem] marquee-span items-center">
       {items.map((item, idx) => {

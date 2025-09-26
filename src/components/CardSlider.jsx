@@ -69,7 +69,6 @@ export default function CardSlider() {
               </div>
             )}
 
-            {/* Navigation buttons */}
             <div className="swiper-button-prev"></div>
             <div className="swiper-button-next"></div>
           </Swiper>

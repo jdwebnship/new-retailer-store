@@ -36,7 +36,6 @@ export default function OrderList({ item }) {
       key={item.cart_id}
       className="flex md:flex-row flex-col md:gap-6 gap-4 justify-between"
     >
-      {/* Product Image + Info */}
       <div className="flex gap-[0.938rem] flex-1 max-w-[25.938rem]">
         <Link to={item?.product_slug ? `/products/${item.product_slug}` : "#"}>
           <img
@@ -85,7 +84,6 @@ export default function OrderList({ item }) {
         </div>
       </div>
 
-      {/* Quantity Selector */}
       <div className="flex items-center gap-7.5 h-12 border border-[#AAAAAA] rounded-[0.625rem] w-fit md:mx-auto md:ml-[0] ml-[6rem]">
         <button
           onClick={decrease}
@@ -106,7 +104,6 @@ export default function OrderList({ item }) {
         </button>
       </div>
 
-      {/* Total Price */}
       <div className="md:ml-[0] ml-[6rem]">
         <p className="text-lg font-bold  ">
           ₹

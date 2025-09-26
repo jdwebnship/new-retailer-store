@@ -157,7 +157,6 @@ const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
 
       <div className="fixed inset-0 flex items-center justify-center p-2 sm:p-4 md:p-6 lg:p-0 z-50">
         <DialogPanel className="relative bg-white rounded-2xl sm:rounded-[1.5rem] shadow-lg w-full max-w-[95vw] sm:max-w-2xl md:max-w-3xl lg:max-w-[67.5rem] mx-auto flex flex-col lg:flex-row overflow-hidden min-h-[60vh] sm:min-h-[32rem]">
-          {/* Left Side: Background Image */}
           <div className="w-full lg:w-1/2 h-32 xs:h-40 sm:h-64 md:h-80 lg:h-auto bg-cover bg-center flex-shrink-0">
             <img
               src={modalImg}
@@ -170,7 +169,6 @@ const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
             />
           </div>
 
-          {/* Right Side: Form Content */}
           <div className="relative w-full lg:w-1/2 p-3 xs:p-4 sm:p-6 md:p-8 lg:p-[3.75rem] flex flex-col justify-start text-left">
             <button
               onClick={() => dispatch(closeCheckoutModal())}

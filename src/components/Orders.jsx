@@ -9,6 +9,7 @@ import {
 import { formatStatus } from "../utils/common";
 import { openOrderPopup } from "../redux/slices/orderPopupSlice";
 import { useTheme } from "../contexts/ThemeContext";
+import Loader from "./Loader";
 
 const Orders = () => {
   const dispatch = useDispatch();
@@ -34,9 +35,7 @@ const Orders = () => {
       <hr className="opacity-10" />
 
       {loading ? (
-        <div className="flex items-center justify-center h-[20rem] p-6">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-        </div>
+        <Loader />
       ) : orders?.orders?.length > 0 ? (
         <>
           {orders?.orders?.map((val) => {

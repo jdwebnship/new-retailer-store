@@ -74,7 +74,6 @@ function Video({ data }) {
 }
 
 export default function Banner() {
-  // const { theme } = useTheme();
   const dispatch = useDispatch();
   const { homeSections } = useSelector((state) => state.homeSections);
 
