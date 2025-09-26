@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Eye, EyeOff } from "lucide-react";
 import { registerGuestUser } from "../redux/slices/authSlice";
 import modalImg from "../assets/images/modal.jpg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { syncGuestCartItems } from "../utils/helper";
 import { SignUpModalSchema } from "../utils/validationSchema";
@@ -220,13 +220,19 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   className="text-sm font-medium select-none"
                 >
                   By creating an account you agree with our{" "}
-                  <a href="#" className="underline hover:text-blue-800">
+                  <Link
+                    to="/terms-use"
+                    className="underline hover:text-blue-800"
+                  >
                     Terms of Service
-                  </a>
+                  </Link>
                   ,{" "}
-                  <a href="#" className="underline hover:text-blue-800">
+                  <Link
+                    to="/privacy-policy"
+                    className="underline hover:text-blue-800"
+                  >
                     Privacy Policy
-                  </a>
+                  </Link>
                 </label>
               </div>
               {formik.touched.terms && formik.errors.terms && (

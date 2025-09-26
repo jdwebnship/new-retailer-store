@@ -3,6 +3,7 @@ import CommonHeader from "../components/CommonHeader";
 import { Headset, Mail, Phone, Clock, MessageCircle } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useTheme } from "../contexts/ThemeContext";
+import { Link } from "react-router-dom";
 
 const Support = () => {
   const { storeInfo } = useSelector((state) => state.storeInfo);
@@ -83,7 +84,7 @@ const Support = () => {
                 icon: <Phone className="w-6 h-6" />,
                 title: "Phone Support – Speak to our team",
                 description: `Mon-Fri, ${
-                  storeInfo?.storeInfo?.storeTime || "11:00 AM - 8:00 PM"
+                  storeInfo?.storeinfo?.store_time || "11:00 AM to 08:00 PM"
                 }`,
               },
             ].map((option, index) => (
@@ -130,29 +131,32 @@ const Support = () => {
                 <h2 className="text-2xl font-bold mb-4">How to Reach Us</h2>
                 <p className=" mb-6">
                   Email us at{" "}
-                  <a
-                    href={`mailto:${
-                      storeInfo?.storeinfo?.retailer?.email ||
-                      "storename123@gmail.com"
+                  <Link
+                    to={`mailto:${
+                      storeInfo?.storeinfo?.email || "storename123@gmail.com"
                     }`}
                     className="text-blue-600 hover:underline"
                   >
-                    {storeInfo?.storeinfo?.retailer?.email ||
-                      "storename123@gmail.com"}
-                  </a>
+                    {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
+                  </Link>
                   . Please include a brief description of your issue.
                 </p>
 
                 <h3 className="text-xl font-semibold mb-3">Additional Help</h3>
                 <p className="">
                   For immediate assistance, call us at{" "}
-                  <a href="#" className="text-blue-600 hover:underline">
-                    {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
-                  </a>{" "}
+                  <Link
+                    to={`tel:${
+                      storeInfo?.storeinfo?.mobile_no || "9876543210"
+                    }`}
+                    className="text-blue-600 hover:underline"
+                  >
+                    {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
+                  </Link>{" "}
                   or visit our{" "}
-                  <a href="/faq" className="text-blue-600 hover:underline">
+                  <Link to="/faq" className="text-blue-600 hover:underline">
                     FAQ page
-                  </a>
+                  </Link>
                   .
                 </p>
               </div>

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import CommonHeader from "../components/CommonHeader";
 
 function NotFound() {
@@ -29,18 +30,18 @@ function NotFound() {
           navigating from the homepage or contact our support team.
         </p>
         <div className="flex flex-row gap-4 justify-center my-5">
-          <a
-            href="/"
+          <Link
+            to="/"
             className="inline w-full lg:w-1/2 text-center gap-2 btn px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center uppercase"
           >
             Go to Homepage
-          </a>
-          <a
-            href="/contact"
+          </Link>
+          <Link
+            to="/contact"
             className="inline w-full lg:w-1/2 text-center gap-2 border px-[1.5rem] py-[0.9375rem] rounded-lg text-sm font-medium focus:outline-none items-center uppercase"
           >
             Contact Support
-          </a>
+          </Link>
         </div>
       </div>
     </div>
