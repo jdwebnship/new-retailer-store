@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import { syncGuestCartItems } from "../utils/helper";
 import { SignUpModalSchema } from "../utils/validationSchema";
 import LoadingButton from "./LoadingButton";
+import { closeSignUpModal } from "../redux/slices/uiSlice";
 
 const initialValues = {
   firstName: "",
@@ -19,10 +20,11 @@ const initialValues = {
   terms: false,
 };
 
-const SignUpModal = ({ isOpen, onClose }) => {
+const SignUpModal = () => {
   const { user } = useSelector((state) => state.auth);
   const { cartItems } = useSelector((state) => state.cart);
   const [showPassword, setShowPassword] = useState(false);
+  const { showSignUpModal } = useSelector((state) => state.ui);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -59,7 +61,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
   });
 
   return (
-    <Dialog open={isOpen} onClose={onClose} className="relative z-50">
+    <Dialog open={showSignUpModal} onClose={() => dispatch(closeSignUpModal())} className="relative z-50">
       <DialogBackdrop className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-50 transition-opacity duration-300 overflow-hidden" />
       <div className="fixed inset-0 flex items-center justify-center p-5 lg:p-0">
         <DialogPanel className="relative bg-white rounded-[1.5rem] shadow-lg w-full max-w-[67.5rem] mx-5 lg:mx-0 flex flex-col lg:flex-row overflow-hidden">
@@ -77,7 +79,7 @@ const SignUpModal = ({ isOpen, onClose }) => {
 
           <div className="w-full lg:w-1/2 px-[1.5rem] lg:px-[3rem] py-[1.2rem] lg:py-[2rem] flex flex-col justify-start text-left">
             <button
-              onClick={onClose}
+              onClick={() => dispatch(closeSignUpModal())}
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl focus:outline-none"
               aria-label="Close modal"
             >

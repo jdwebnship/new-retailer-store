@@ -15,13 +15,15 @@ const uiSlice = createSlice({
     closeCheckoutModal: (state) => {
       state.isCheckoutModalOpen = false;
     },
+    openSignUpModal: (state) => {
+      state.showSignUpModal = true;
+    },
+    closeSignUpModal: (state) => {
+      state.showSignUpModal = false;
+    },
   },
 });
 
-export const { openCheckoutModal, closeCheckoutModal } = uiSlice.actions;
-
-export const selectIsCheckoutModalOpen = (state) =>
-  state.ui.isCheckoutModalOpen;
-export const selectShowSignUpModal = (state) => state.ui.showSignUpModal;
+export const { openCheckoutModal, closeCheckoutModal, openSignUpModal, closeSignUpModal } = uiSlice.actions;
 
 export default uiSlice.reducer;

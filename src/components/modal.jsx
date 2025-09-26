@@ -9,16 +9,17 @@ import {
 import modalImg from "../assets/images/modal.jpg";
 import { sendOTP, verifyOTP } from "../redux/slices/authSlice";
 import { Link, useNavigate } from "react-router-dom";
-import { closeCheckoutModal } from "../redux/slices/uiSlice";
+import { closeCheckoutModal, closeSignUpModal, openSignUpModal } from "../redux/slices/uiSlice";
 import { syncGuestCartItems } from "../utils/helper";
 import LoadingButton from "./LoadingButton";
 
-const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
+const ModalComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { verificationError, loading, verificationLoading } = useSelector(
     (state) => state.auth
   );
+  const { isCheckoutModalOpen } = useSelector((state) => state.ui);
   const { cartItems } = useSelector((state) => state.cart);
 
   const [step, setStep] = useState("phone");
@@ -86,10 +87,11 @@ const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
         ).unwrap();
 
         if (res?.success) {
+          setStep("phone");
           if (!res?.data?.is_existing_customer) {
-            setShowSignUpModal(true);
+            dispatch(openSignUpModal());
           } else {
-            setShowSignUpModal(false);
+            dispatch(closeSignUpModal());
             const token = res?.data?.token;
             if (token && cartItems.length > 0) {
               syncGuestCartItems(token, cartItems, dispatch);
@@ -137,7 +139,7 @@ const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
   }, [step, timer]);
 
   useEffect(() => {
-    if (isModalOpen) {
+    if (isCheckoutModalOpen) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "auto";
@@ -145,11 +147,11 @@ const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isModalOpen]);
+  }, [isCheckoutModalOpen]);
 
   return (
     <Dialog
-      open={isModalOpen}
+      open={isCheckoutModalOpen}
       onClose={() => dispatch(closeCheckoutModal())}
       className="relative z-50"
     >
@@ -290,11 +292,10 @@ const ModalComponent = ({ isModalOpen, setShowSignUpModal }) => {
                       <button
                         onClick={handleResend}
                         disabled={timer > 0}
-                        className={`w-auto whitespace-nowrap xs:w-auto underline text-xs xs:text-sm sm:text-sm ${
-                          timer > 0
+                        className={`w-auto whitespace-nowrap xs:w-auto underline text-xs xs:text-sm sm:text-sm ${timer > 0
                             ? "cursor-not-allowed opacity-50 text-gray-500"
                             : "cursor-pointer hover:opacity-100 text-gray-900"
-                        }`}
+                          }`}
                       >
                         <span className="block w-full text-left">
                           {timer > 0 ? `RESEND IN ${timer}s` : "RESEND CODE"}

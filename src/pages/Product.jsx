@@ -85,9 +85,8 @@ function Product() {
                   {/* reuse your desktop filter JSX here (Availability, Category, Price, etc.) */}
                   <div>
                     <div
-                      className={`${
-                        hasActiveFilters ? "lg:col-span-2" : "hidden"
-                      }`}
+                      className={`${hasActiveFilters ? "lg:col-span-2" : "hidden"
+                        }`}
                     >
                       <div className="flex flex-col border-b mb-[1rem] xl:mb-[1.5rem] !text-left">
                         <div className="flex justify-between w-full">
@@ -187,19 +186,19 @@ function Product() {
                           ))} */}
                           {(filters.priceRange[0] > 0 ||
                             filters.priceRange[1] < 10000) && (
-                            <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
-                              ₹{filters.priceRange[0]} - ₹
-                              {filters.priceRange[1]}
-                              <img
-                                className="cursor-pointer"
-                                src={cross}
-                                alt=""
-                                onClick={() =>
-                                  handleFilterChange("priceRange", [0, 10000])
-                                }
-                              />
-                            </span>
-                          )}
+                              <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                                ₹{filters.priceRange[0]} - ₹
+                                {filters.priceRange[1]}
+                                <img
+                                  className="cursor-pointer"
+                                  src={cross}
+                                  alt=""
+                                  onClick={() =>
+                                    handleFilterChange("priceRange", [0, 10000])
+                                  }
+                                />
+                              </span>
+                            )}
                         </div>
                       </div>
                     </div>
@@ -424,27 +423,27 @@ function Product() {
                     ))} */}
                     {(filters.priceRange[0] > 0 ||
                       filters.priceRange[1] < 10000) && (
-                      <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
-                        ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
-                        <img
-                          className="cursor-pointer"
-                          src={cross}
-                          alt=""
-                          onClick={() => {
-                            setFilters((prev) => ({
-                              ...prev,
-                              priceRange: [0, 10000],
-                            }));
-                            // Reset to page 1 when clearing price range
-                            setSearchParams((prev) => {
-                              const newParams = new URLSearchParams(prev);
-                              newParams.set("page", "1");
-                              return newParams;
-                            });
-                          }}
-                        />
-                      </span>
-                    )}
+                        <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
+                          ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
+                          <img
+                            className="cursor-pointer"
+                            src={cross}
+                            alt=""
+                            onClick={() => {
+                              setFilters((prev) => ({
+                                ...prev,
+                                priceRange: [0, 10000],
+                              }));
+                              // Reset to page 1 when clearing price range
+                              setSearchParams((prev) => {
+                                const newParams = new URLSearchParams(prev);
+                                newParams.set("page", "1");
+                                return newParams;
+                              });
+                            }}
+                          />
+                        </span>
+                      )}
                     {/* {filters.sort_by && (
                     <span className="bg-[#F8F8F8] text-sm text-[#111111] inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
                       {filters.sort_by}
@@ -596,11 +595,11 @@ function Product() {
                   {ProductLoading
                     ? "Loading..."
                     : pageForm &&
-                      pageTo && (
-                        <>
-                          Showing {pageForm}-{pageTo} of {totalItems} results.
-                        </>
-                      )}
+                    pageTo && (
+                      <>
+                        Showing {pageForm}-{pageTo} of {totalItems} results.
+                      </>
+                    )}
                 </span>
                 {/* 🔹 Mobile Filter Button */}
                 <div className="lg:hidden flex justify-end">
@@ -634,7 +633,7 @@ function Product() {
                   <CardComponent key={product.id} product={product} />
                 ))}
               </div>
-            ) : (
+            ) : hasActiveFilters ? (
               <div className="col-span-full text-center py-8 h-screen">
                 <p className="text-lg text-gray-600">
                   No products match the selected filters.
@@ -646,7 +645,12 @@ function Product() {
                   Clear all filters
                 </button>
               </div>
+            ) : (
+              <div className="col-span-full text-center py-8 h-screen">
+                <p className="text-lg text-gray-600">No data found.</p>
+              </div>
             )}
+
             {filteredProducts.length > 0 && (
               <div className="mt-auto">
                 <div className="flex justify-center mt-[2.375rem] lg:mt-[4.375rem]">

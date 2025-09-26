@@ -4,13 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromCartApi, updateCartItem } from "../redux/slices/cartSlice";
 import { getProductImage } from "../utils/common";
 import useCartQuantity from "../hooks/useCartQuantity";
-import { openCheckoutModal } from "../redux/slices/uiSlice";
+import { closeCheckoutModal, openCheckoutModal, openSignUpModal } from "../redux/slices/uiSlice";
 import LoadingButton from "./LoadingButton";
 
 const CartPopup = ({ items = [], onClose }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, user, verified } = useSelector((state) => state.auth);
   useEffect(() => {
     document.body.classList.add("no-scroll");
     return () => {
@@ -67,14 +67,29 @@ const CartPopup = ({ items = [], onClose }) => {
         <div className="flex flex-col gap-6 border-t border-[#11111126]">
           <LoadingButton
             onClick={() => {
-              if (!isAuthenticated) {
+              if (!isAuthenticated && !user) {
                 navigate("/cart");
                 dispatch(openCheckoutModal());
+                onClose();
+              } else if(user && !user?.is_existing_customer && verified) {
+                dispatch(openSignUpModal());
+                navigate("/cart");
+                dispatch(closeCheckoutModal());
                 onClose();
               } else {
                 proceedToCheckout();
               }
             }}
+            // onClick={() => {
+            //                 if (!isAuthenticated && !user) {
+            //                   dispatch(openCheckoutModal());
+            //                 } else if(user && !user?.is_existing_customer && verified) {
+            //                   setShowSignUpModal(true);
+            //                   dispatch(closeCheckoutModal());
+            //                 } else {
+            //                   proceedToCheckout();
+            //                 }
+            //               }}
             text="Checkout"
           />
           <button

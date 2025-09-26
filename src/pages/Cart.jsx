@@ -6,18 +6,17 @@ import SignUpModal from "../components/SignUpModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCart } from "../redux/slices/cartSlice";
 import OrderList from "../components/orderList";
-import { openCheckoutModal } from "../redux/slices/uiSlice";
+import { closeCheckoutModal, openCheckoutModal, openSignUpModal } from "../redux/slices/uiSlice";
 import LoadingButton from "../components/LoadingButton";
 import { useTheme } from "../contexts/ThemeContext";
 
 function Cart() {
   const { cartItems } = useSelector((state) => state.cart);
-  const { isAuthenticated } = useSelector((state) => state.auth);
+  const { isAuthenticated, verified, user } = useSelector((state) => state.auth);
   const { isCheckoutModalOpen } = useSelector((state) => state.ui);
   const { theme } = useTheme();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
   useEffect(() => {
@@ -110,8 +109,11 @@ function Cart() {
             </div>
             <LoadingButton
               onClick={() => {
-                if (!isAuthenticated) {
+                if (!isAuthenticated && !user) {
                   dispatch(openCheckoutModal());
+                } else if (user && !user?.is_existing_customer && verified) {
+                  dispatch(openSignUpModal());
+                  dispatch(closeCheckoutModal());
                 } else {
                   proceedToCheckout();
                 }
@@ -130,14 +132,11 @@ function Cart() {
           </aside>
         </div>
       </div>
-      <ModalComponent
-        isModalOpen={isCheckoutModalOpen}
-        setShowSignUpModal={setShowSignUpModal}
-      />
-      <SignUpModal
-        isOpen={showSignUpModal}
-        onClose={() => setShowSignUpModal(false)}
-      />
+
+      <ModalComponent />
+
+      <SignUpModal />
+
     </div>
   );
 }

@@ -405,7 +405,7 @@ const authSlice = createSlice({
         state.verificationLoading = false;
         state.verified = true;
         state.user = action.payload.data;
-        state.isAuthenticated = action.payload.success ? true : false;
+        state.isAuthenticated = (action.payload.success && action.payload.data.is_existing_customer) ? true : false;
         if (state.user?.customer && !state.user.customer.alt_phone_number) {
           state.user.customer.alt_phone_number = state.user.customer.phone_number;
         }
