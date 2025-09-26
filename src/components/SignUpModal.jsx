@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useFormik } from "formik";
-import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { Eye, EyeOff } from "lucide-react";
 import { registerGuestUser } from "../redux/slices/authSlice";
@@ -12,7 +11,6 @@ import { syncGuestCartItems } from "../utils/helper";
 import { SignUpModalSchema } from "../utils/validationSchema";
 import LoadingButton from "./LoadingButton";
 
-// Initial values
 const initialValues = {
   firstName: "",
   lastName: "",
@@ -65,7 +63,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
       <DialogBackdrop className="fixed inset-0 bg-[rgba(0,0,0,0.7)] bg-opacity-50 transition-opacity duration-300 overflow-hidden" />
       <div className="fixed inset-0 flex items-center justify-center p-5 lg:p-0">
         <DialogPanel className="relative bg-white rounded-[1.5rem] shadow-lg w-full max-w-[67.5rem] mx-5 lg:mx-0 flex flex-col lg:flex-row overflow-hidden">
-          {/* Left Side: Background Image */}
           <div className="w-full lg:w-1/2 bg-cover bg-center">
             <img
               src={modalImg}
@@ -78,7 +75,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
             />
           </div>
 
-          {/* Right Side: Form Content */}
           <div className="w-full lg:w-1/2 px-[1.5rem] lg:px-[3rem] py-[1.2rem] lg:py-[2rem] flex flex-col justify-start text-left">
             <button
               onClick={onClose}
@@ -109,7 +105,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
                   Sign up to get started with your account
                 </p>
               </div>
-              {/* First & Last Name */}
               <div className="sm:mb-0 mb-3 flex flex-col sm:flex-row space-x-4">
                 <div className="sm:w-1/2 w-full mb-3 relative">
                   <label className="block text-sm mb-2.5 font-bold uppercase">
@@ -153,7 +148,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              {/* Email */}
               <div className="sm:mb-0 mb-3 flex flex-col sm:flex-row space-x-4">
                 <div className="sm:w-1/2 w-full mb-3 relative">
                   <label className="block text-sm mb-2.5 font-bold uppercase">
@@ -177,8 +171,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 </div>
 
                 <div className="sm:w-1/2 w-full relative">
-                  {/* Password */}
-
                   <label className="block text-sm mb-2.5 font-bold uppercase">
                     Password
                   </label>
@@ -213,7 +205,6 @@ const SignUpModal = ({ isOpen, onClose }) => {
                 </div>
               </div>
 
-              {/* Terms and Conditions */}
               <div className="flex items-start gap-2 mt-4">
                 <input
                   id="terms"

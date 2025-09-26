@@ -12,8 +12,6 @@ function Cart() {
         navigate("/cart");
       }}
     >
-      {/* Settings Button */}
-
       <svg
         className="w-6 h-6 md:w-[1.625rem] md:h-[1.625rem]"
         viewBox="0 0 26 26"

@@ -29,16 +29,12 @@ const CartPopup = ({ items = [], onClose }) => {
 
   return (
     <>
-      {/* Overlay */}
       <div
         className="overlay w-full h-full fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-[99]"
         onClick={onClose}
       ></div>
-
-      {/* Cart Popup */}
       <div className="cart-popup flex flex-col justify-between fixed right-0 top-0 z-[100] w-full h-dvh max-w-[31.25rem] bg-white shadow-lg p-7.5 overflow-y-auto">
         <div>
-          {/* Header */}
           <div className="flex justify-between items-center border-b border-[#11111126] pb-5 mb-6">
             <h2 className="text-2xl font-bold">Cart({items.length})</h2>
             <button className="cursor-pointer" onClick={onClose}>
@@ -58,7 +54,6 @@ const CartPopup = ({ items = [], onClose }) => {
             </button>
           </div>
 
-          {/* Cart Items */}
           <div className="flex flex-col gap-6 mb-6">
             {items.map((item) => (
               <CartItem
@@ -69,7 +64,6 @@ const CartPopup = ({ items = [], onClose }) => {
           </div>
         </div>
 
-        {/* Footer */}
         <div className="flex flex-col gap-6 border-t border-[#11111126]">
           <LoadingButton
             onClick={() => {
@@ -107,7 +101,6 @@ const CartPopup = ({ items = [], onClose }) => {
 
 export default CartPopup;
 
-// CartItem Component
 const CartItem = ({ item }) => {
   const dispatch = useDispatch();
 

@@ -28,7 +28,6 @@ function Profile() {
 
   return (
     <div className="relative h-full" ref={dropdownRef}>
-      {/* Profile Icon Button */}
       <button
         onClick={() => {
           if (!isAuthenticated) {
@@ -71,7 +70,6 @@ function Profile() {
         </svg>
       </button>
 
-      {/* Profile Dropdown Menu */}
       {isProfileDropdownOpen && isAuthenticated && (
         <div
           className="absolute top-full w-80 z-50 profile-dropdown
@@ -86,7 +84,6 @@ function Profile() {
             }}
           >
             <div className="space-y-3">
-              {/* User Info Section */}
               <div className="pb-3 border-b border-gray-200">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
@@ -116,7 +113,6 @@ function Profile() {
                 </div>
               </div>
 
-              {/* Menu Items */}
               <div className="space-y-2">
                 <Link
                   to="/my-account"

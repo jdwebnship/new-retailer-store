@@ -18,7 +18,6 @@ export function CardItem({ item }) {
         <h3 className="text-lg font-bold text-[1.125rem] text-white">
           {item.name}
         </h3>
-        {/* <p className="text-md text-gray-600">{item.price}</p> */}
       </div>
     </div>
   );

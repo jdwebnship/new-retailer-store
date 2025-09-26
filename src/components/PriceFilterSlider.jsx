@@ -13,9 +13,7 @@ export default function PriceFilterSlider({ value = [1000, 5000], onChange }) {
 
   return (
     <div className="w-full">
-      {/* Slider container */}
       <div className="relative w-full h-2 md:h-1 bg-gray-200 rounded-full mb-5 sm:mb-3">
-        {/* Filled range track */}
         <div
           className="absolute h-2 md:h-1 rounded-full"
           style={{
@@ -25,7 +23,6 @@ export default function PriceFilterSlider({ value = [1000, 5000], onChange }) {
               ThemeProvider?.bottomFooterBackgroundColor || "#111111",
           }}
         />
-        {/* Min handle */}
         <input
           type="range"
           min="0"
@@ -53,7 +50,6 @@ export default function PriceFilterSlider({ value = [1000, 5000], onChange }) {
             z-[2]
           "
         />
-        {/* Max handle */}
         <input
           type="range"
           min="0"
@@ -83,7 +79,6 @@ export default function PriceFilterSlider({ value = [1000, 5000], onChange }) {
         />
       </div>
 
-      {/* Price boxes */}
       <div className="flex justify-between gap-6">
         <div className="flex items-center justify-between w-1/2 border rounded-lg px-3 py-3">
           <span className="mr-1">₹</span>

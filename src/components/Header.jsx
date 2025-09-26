@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"; // For navigation links
+import { Link } from "react-router-dom";
 import { useTheme } from "../contexts/ThemeContext";
 import Settings from "./Settings";
 import Search from "./Search";
@@ -37,7 +37,6 @@ function Header({ offsetY = 0, onHeightChange }) {
     dispatch(fetchStoreInfo());
   }, [dispatch]);
 
-  // Prevent background scroll when drawer is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = "hidden";
@@ -61,7 +60,6 @@ function Header({ offsetY = 0, onHeightChange }) {
     return () => ro.disconnect();
   }, [onHeightChange]);
 
-  // Animate header position smoothly with GSAP
   useEffect(() => {
     if (!ref.current) return;
     gsap.to(ref.current, {
@@ -72,7 +70,6 @@ function Header({ offsetY = 0, onHeightChange }) {
     });
   }, [offsetY]);
 
-  // Toggle compact header on scroll
   useEffect(() => {
     const handleScroll = () => {
       setIsSticky(window.scrollY > 60);
@@ -105,7 +102,6 @@ function Header({ offsetY = 0, onHeightChange }) {
           }}
         >
           <div className="flex items-center gap-3 lg:gap-4 h-full">
-            {/* Hamburger for mobile */}
             <button
               type="button"
               className="lg:hidden cursor-pointer"
@@ -140,7 +136,6 @@ function Header({ offsetY = 0, onHeightChange }) {
                 Home
               </Link>
 
-              {/* Categories Dropdown */}
               <div
                 className="relative h-full"
                 onMouseEnter={() => setIsCategoryDropdownOpen(true)}
@@ -174,7 +169,6 @@ function Header({ offsetY = 0, onHeightChange }) {
                   </svg>
                 </Link>
 
-                {/* Dropdown Menu */}
                 {isCategoryDropdownOpen && (
                   <div
                     className="absolute top-full left-0 mt-0 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50"
@@ -225,8 +219,6 @@ function Header({ offsetY = 0, onHeightChange }) {
                 )}
               </div>
 
-              {/* Shop Mega Menu */}
-
               <div
                 className="relative h-full"
                 onMouseEnter={() => setIsShopMegaMenuOpen(true)}
@@ -248,7 +240,6 @@ function Header({ offsetY = 0, onHeightChange }) {
                       backgroundColor: theme?.headerBackgroundColor || "#fff",
                     }}
                   >
-                    {/* Mega menu content */}
                     <div className="flex items-center justify-center min-h-[160px] w-full">
                       {loading ? (
                         <Loader />
@@ -324,7 +315,6 @@ function Header({ offsetY = 0, onHeightChange }) {
                               </SwiperSlide>
                             ))}
 
-                            {/* Custom Navigation Buttons */}
                             <div className="swiper-button-prev-custom absolute left-0 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-[#F7F7F7] rounded-full shadow-sm flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors duration-200">
                               <svg
                                 width="25"
@@ -417,10 +407,8 @@ function Header({ offsetY = 0, onHeightChange }) {
             <Cart />
             {/* <Settings /> */}
           </div>
-          {/* Add more links as needed */}
         </nav>
 
-        {/* Overlay */}
         {isMenuOpen && (
           <button
             type="button"
@@ -430,8 +418,6 @@ function Header({ offsetY = 0, onHeightChange }) {
           />
         )}
 
-        {/* Drawer */}
-        {/* <div className="overlay w-full h-dvh fixed top-0 left-0 bg-[rgba(0,0,0,.65)] z-99"></div> */}
         <aside
           id="mobile-drawer"
           role="dialog"
@@ -481,7 +467,6 @@ function Header({ offsetY = 0, onHeightChange }) {
               Home
             </Link>
 
-            {/* Mobile Categories Dropdown */}
             <div className="w-full">
               <button
                 className="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-black/10 transition uppercase text-sm"
@@ -512,7 +497,6 @@ function Header({ offsetY = 0, onHeightChange }) {
                 </svg>
               </button>
 
-              {/* Mobile Categories List */}
               {isMobileCategoryOpen && (
                 <div className="ml-4 mt-2 space-y-1">
                   {loading ? (
@@ -574,14 +558,12 @@ function Header({ offsetY = 0, onHeightChange }) {
           </nav>
         </aside>
       </header>
-      {/* Cart POP up */}
       {isCartOpen && (
         <CartPopup
           items={cartItems}
           onClose={() => dispatch(closeCartPopup())}
         />
       )}
-
       {orderPopup?.open && (
         <OrderDetailsPopup orderDetail={orderPopup?.order} />
       )}
