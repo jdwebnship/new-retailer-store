@@ -11,14 +11,11 @@ const initialState = {
 
 export const fetchProducts = createAsyncThunk(
   "product/fetchProducts",
-  async (params, { rejectWithValue }) => {
+  async (params, { rejectWithValue, dispatch }) => {
     try {
       const formData = new FormData();
 
-      // Add all parameters to form data
       if (params.sub_category) {
-        // If sub_category is an array (from multiple selections), join with commas
-        // Otherwise, use as is (for single selection)
         const subCategoryValue = Array.isArray(params.sub_category)
           ? params.sub_category.join(",")
           : params.sub_category;
@@ -37,6 +34,9 @@ export const fetchProducts = createAsyncThunk(
         `/get-products?page=${params.page || 1}`,
         formData
       );
+      if(!response?.data?.success){
+        dispatch(resetProductList())
+      }
 
       return {
         data: response.data,
@@ -84,8 +84,8 @@ const productSlice = createSlice({
   name: "products",
   initialState,
   reducers: {
-    resetProductDetails(state) {
-      state.productDetails = null;
+    resetProductList(state) {
+      state.product = null;
     },
   },
   extraReducers: (builder) => {
@@ -133,5 +133,5 @@ const productSlice = createSlice({
   },
 });
 
-export const { clearProducts, resetProductDetails } = productSlice.actions;
+export const { clearProducts, resetProductList } = productSlice.actions;
 export default productSlice.reducer;
