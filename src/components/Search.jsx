@@ -215,9 +215,9 @@ function Search() {
                     "Shirts",
                     "Denims",
                     "Men's - Watch",
-                    "Womens - Watch",
+                    "Women's - Watch",
                     "Handbags",
-                    "Mens Shoes",
+                    "Men's Shoes",
                     "Wallet",
                     "Caps",
                   ].map((suggestion) => (

@@ -43,22 +43,24 @@ function Footer() {
             <h2 className="mb-4 font-bold text-lg">Customer Care</h2>
             <ul className="font-regular flex flex-col gap-1">
               <li className="mb-1">
-                <a
-                  href="#"
+                <Link
+                  to={`mailto:${
+                    storeInfo?.storeinfo?.email || "storename123@gmail.com"
+                  }`}
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Mail />
                   {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
-                </a>
+                </Link>
               </li>
               <li className="mb-1">
-                <a
-                  href="#"
+                <Link
+                  to={`tel:${storeInfo?.storeinfo?.mobile_no || "9876543210"}`}
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Call />
-                  {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
-                </a>
+                  {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
+                </Link>
               </li>
             </ul>
           </div>
@@ -145,6 +147,7 @@ function Footer() {
                 <Link
                   to={storeInfo?.storeinfo?.facebook_url || "#"}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Facebook />
@@ -155,6 +158,7 @@ function Footer() {
                 <Link
                   to={storeInfo?.storeinfo?.instagram_url || "#"}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Instagram />
@@ -165,6 +169,7 @@ function Footer() {
                 <Link
                   to={storeInfo?.storeinfo?.twitter_url || "#"}
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
                 >
                   <Twitter />

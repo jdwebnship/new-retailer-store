@@ -56,8 +56,10 @@ function TopHeader({ visible = true, onHeightChange }) {
       <div className="w-[100%] px-2 sm:px-6 lg:px-10 xl:px-[4.6875rem] mx-auto">
         <div className="flex items-center justify-between mx-auto text-center">
           <div className="sm:flex text-base gap-2 sm:gap-4 customer-care hidden">
-            <a
-              href="#"
+            <Link
+              to={`mailto:${
+                storeInfo?.storeinfo?.email || "storename123@gmail.com"
+              }`}
               className="flex  gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
@@ -66,9 +68,9 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="hidden xl:block">
                 {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
               </span>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to={`tel:${storeInfo?.storeinfo?.mobile_no || "9876543210"}`}
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
@@ -77,7 +79,7 @@ function TopHeader({ visible = true, onHeightChange }) {
               <span className="hidden xl:block">
                 {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
               </span>
-            </a>
+            </Link>
           </div>
           <span className="font-medium text-[0.75] sm:text-[0.875rem] md:text-[1rem] center-nav flex-1 flex items-center justify-center relative sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2">
             {storeInfo?.storeinfo?.offer_text ||
@@ -87,6 +89,7 @@ function TopHeader({ visible = true, onHeightChange }) {
             <Link
               to={storeInfo?.storeinfo?.facebook_url || "#"}
               target="_blank"
+              rel="noopener noreferrer"
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
@@ -97,6 +100,7 @@ function TopHeader({ visible = true, onHeightChange }) {
             <Link
               to={storeInfo?.storeinfo?.instagram_url || "#"}
               target="_blank"
+              rel="noopener noreferrer"
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">
@@ -107,6 +111,7 @@ function TopHeader({ visible = true, onHeightChange }) {
             <Link
               to={storeInfo?.storeinfo?.twitter_url || "#"}
               target="_blank"
+              rel="noopener noreferrer"
               className="flex gap-2 hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
             >
               <span className="icon">

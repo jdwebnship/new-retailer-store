@@ -16,10 +16,12 @@ import Twitter from "../assets/twitter.svg";
 import { ContactSchema } from "../utils/validationSchema";
 import LoadingButton from "../components/LoadingButton";
 import { useTheme } from "../contexts/ThemeContext";
+import { Link } from "react-router-dom";
 
 function Contacts() {
   const dispatch = useDispatch();
   const { theme } = useTheme();
+  const { storeInfo } = useSelector((state) => state.storeInfo);
   const { loading, success, error, message } = useSelector(
     (state) => state.contact
   );
@@ -82,7 +84,8 @@ function Contacts() {
       <div className="2xl:max-w-[80rem] mx-auto py-10 md:py-[6.5rem] px-4 sm:px-6 lg:px-[4.6875rem] 2xl:px-[0] text-left">
         <div className="flex flex-col lg:flex-row gap-[1.5rem] xl:gap-y-[4.375rem]">
           <div className="space-y-6 lg:w-2/6">
-            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3"
+            <div
+              className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3"
               style={{
                 backgroundColor: theme.bottomFooterBackgroundColor,
               }}
@@ -90,9 +93,11 @@ function Contacts() {
               <h3 className="font-semibold text-lg lg:text-2xl pb-2 border-b border-[#f3f3f3]">
                 Contact Information
               </h3>
-              <a
+              <Link
                 className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                href=""
+                to={`mailto:${
+                  storeInfo?.storeinfo?.email || "storename123@gmail.com"
+                }`}
               >
                 <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                   <img
@@ -101,11 +106,13 @@ function Contacts() {
                     alt=""
                   />
                 </span>
-                <span>supprt@jdshipnweb.com</span>
-              </a>
-              <a
+                <span>
+                  {storeInfo?.storeinfo?.email || "storename123@gmail.com"}
+                </span>
+              </Link>
+              <Link
                 className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                href=""
+                to={`tel:${storeInfo?.storeinfo?.mobile_no || "9876543210"}`}
               >
                 <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0 ">
                   <img
@@ -114,20 +121,27 @@ function Contacts() {
                     alt=""
                   />
                 </span>
-                <span>+91 9876543210</span>
-              </a>
-              <a
+                <span>
+                  {storeInfo?.storeinfo?.mobile_no || "+91 9876543210"}
+                </span>
+              </Link>
+              <Link
                 className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                href=""
+                to={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                  storeInfo?.storeinfo?.address || ""
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                   <img className="w-[1.125rem] h-[1.125rem]" src={Map} alt="" />
                 </span>
-                <span>123 Business Street, City, Country – ZIP</span>
-              </a>
+                <span>{storeInfo?.storeinfo?.address || ""}</span>
+              </Link>
             </div>
 
-            <div className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3"
+            <div
+              className="rounded-lg bg-[#fff7f2] p-5 flex flex-col gap-3"
               style={{
                 backgroundColor: theme.bottomFooterBackgroundColor,
               }}
@@ -136,13 +150,17 @@ function Contacts() {
                 Business Hours
               </h3>
               <div className="flex flex-col gap-2 text-base">
-                <span>Monday – Friday: 9:00 AM – 6:00 PM</span>
-                <span>Saturday: 10:00 AM – 2:00 PM</span>
-                <span>Sunday: Closed</span>
+                <span>
+                  Monday – Friday:{" "}
+                  {storeInfo?.storeinfo?.store_time || "11:00 AM to 08:00 PM"}
+                </span>
+                {/* <span>Saturday: 10:00 AM – 2:00 PM</span> */}
+                {/* <span>Sunday: Closed</span> */}
               </div>
             </div>
 
-            <div className="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4"
+            <div
+              className="rounded-lg bg-[#fff7f2] p-5 flex items-center gap-4"
               style={{
                 backgroundColor: theme.bottomFooterBackgroundColor,
               }}
@@ -152,9 +170,11 @@ function Contacts() {
                   Follow Our Journey
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                  <a
+                  <Link
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href=""
+                    to={storeInfo?.storeinfo?.facebook_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
@@ -164,10 +184,12 @@ function Contacts() {
                       />
                     </span>
                     <span>Facebook</span>
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href=""
+                    to={storeInfo?.storeinfo?.instagram_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
@@ -177,10 +199,12 @@ function Contacts() {
                       />
                     </span>
                     <span>Instagram</span>
-                  </a>
-                  <a
+                  </Link>
+                  <Link
                     className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href="#"
+                    to={storeInfo?.storeinfo?.twitter_url || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
                     <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
                       <img
@@ -190,20 +214,7 @@ function Contacts() {
                       />
                     </span>
                     <span>Twitter</span>
-                  </a>
-                  <a
-                    className="flex gap-2 text-base items-center hover:!text-[#007BFF] transition-all duration-600 ease-in-out"
-                    href=""
-                  >
-                    <span className="flex items-center justify-center w-8 h-8 bg-[#111111] rounded-full p-1 shrink-0">
-                      <img
-                        className="w-[1.125rem] h-[1.125rem]"
-                        src={Twitter}
-                        alt=""
-                      />
-                    </span>
-                    <span>Twitter</span>
-                  </a>
+                  </Link>
                 </div>
               </div>
             </div>
