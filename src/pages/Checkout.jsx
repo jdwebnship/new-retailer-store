@@ -630,7 +630,7 @@ function Checkout() {
                   </div>
                 ))}
 
-              <div className="border-t border-[#11111126] pt-6 mt-6 flex justify-between font-medium">
+              <div className="border-t border-[#11111126] pt-6 my-6 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium  ">Total</span>
                 <span className="md:text-2xl text-lg font-medium  ">
                   ₹{discTotal?.toFixed(2)}

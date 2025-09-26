@@ -110,7 +110,7 @@ function Cart() {
                 <span className="sm:text-lg font-medium">Shipping Cost</span>
                 <span className="sm:text-lg font-medium">Free</span>
               </div>
-              <div className="border-t border-[#11111126] pt-5 mt-4 flex justify-between font-medium">
+              <div className="border-t border-[#11111126] pt-5 my-4 flex justify-between font-medium">
                 <span className="md:text-2xl text-lg font-medium">Total</span>
                 <span className="md:text-2xl text-lg font-medium">
                   ₹{total.toLocaleString("en-IN", { maximumFractionDigits: 2 })}
