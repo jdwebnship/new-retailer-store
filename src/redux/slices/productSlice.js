@@ -43,6 +43,7 @@ export const fetchProducts = createAsyncThunk(
         // currentPage: params.page || 1,
       };
     } catch (error) {
+      dispatch(resetProductList())
       return rejectWithValue(
         error.response?.data?.message || "Failed to fetch products information"
       );
