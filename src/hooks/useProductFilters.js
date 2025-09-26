@@ -291,6 +291,7 @@ const useProductFilters = () => {
         : product?.data?.products?.data || [];
 
     return products.filter((product) => {
+      const isActive = product.status === "active";
       const in_stock = product.quantity > 0;
       const stockMatch =
         (filters.in_stock && in_stock) ||
@@ -308,7 +309,7 @@ const useProductFilters = () => {
         product.final_price >= filters.priceRange[0] &&
         product.final_price <= filters.priceRange[1];
 
-      return stockMatch && categoryMatch && priceMatch;
+      return isActive && stockMatch && categoryMatch && priceMatch;
     });
   }, [product, searchQuery, filters, categories]);
 

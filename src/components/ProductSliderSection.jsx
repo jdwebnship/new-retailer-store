@@ -10,12 +10,12 @@ function ProductSliderSection() {
   const { productDetails, product } = useSelector((state) => state.products);
   const similarProducts = product?.data?.products?.data;
   const filteredProducts = similarProducts?.filter(
-    (p) => p.id !== productDetails?.product?.id
+    (p) => p.id !== productDetails?.product?.id && p.status === "active"
   );
 
   return (
     <div className="py-[3.125rem] lg:py-[100px]">
-      {filteredProducts &&
+      {filteredProducts && (
         <>
           <p className="uppercase">Similar Products</p>
           <h2 className="text-[2rem] lg:text-[2.625rem] font-bold mb-[1.25rem] lg:mb-[3.125rem]">
@@ -58,7 +58,7 @@ function ProductSliderSection() {
             </Swiper>
           </section>
         </>
-      }
+      )}
     </div>
   );
 }

@@ -13,7 +13,9 @@ function ProductSection() {
     dispatch(postNewArrivals());
   }, [dispatch]);
 
-  const products = newArrivals?.products || [];
+  const products = (newArrivals?.products || []).filter(
+    (product) => product.status === "active"
+  );
 
   return (
     <div className="py-[3.125rem] lg:py-[100px]">
