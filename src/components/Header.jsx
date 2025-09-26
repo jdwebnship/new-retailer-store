@@ -19,7 +19,7 @@ import { closeCartPopup } from "../redux/slices/cartSlice";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
 
-function Header({ offsetY = 0, onHeightChange, hasShadow = false }) {
+function Header({ offsetY = 0, onHeightChange }) {
   const navigate = useNavigate();
   const { theme, headerTextColor } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);

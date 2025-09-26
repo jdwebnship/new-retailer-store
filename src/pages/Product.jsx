@@ -1,12 +1,11 @@
 import React, { useState, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
 import CommonHeader from "../components/CommonHeader";
 import cross from "../assets/x.svg";
 import CardComponent from "../components/CardComponent";
-import PriceRangeSlider from "../components/Pricerangeslider";
 import { useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import useProductFilters from "../hooks/useProductFilters";
+import PriceFilterSlider from "../components/PriceFilterSlider";
 
 function Product() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -19,16 +18,16 @@ function Product() {
     currentPage,
     categories,
     searchQuery,
-    
+
     filteredProducts,
     totalPages,
     totalItems,
     pageFrom: pageForm,
     pageTo,
-    
+
     hasActiveFilters,
     activeFilterCount,
-    
+
     handlePageClick,
     handleFilterChange,
     handlePriceRangeChange,
@@ -37,14 +36,20 @@ function Product() {
     setSearchParams,
     searchParams,
   } = useProductFilters();
-  
-  const handlePriceRangeApply = useCallback((newRange) => {
-    handlePriceRangeChange(newRange);
-  }, [handlePriceRangeChange]);
 
-  const handleCheckboxChange = useCallback((filterType, value) => {
-    handleFilterChange(filterType, value);
-  }, [handleFilterChange]);
+  const handlePriceRangeApply = useCallback(
+    (newRange) => {
+      handlePriceRangeChange(newRange);
+    },
+    [handlePriceRangeChange]
+  );
+
+  const handleCheckboxChange = useCallback(
+    (filterType, value) => {
+      handleFilterChange(filterType, value);
+    },
+    [handleFilterChange]
+  );
 
   const handleClearSearch = useCallback(() => {
     const newParams = new URLSearchParams(searchParams);
@@ -78,7 +83,7 @@ function Product() {
                 {/* 🔹 Your existing filter content copied here */}
                 <div className="mt-10">
                   {/* reuse your desktop filter JSX here (Availability, Category, Price, etc.) */}
-                  <div className="fillter">
+                  <div>
                     <div
                       className={`${
                         hasActiveFilters ? "lg:col-span-2" : "hidden"
@@ -93,7 +98,9 @@ function Product() {
                             className="underline text-[0.875rem] cursor-pointer"
                             onClick={() => {
                               // Force reset to page 1 before clearing filters
-                              const newParams = new URLSearchParams(searchParams);
+                              const newParams = new URLSearchParams(
+                                searchParams
+                              );
                               newParams.set("page", "1");
                               setSearchParams(newParams, { replace: true });
                               // Then clear all filters
@@ -133,7 +140,9 @@ function Product() {
                                 className="cursor-pointer"
                                 src={cross}
                                 alt=""
-                                onClick={() => handleCheckboxChange("out_of_stock")}
+                                onClick={() =>
+                                  handleCheckboxChange("out_of_stock")
+                                }
                               />
                             </span>
                           )}
@@ -153,7 +162,10 @@ function Product() {
                                   src={cross}
                                   alt=""
                                   onClick={() =>
-                                    handleCheckboxChange("categories", category.id.toString())
+                                    handleCheckboxChange(
+                                      "categories",
+                                      category.id.toString()
+                                    )
                                   }
                                 />
                               </span>
@@ -173,14 +185,18 @@ function Product() {
                               />
                             </span>
                           ))} */}
-                          {(filters.priceRange[0] > 0 || filters.priceRange[1] < 10000) && (
+                          {(filters.priceRange[0] > 0 ||
+                            filters.priceRange[1] < 10000) && (
                             <span className="bg-[#F8F8F8] text-sm inline-flex items-center px-[0.9375rem] py-[0.375rem] gap-[0.375rem] rounded-lg">
-                              ₹{filters.priceRange[0]} - ₹{filters.priceRange[1]}
+                              ₹{filters.priceRange[0]} - ₹
+                              {filters.priceRange[1]}
                               <img
                                 className="cursor-pointer"
                                 src={cross}
                                 alt=""
-                                onClick={() => handleFilterChange("priceRange", [0, 10000])}
+                                onClick={() =>
+                                  handleFilterChange("priceRange", [0, 10000])
+                                }
                               />
                             </span>
                           )}
@@ -206,7 +222,9 @@ function Product() {
                             type="checkbox"
                             className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-transparent focus:ring-blue-500 dark:focus:ring-blue-400 appearance-none custom-checkbox"
                             checked={filters.out_of_stock}
-                            onChange={() => handleCheckboxChange("out_of_stock")}
+                            onChange={() =>
+                              handleCheckboxChange("out_of_stock")
+                            }
                           />
                           <span className="ml-2">Out of Stock</span>
                         </label>
@@ -232,8 +250,15 @@ function Product() {
                                 <input
                                   type="checkbox"
                                   className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-transparent focus:ring-blue-500 dark:focus:ring-blue-400 appearance-none custom-checkbox"
-                                  checked={filters.categories.includes(category.name)}
-                                  onChange={() => handleCheckboxChange("categories", category.id.toString())}
+                                  checked={filters.categories.includes(
+                                    category.name
+                                  )}
+                                  onChange={() =>
+                                    handleCheckboxChange(
+                                      "categories",
+                                      category.id.toString()
+                                    )
+                                  }
                                 />
                                 <span className="ml-2">{name}</span>
                               </label>
@@ -243,7 +268,9 @@ function Product() {
                       </div>
                     ) : (
                       <div className="flex items-center justify-center p-4">
-                        <p className="text-sm text-gray-500">No categories found</p>
+                        <p className="text-sm text-gray-500">
+                          No categories found
+                        </p>
                       </div>
                     )}
 
@@ -283,12 +310,12 @@ function Product() {
                       <h4 className="text-lg font-bold uppercase text-[0.875rem] mb-[0.9375rem]">
                         Price
                       </h4>
-                      <PriceRangeSlider
+                      <PriceFilterSlider
                         value={filters.priceRange}
                         onChange={(newRange) => {
-                          setFilters(prev => ({
+                          setFilters((prev) => ({
                             ...prev,
-                            priceRange: newRange
+                            priceRange: newRange,
                           }));
                         }}
                         onApply={handlePriceRangeApply}
@@ -302,7 +329,7 @@ function Product() {
 
           {/* 🔹 Desktop Sidebar (unchanged) */}
           <div className="hidden lg:block lg:col-span-2 lg:sticky lg:self-start lg:top-[100px] text-left">
-            <div className="fillter">
+            <div>
               <div
                 className={`${hasActiveFilters ? "lg:col-span-2" : "hidden"}`}
               >
@@ -533,12 +560,12 @@ function Product() {
                 <h4 className="text-lg font-bold uppercase text-[0.875rem] mb-[0.9375rem]">
                   Price
                 </h4>
-                <PriceRangeSlider
+                <PriceFilterSlider
                   value={filters.priceRange}
                   onChange={(newRange) => {
-                    setFilters(prev => ({
+                    setFilters((prev) => ({
                       ...prev,
-                      priceRange: newRange
+                      priceRange: newRange,
                     }));
                   }}
                   onApply={handlePriceRangeApply}
