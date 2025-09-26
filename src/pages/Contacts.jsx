@@ -403,11 +403,11 @@ function Contacts() {
               </div>
 
               <div className="mb-6">
-                <label className="flex items-center">
+                <label className="flex items-center cursor-pointer">
                   <input
                     type="checkbox"
                     name="subscribe"
-                    className="form-checkbox h-5 w-5 text-blue-600 shrink-0"
+                    className="form-checkbox h-5 w-5 text-blue-600 shrink-0 cursor-pointer"
                     onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                     checked={formik.values.subscribe}
